@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="1" time="0.005856" name="Orc::MismatchResolver" tests="11">
+  <testcase time="0.000569" name="Orc::MismatchResolver sends update when should not be participating, is not participating and has a version mismatch">
+  </testcase>
+  <testcase time="0.000467" name="Orc::MismatchResolver sends disable when should be participating, is participating and has a version mismatch">
+  </testcase>
+  <testcase time="0.000485" name="Orc::MismatchResolver sends update when is not participating and there is a version mismatch only">
+  </testcase>
+  <testcase time="0.000399" name="Orc::MismatchResolver sends disable when is participating and there is a version mismatch only">
+  </testcase>
+  <testcase time="0.000514" name="Orc::MismatchResolver sends enable when should be participating but is not and there is no version mismatch">
+  </testcase>
+  <testcase time="0.000415" name="Orc::MismatchResolver sends disable when should not be participating but is and there is no version mismatch">
+  </testcase>
+  <testcase time="0.000379" name="Orc::MismatchResolver sends update when should be participating, is not participating and has a version mismatch">
+  </testcase>
+  <testcase time="0.000392" name="Orc::MismatchResolver is resolved when should be participating, is participating and has correct version">
+  </testcase>
+  <testcase time="0.000384" name="Orc::MismatchResolver is resolved when should not be participating, is not participating and has correct version">
+  </testcase>
+  <testcase time="0.000617" name="Orc::MismatchResolver will not send a disable when there would be no groups left in the lb pool">
+  </testcase>
+  <testcase time="0.000114" name="Orc::MismatchResolver after evaluating all groups transitions, all enablements should take precedence over disablements (PENDING)">
+    <skipped/>
+  </testcase>
+  <system-out>
+  </system-out>
+  <system-err>
+
+*****************************************************************
+DEPRECATION WARNING: you are using deprecated behaviour that will
+be removed from rspec-3.
+
+/Users/aeg/src/youdevise-orc/spec/orc/mismatch_resolver_spec.rb:157
+
+* `expect { }.should` is deprecated.
+* please use `expect { }.to` instead.
+*****************************************************************
+  </system-err>
+</testsuite>

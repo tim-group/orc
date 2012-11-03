@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" time="0.007507" name="CMDB::HighLevelOrchrestration" tests="5">
+  <testcase time="0.001366" name="CMDB::HighLevelOrchrestration install saves the requested version in the currently offline group">
+  </testcase>
+  <testcase time="0.001033" name="CMDB::HighLevelOrchrestration swap makes the currently offline group online and vice versa">
+  </testcase>
+  <testcase time="0.002633" name="CMDB::HighLevelOrchrestration deploy does an install followed by a swap">
+  </testcase>
+  <testcase time="0.00084" name="CMDB::HighLevelOrchrestration deploy when only one group just upgrades the version">
+  </testcase>
+  <testcase time="0.000932" name="CMDB::HighLevelOrchrestration promotes an application from one environment to another">
+  </testcase>
+  <system-out>
+  </system-out>
+  <system-err>
+  </system-err>
+</testsuite>

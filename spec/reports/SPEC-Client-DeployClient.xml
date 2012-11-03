@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" time="0.002771" name="Client::DeployClient" tests="1">
+  <testcase time="0.002557" name="Client::DeployClient handles messages correctly when the agent throws an exception">
+  </testcase>
+  <system-out>
+  </system-out>
+  <system-err>
+  </system-err>
+</testsuite>

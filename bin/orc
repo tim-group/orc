@@ -1,0 +1,6 @@
+#!/usr/bin/ruby
+$: << File.join(File.dirname(__FILE__), "..", "lib")
+$: << '/opt/orctool/lib'
+require 'util/orc_option_parser.rb'
+
+Util::OrcOptionParser.new.parse()
