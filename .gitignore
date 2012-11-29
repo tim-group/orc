@@ -1,3 +1,4 @@
-spec/reports/*
+build/
+spec/reports/*.xml
 .*.sw[a-z]
 *~

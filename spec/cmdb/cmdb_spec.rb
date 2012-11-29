@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rspec'
 require 'cmdb/yaml'
+require 'yaml'
 
 describe CMDB::Yaml do
   before do
