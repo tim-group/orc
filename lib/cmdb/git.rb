@@ -4,7 +4,7 @@ require 'logger'
 
 class CMDB::Git
   def initialize(options={})
-    @repo_url = options[:origin] || 'git@gitit:cmdb'
+    @repo_url = options[:origin] || 'git@git:cmdb'
     @local_path = options[:local_path] || '/opt/orctool/data/cmdb/'
     @branch = options[:branch] || "master"
   end
