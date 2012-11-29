@@ -1,4 +1,5 @@
 require 'cmdb/namespace'
+require 'pathname'
 
 class CMDB::Yaml
   def initialize(args)
@@ -17,7 +18,7 @@ class CMDB::Yaml
       YAML::load(File.open(convention(spec)))
     else
       YAML::load(File.open("#{@data_dir}/#{spec[:environment]}.yaml"))["#{spec[:application]}"]
-    end    
+    end
   end
 
   def save_application(spec, groups)
