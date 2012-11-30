@@ -15,10 +15,11 @@ class CMDB::Yaml
 
   def retrieve_application(spec)
     if Pathname.new(convention(spec)).exist?
-      YAML::load(File.open(convention(spec)))
+      data = YAML::load(File.open(convention(spec)))
     else
-      YAML::load(File.open("#{@data_dir}/#{spec[:environment]}.yaml"))["#{spec[:application]}"]
+      data = YAML::load(File.open("#{@data_dir}/#{spec[:environment]}.yaml"))["#{spec[:application]}"]
     end
+    data.map { |el| Hash[el.map{|(k,v)| [k.to_sym,v]}] }
   end
 
   def save_application(spec, groups)
@@ -27,8 +28,9 @@ class CMDB::Yaml
     if !dir.exist?
         Dir.mkdir dir
     end
+    flattened = groups.map { |el| Hash[el.map{|(k,v)| [k.to_s,v]}] }
     File.open( convention(spec), "w" ) do |f|
-      f.write( groups.to_yaml )
+      f.write( flattened.to_yaml )
     end
   end
 end
