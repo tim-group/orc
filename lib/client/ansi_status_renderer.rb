@@ -1,10 +1,26 @@
 class AnsiStatusRenderer
   def render(statuses)
     buffer =""
-    keys = [:host,nil,:application,:group,:present,:version,:participating]
+    keys = [:host,:application,:group,:present,:version,:participating]
+    lengths = {}
+    keys.each do |key|
+      lengths[key] = key.to_s.length
+    end
+
+    statuses.instances.each do |status|
+      keys.each do |key|
+         len = status[key].to_s.length
+         if lengths[key] < len
+           lengths[key] = len
+         end
+      end
+    end
+
     header_buffer = ""
     keys.each do |key|
-      header_buffer << "\t#{key}"
+      header_buffer << "#{key}"
+      rem = lengths[key] - key.to_s.length + 1
+      (1..rem).to_a.each { |x| header_buffer << " "}
     end
 
     buffer << Color.new(:text=>header_buffer).header().display()
@@ -12,12 +28,11 @@ class AnsiStatusRenderer
     statuses.instances.each do |status|
       color = status[:group]
       present = status[:present]
-
-      status_buffer = "\n "
+      status_buffer = ""
       keys.each do |key|
-        if (key!=nil)
-          status_buffer << "\t#{status[key]}"
-        end
+        status_buffer << "#{status[key]}"
+        rem = lengths[key] - status[key].to_s.length + 1
+        (1..rem).to_a.each { |x| status_buffer << " "}
       end
       status_buffer << "\n "
       buffer << Color.new(:text=>status_buffer).color(color).highlight(present).display()
