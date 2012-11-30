@@ -15,7 +15,7 @@ class MCollective::RPC::DeploytoolWrapper
 
   def status(spec)
     mc = rpcclient("deployapp",{:options => @options})
-    mc.discover :verbose=>true
+    mc.discover :verbose=>false
     mc.progress = false
     mc.verbose = true
     mc.status(:spec=>spec)
