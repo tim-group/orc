@@ -35,7 +35,6 @@ class Orc::Engine
         action.check_valid(application_model)
         action_successful = action.execute()
 
-
         if action_successful == false
           next_resolution[:instance].fail
         end

@@ -28,7 +28,7 @@ class Orc::LiveModelCreator
       instance_model = Model::InstanceModel.new(instance, group)
       previous = @instance_models[instance_model.key]
       if previous!=nil and previous.failed?
-        instance_model = previous
+        instance_model.fail
       else
         @instance_models[instance_model.key] = instance_model
      end
