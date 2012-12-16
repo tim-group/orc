@@ -12,7 +12,6 @@ class MCollective::RPC::DeploytoolWrapper
     @options = options
   end
 
-
   def status(spec)
     mc = rpcclient("deployapp",{:options => @options})
     mc.discover :verbose=>false
@@ -45,11 +44,18 @@ class Client::DeployClient
 
     @mcollective_client.status(spec).each do |resp|
       data  = resp[:data]
-      if ! data.kind_of?(Array)
+
+      if data.kind_of?(Hash) and data.has_key?(:statuses)
+        raw_instances = data[:statuses]
+      else
+        raw_instances = data
+      end
+
+      if ! raw_instances.kind_of?(Array)
         next
       end
 
-      data.each do |instance|
+      raw_instances.each do |instance|
         instance[:host] = resp[:sender]
         instances<<instance
       end
