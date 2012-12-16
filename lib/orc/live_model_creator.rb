@@ -8,7 +8,7 @@ class Orc::LiveModelCreator
     @remote_client = args[:remote_client]
     @cmdb = args[:cmdb]
     @instance_models = {}
-  end
+ end
 
   def create_live_model(environment, application)
     statuses = @remote_client.status(:environment=>environment, :application=>application)
@@ -33,7 +33,7 @@ class Orc::LiveModelCreator
         @instance_models[instance_model.key] = instance_model
      end
 
-      models << instance_model
+     models << instance_model
     end
 
     return Model::ApplicationModel.new(models)
