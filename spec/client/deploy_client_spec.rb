@@ -47,4 +47,22 @@ describe Client::DeployClient do
       }])
   end
 
+  it 'returns false when a remote error is reported' do
+    well_formed_message =  [
+      {:data=>{
+        :logs=>{
+          :infos=>[],
+          :warns=>[],
+          :errors=>[]
+        },
+        :successful=>false
+      },
+      :sender=>"mars"}
+    ]
+    mcollective_client = double()
+    mcollective_client.stub(:custom_request).and_return(well_formed_message)
+    client = Client::DeployClient.new(:mcollective_client=>mcollective_client)
+    client.update_to_version({:environment=>"test",:application=>"xyz"}, ["mars"],5).should eql(false)
+  end
+
 end

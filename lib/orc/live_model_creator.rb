@@ -26,6 +26,13 @@ class Orc::LiveModelCreator
       group = groups[instance[:group]]
       raise Orc::GroupMissing.new("#{instance[:group]}") if group.nil?
       instance_model = Model::InstanceModel.new(instance, group)
+      previous = @instance_models[instance_model.key]
+      if previous!=nil and previous.failed?
+        instance_model = previous
+      else
+        @instance_models[instance_model.key] = instance_model
+     end
+
       models << instance_model
     end
 

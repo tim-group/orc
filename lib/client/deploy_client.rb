@@ -19,6 +19,15 @@ class MCollective::RPC::DeploytoolWrapper
     mc.verbose = true
     mc.status(:spec=>spec)
   end
+
+
+  def custom_request(action,request,hosts,identity_hash)
+    mc = rpcclient("deployapp",{:options => @options})
+    mc.discover :verbose=>false
+    mc.progress = false
+    mc.verbose = true
+    mc.custom_request(action, request, hosts, identity_hash)
+  end
 end
 
 class Client::DeployClient
@@ -34,6 +43,7 @@ class Client::DeployClient
     if args[:config]!=nil
       @options[:config] = args[:config]
     end
+
     @options[:verbose] = true
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
   end
@@ -65,39 +75,28 @@ class Client::DeployClient
   end
 
   def update_to_version(spec,hosts,version)
-    @mc = rpcclient("deployapp",{:options => @options})
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    mc = @mc
-    mc.progress = false
-    mc.verbose = false
 
-    mc.custom_request("update_to_version", {:spec=>spec, :version=>version}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+    @mcollective_client.custom_request("update_to_version", {:spec=>spec, :version=>version}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
       log_response(resp)
+      return resp[:data][:successful]
     end
   end
 
   def enable_participation(spec,hosts)
-    @mc = rpcclient("deployapp",{:options => @options})
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    mc = @mc
-    mc.progress = false
-    mc.verbose = false
-
-    mc.custom_request("enable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+    @mcollective_client.custom_request("enable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
       log_response(resp)
     end
   end
 
   def disable_participation(spec,hosts)
-    @mc = rpcclient("deployapp",{:options => @options})
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    mc = @mc
-    mc.progress = false
-    mc.verbose = false
-    mc.custom_request("disable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+
+    @mcollective_client.custom_request("disable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
       log_response(resp)
     end
   end

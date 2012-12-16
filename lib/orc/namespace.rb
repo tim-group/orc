@@ -26,7 +26,7 @@ module Orc
     def execute
       logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
 
-      @remote_client.update_to_version({
+      return @remote_client.update_to_version({
         :group=>@instance.group.name,
       }, [@instance.host], @instance.group.target_version)
 
@@ -51,10 +51,11 @@ module Orc
 
     def execute
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
-      @remote_client.enable_participation({
+      successful = @remote_client.enable_participation({
         :group=>@instance.group.name,
       }, [@instance.host])
       sleep(@lb_waittime)
+      return successful
     end
 
     def precedence
@@ -79,10 +80,11 @@ module Orc
 
     def execute
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
-      @remote_client.disable_participation({
+      successful = @remote_client.disable_participation({
         :group=>@instance.group.name,
       }, [@instance.host])
       sleep(@lb_waittime)
+      return successful
     end
 
     def precedence
