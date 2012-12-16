@@ -26,15 +26,25 @@ class Orc::Engine
       sorted_resolutions = proposed_resolutions.sort_by { |resolution_pair|
         resolution_pair[:resolution].precedence()
       }.reject { |resolution_pair|
-        resolution_pair[:resolution].kind_of? Orc::ResolvedCompleteAction
+        resolution_pair[:resolution].kind_of? Orc::ResolvedCompleteAction or resolution_pair[:instance].failed?
       }
 
       if (sorted_resolutions.size>0)
         next_resolution = sorted_resolutions.shift
         action = next_resolution[:resolution]
         action.check_valid(application_model)
-        action.execute()
+        action_successful = action.execute()
+
+        if action_successful == false
+          next_resolution[:instance].fail
+          pp next_resolution[:instance].object_id
+          pp next_resolution[:instance].object_id
+        end
       else
+        if (application_model.instances.reject {|instance| not instance.failed?}.size>0)
+          raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
+        end
+
         @progress_logger.log_resolution_complete()
         break
       end

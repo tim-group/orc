@@ -12,6 +12,7 @@ class Model::InstanceModel
     @participation = instance[:participating]
     @version = instance[:version]
     @host = instance[:host]
+    @failed = false
   end
 
   def version_mismatch?
@@ -25,4 +26,11 @@ class Model::InstanceModel
     }
   end
 
+  def fail
+    @failed = true
+  end
+
+  def failed?
+    return @failed
+  end
 end

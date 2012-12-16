@@ -144,10 +144,11 @@ describe Orc::Engine do
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
-    action.stub(:execute).with(true)
+    action.stub(:execute).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
@@ -157,7 +158,9 @@ describe Orc::Engine do
 
     action.should_receive(:execute).at_least(:once)
 
-#    expect {engine.resolve()}.to raise_error(Orc::FailedToResolve)
-  end
+    expect {engine.resolve()}.to raise_error(Orc::FailedToResolve)
+    @blue_instance.failed?.should eql(true)
+    @green_instance.failed?.should eql(true)
+ end
 
 end
