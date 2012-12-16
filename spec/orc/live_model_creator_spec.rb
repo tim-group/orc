@@ -20,9 +20,9 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
 
-   expect {
-     live_model = live_model_creator.create_live_model(environment, application)
-   }.should raise_error(CMDB::ApplicationMissing)
+    expect {
+      live_model = live_model_creator.create_live_model(environment, application)
+    }.should raise_error(CMDB::ApplicationMissing)
 
   end
 
@@ -73,6 +73,9 @@ describe Orc::LiveModelCreator do
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
 
     expect {live_model_creator.create_live_model(environment, application)}.to raise_error(Orc::GroupMissing)
+  end
+
+  it 'combines the model returned from the audit with its current understanding of the model' do
   end
 
   it 'missed messages...' do

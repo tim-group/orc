@@ -11,7 +11,6 @@ module Orc
   end
 
   class GroupMissing < Exception
-
   end
 
   class UpdateVersionAction

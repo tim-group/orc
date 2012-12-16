@@ -6,6 +6,7 @@ class Model::InstanceModel
   attr_accessor :participation
   attr_accessor :version
   attr_accessor :host
+
   def initialize(instance, group)
     @group = group || raise("must pass in a not null group")
     @participation = instance[:participating]
@@ -16,4 +17,12 @@ class Model::InstanceModel
   def version_mismatch?
     return self.version != group.target_version
   end
+
+  def key()
+    return {
+      :group=>group.name,
+      :host=>host
+    }
+  end
+
 end
