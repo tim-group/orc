@@ -38,7 +38,7 @@ class Client::DeployClient
     @environment = args[:environment] or "default"
     @application = args[:application] or "default"
     @options =  MCollective::Util.default_options
-    @options[:timeout] = 120
+    @options[:timeout] = 200
 
     if args[:config]!=nil
       @options[:config] = args[:config]
