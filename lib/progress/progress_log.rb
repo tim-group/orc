@@ -24,6 +24,10 @@ module ProgressLog
     print  "  [\e[1;50m#{host}\e[0m] #{log}\n"
   end
 
+  def log_client_response_error(host, log)
+    print  "  [\e[1;31m#{host}\e[0m] #{log}\n"
+  end
+
   class ProgressLog::Logger
     include ProgressLog
   end

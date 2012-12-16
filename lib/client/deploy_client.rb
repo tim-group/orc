@@ -110,7 +110,7 @@ class Client::DeployClient
       log_client_response(resp[:sender], log)
     end
     data[:logs][:errors].each do |log|
-      log_client_response(resp[:sender], log)
+      log_client_response_error(resp[:sender], log)
     end
   end
 
