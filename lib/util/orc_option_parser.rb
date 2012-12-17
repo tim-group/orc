@@ -6,7 +6,7 @@ require 'client/deploy_client'
 require 'client/ansi_status_renderer'
 require 'etc'
 
-user = Etc.getlogin
+user = ENV['USER']
 ENV['MCOLLECTIVE_SSL_PRIVATE']="/home/#{user}/.mc/#{user}-private.pem"
 ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem"
 
