@@ -1,7 +1,7 @@
 class AnsiStatusRenderer
   def render(statuses)
     buffer =""
-    keys = [:host,:application,:group,:present,:version,:participating]
+    keys = [:host,:application,:group,:present,:version,:participating,:health]
     lengths = {}
     keys.each do |key|
       lengths[key] = key.to_s.length
