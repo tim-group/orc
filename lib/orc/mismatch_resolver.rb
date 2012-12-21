@@ -2,7 +2,12 @@ require 'orc/actions'
 
 class Orc::MismatchResolver
   def in_case(state, name)
-    state.keys.each { |k|
+    [
+      :should_participate,
+      :does_participate,
+      :version_mismatch,
+      :is_healthy,
+    ].each { |k|
       if state[k].nil?
         t_state = state.clone
         f_state = state.clone
@@ -22,47 +27,47 @@ class Orc::MismatchResolver
     in_case({
       :should_participate => true,
       :does_participate   => true,
-      :version_mismatch   => false
+      :version_mismatch   => false,
     }, 'ResolvedCompleteAction')
     in_case({
       :should_participate => false,
       :does_participate   => false,
-      :version_mismatch   => false
+      :version_mismatch   => false,
     }, 'ResolvedCompleteAction')
     in_case({
       :should_participate => false,
       :does_participate   => false,
-      :version_mismatch   => true
+      :version_mismatch   => true,
     }, 'UpdateVersionAction')
     in_case({
       :should_participate => true,
       :does_participate   => true,
-      :version_mismatch   => true
+      :version_mismatch   => true,
     }, 'DisableParticipationAction')
     in_case({
       :should_participate => false,
       :does_participate   => false,
-      :version_mismatch   => true
+      :version_mismatch   => true,
     }, 'UpdateVersionAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,
-      :version_mismatch   => true
+      :version_mismatch   => true,
     }, 'UpdateVersionAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,
-      :version_mismatch   => false
+      :version_mismatch   => false,
     }, 'EnableParticipationAction')
     in_case({
       :should_participate => false,
       :does_participate   => true,
-      :version_mismatch   => false
+      :version_mismatch   => false,
     }, 'DisableParticipationAction')
     in_case({
       :should_participate => false,
       :does_participate   => true,
-      :version_mismatch   => true
+      :version_mismatch   => true,
     }, 'DisableParticipationAction')
   end
 
@@ -74,7 +79,8 @@ class Orc::MismatchResolver
     return get_case(
       :should_participate => instance.group.target_participation,
       :does_participate   => instance.participation,
-      :version_mismatch   => instance.version_mismatch?
+      :version_mismatch   => instance.version_mismatch?,
+      :is_healthy         => instance.healthy?
     ).call(instance)
   end
 end

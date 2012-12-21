@@ -13,6 +13,7 @@ class Model::InstanceModel
     @version = instance[:version]
     @host = instance[:host]
     @failed = false
+    @healthy = true
   end
 
   def version_mismatch?
@@ -21,8 +22,8 @@ class Model::InstanceModel
 
   def key()
     return {
-      :group=>group.name,
-      :host=>host
+      :group => group.name,
+      :host  => host
     }
   end
 
@@ -32,6 +33,10 @@ class Model::InstanceModel
 
   def failed?
     return @failed
+  end
+
+  def healthy?
+    @healthy
   end
 end
 
