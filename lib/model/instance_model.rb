@@ -34,3 +34,4 @@ class Model::InstanceModel
     return @failed
   end
 end
+

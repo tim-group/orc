@@ -3,12 +3,12 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'orc/namespace.rb'
+require 'orc/actions'
 require 'model/instance_model'
 require 'model/group_model'
 require 'client/deploy_client'
 
-describe Orc::DisableParticipationAction do
+describe Orc::Action::DisableParticipationAction do
 
   before do
     @remote_client = double(Client::DeployClient)
@@ -20,7 +20,7 @@ describe Orc::DisableParticipationAction do
       :host=>"host1"
     },group)
 
-    update_version_action = Orc::DisableParticipationAction.new(@remote_client, instance_model,0)
+    update_version_action = Orc::Action::DisableParticipationAction.new(@remote_client, instance_model,0)
     @remote_client.should_receive(:disable_participation).with( {:group=>"blue"}, ["host1"])
     update_version_action.execute()
   end

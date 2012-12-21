@@ -3,13 +3,13 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'orc/engine.rb'
+require 'orc/engine'
 
 describe Orc::Engine do
 
   before do
     @progress_logger = double()
-    @resolution_complete = Orc::ResolvedCompleteAction.new()
+    @resolution_complete = Orc::Action::ResolvedCompleteAction.new()
 
     @blue_group = Model::GroupModel.new(:name=>"blue")
     @green_group = Model::GroupModel.new(:name=>"green")

@@ -11,3 +11,4 @@ class Model::ApplicationModel
   end
 
 end
+

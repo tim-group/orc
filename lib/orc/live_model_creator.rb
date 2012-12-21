@@ -40,3 +40,4 @@ class Orc::LiveModelCreator
   end
 
 end
+

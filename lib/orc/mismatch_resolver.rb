@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/actions'
 
 class Orc::MismatchResolver
   def in_case(state, closure)
@@ -11,47 +11,47 @@ class Orc::MismatchResolver
       :should_participate=>true,
       :does_participate=>true,
       :version_mismatch=>false
-    }, lambda {|instance| Orc::ResolvedCompleteAction.new()})
+    }, lambda {|instance| Orc::Action::ResolvedCompleteAction.new()})
     in_case({
       :should_participate=>false,
       :does_participate=>false,
       :version_mismatch=>false
-    }, lambda {|instance| Orc::ResolvedCompleteAction.new()})
+    }, lambda {|instance| Orc::Action::ResolvedCompleteAction.new()})
     in_case({
       :should_participate=>false,
       :does_participate=>false,
       :version_mismatch=>true
-    }, lambda {|instance| Orc::UpdateVersionAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::UpdateVersionAction.new(remote_client,instance)})
     in_case({
       :should_participate=>true,
       :does_participate=>true,
       :version_mismatch=>true
-    }, lambda {|instance| Orc::DisableParticipationAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::DisableParticipationAction.new(remote_client,instance)})
     in_case({
       :should_participate=>false,
       :does_participate=>false,
       :version_mismatch=>true
-    }, lambda {|instance| Orc::UpdateVersionAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::UpdateVersionAction.new(remote_client,instance)})
     in_case({
       :should_participate=>true,
       :does_participate=>false,
       :version_mismatch=>true
-    }, lambda {|instance| Orc::UpdateVersionAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::UpdateVersionAction.new(remote_client,instance)})
     in_case({
       :should_participate=>true,
       :does_participate=>false,
       :version_mismatch=>false
-    }, lambda {|instance| Orc::EnableParticipationAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::EnableParticipationAction.new(remote_client,instance)})
     in_case({
       :should_participate=>false,
       :does_participate=>true,
       :version_mismatch=>false
-    }, lambda {|instance| Orc::DisableParticipationAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::DisableParticipationAction.new(remote_client,instance)})
     in_case({
       :should_participate=>false,
       :does_participate=>true,
       :version_mismatch=>true
-    }, lambda {|instance| Orc::DisableParticipationAction.new(remote_client,instance)})
+    }, lambda {|instance| Orc::Action::DisableParticipationAction.new(remote_client,instance)})
 
   end
 
@@ -67,3 +67,4 @@ class Orc::MismatchResolver
     ).call(instance)
   end
 end
+

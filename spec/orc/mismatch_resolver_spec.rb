@@ -3,7 +3,7 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'orc/namespace'
+require 'orc/actions'
 require 'orc/mismatch_resolver'
 require 'model/group_model'
 require 'model/instance_model'
@@ -32,7 +32,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::UpdateVersionAction)
+    resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends disable when should be participating, is participating and has a version mismatch' do
@@ -45,7 +45,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::DisableParticipationAction)
+    resolution.class.should eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends update when is not participating and there is a version mismatch only' do
@@ -58,7 +58,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::UpdateVersionAction)
+    resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends disable when is participating and there is a version mismatch only' do
@@ -71,7 +71,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::DisableParticipationAction)
+    resolution.class.should eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends enable when should be participating but is not and there is no version mismatch' do
@@ -84,7 +84,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::EnableParticipationAction)
+    resolution.class.should eql(Orc::Action::EnableParticipationAction)
   end
 
   it 'sends disable when should not be participating but is and there is no version mismatch' do
@@ -95,7 +95,7 @@ describe Orc::MismatchResolver do
     },    @should_not_be_participating_group)
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::DisableParticipationAction)
+    resolution.class.should eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends update when should be participating, is not participating and has a version mismatch' do
@@ -108,7 +108,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::UpdateVersionAction)
+    resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'is resolved when should be participating, is participating and has correct version' do
@@ -121,7 +121,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::ResolvedCompleteAction)
+    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
   end
 
   it 'is resolved when should not be participating, is not participating and has correct version' do
@@ -134,7 +134,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::ResolvedCompleteAction)
+    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
   end
 
   it 'will not send a disable when there would be no groups left in the lb pool' do
@@ -152,7 +152,7 @@ describe Orc::MismatchResolver do
       },    @should_not_be_participating_group)]
 
     resolution = @mismatch_resolver.resolve(instances[0])
-    resolution.class.should eql(Orc::DisableParticipationAction)
+    resolution.class.should eql(Orc::Action::DisableParticipationAction)
 
     expect {resolution.check_valid(Model::ApplicationModel.new(instances))}.should raise_error(Orc::FailedToResolve)
   end
