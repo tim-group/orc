@@ -2,16 +2,28 @@ require 'orc/namespace'
 require 'progress/log'
 
 module Orc::Action
-  class UpdateVersionAction
+  class Base
     include Progress
-    def initialize(remote_client, instance)
+
+    def initialize(remote_client, instance, timeout=nil)
       @instance = instance
       @remote_client = remote_client
+      @timeout = timeout || default_timeout
+    end
+
+    def default_timeout
+      nil
     end
 
     def check_valid(application_model)
     end
 
+    def timeout?
+      ! @timeout.nil?
+    end
+  end
+
+  class UpdateVersionAction < Base
     def execute
       logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
 
@@ -24,18 +36,11 @@ module Orc::Action
     def precedence
       return 1
     end
-
   end
 
-  class EnableParticipationAction
-    include Progress
-    def initialize(remote_client,instance, lb_waittime=10)
-      @remote_client = remote_client
-      @instance = instance
-      @lb_waittime = lb_waittime
-    end
-
-    def check_valid(application_model)
+  class EnableParticipationAction < Base
+    def default_timeout
+      10
     end
 
     def execute
@@ -43,7 +48,7 @@ module Orc::Action
       successful = @remote_client.enable_participation({
         :group=>@instance.group.name,
       }, [@instance.host])
-      sleep(@lb_waittime)
+      sleep(@timeout)
       return successful
     end
 
@@ -52,12 +57,9 @@ module Orc::Action
     end
   end
 
-  class DisableParticipationAction
-    include Progress
-    def initialize(remote_client, instance, lb_waittime=10)
-      @remote_client = remote_client
-      @instance = instance
-      @lb_waittime = lb_waittime
+  class DisableParticipationAction < Base
+    def default_timeout
+      10
     end
 
     def check_valid(application_model)
@@ -72,7 +74,7 @@ module Orc::Action
       successful = @remote_client.disable_participation({
         :group=>@instance.group.name,
       }, [@instance.host])
-      sleep(@lb_waittime)
+      sleep(@timeout)
       return successful
     end
 
@@ -81,14 +83,7 @@ module Orc::Action
     end
   end
 
-  class ResolvedCompleteAction
-    def initialize(instance={})
-      @instance = instance
-    end
-
-    def check_valid(application_model)
-    end
-
+  class ResolvedCompleteAction < Base
     def execute
     end
 
@@ -97,3 +92,4 @@ module Orc::Action
     end
   end
 end
+

@@ -9,7 +9,7 @@ describe Orc::Engine do
 
   before do
     @progress_logger = double()
-    @resolution_complete = Orc::Action::ResolvedCompleteAction.new()
+    @resolution_complete = Orc::Action::ResolvedCompleteAction.new('a', 'b')
 
     @blue_group = Model::GroupModel.new(:name=>"blue")
     @green_group = Model::GroupModel.new(:name=>"green")
