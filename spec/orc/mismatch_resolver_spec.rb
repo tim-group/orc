@@ -154,7 +154,7 @@ describe Orc::MismatchResolver do
     resolution = @mismatch_resolver.resolve(instances[0])
     resolution.class.should eql(Orc::Action::DisableParticipationAction)
 
-    expect {resolution.check_valid(Model::ApplicationModel.new(instances))}.should raise_error(Orc::FailedToResolve)
+    expect {resolution.check_valid(Model::ApplicationModel.new(instances))}.to raise_error(Orc::FailedToResolve)
   end
 
   it 'after evaluating all groups transitions, all enablements should take precedence over disablements'

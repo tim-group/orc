@@ -22,7 +22,7 @@ describe Orc::LiveModelCreator do
 
     expect {
       live_model = live_model_creator.create_live_model(environment, application)
-    }.should raise_error(CMDB::ApplicationMissing)
+    }.to raise_error(CMDB::ApplicationMissing)
   end
 
   it 'combines the results from the remote_client with the cmdb information' do
