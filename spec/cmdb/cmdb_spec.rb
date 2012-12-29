@@ -80,16 +80,23 @@ describe CMDB::Yaml do
     }
     group_static_models = [
       {
-      :target_version=> "1",
-      :name=>"blue",
-      :target_participation=> false},
+        :target_version=> "1",
+        :name=>"blue",
+        :target_participation=> false
+      },
       {
-      :target_version=> "77",
-      :name=> "green",
-      :target_participation=> false}]
+        :target_version=> "77",
+        :name=> "green",
+        :target_participation=> false
+      },
+    ]
 
-    File.open( "build/cmdb_test_#{rand}.yaml", "w" ) do |f|
-      f.write( yaml_content.to_yaml )
+    Dir.mkdir "build/cmdb_test_#{rand}"
+    File.open( "build/cmdb_test_#{rand}/testfred.yaml", "w" ) do |f|
+      f.write( yaml_content["testfred"].to_yaml )
+    end
+    File.open( "build/cmdb_test_#{rand}/testbob.yaml", "w" ) do |f|
+      f.write( yaml_content["testbob"].to_yaml )
     end
 
     cmdb =  CMDB::Yaml.new(:data_dir=>"build/")
@@ -102,7 +109,6 @@ describe CMDB::Yaml do
     group_static_models_again = cmdb.retrieve_application(:environment=>"cmdb_test_#{rand}", :application=>"testbob")
     group_static_models_again[1][:target_version].should eql("4")
     group_static_models_again[1][:target_participation].should eql(false)
-
   end
-
 end
+
