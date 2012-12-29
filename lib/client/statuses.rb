@@ -1,4 +1,6 @@
 class Statuses
+  attr_reader :instances
+
   def initialize(instances)
     @instances = instances
   end
@@ -10,10 +12,6 @@ class Statuses
     return hosts.uniq
   end
 
-  def instances
-    return @instances
-  end
-
   def each
     return instances.each
   end
@@ -22,3 +20,4 @@ class Statuses
     return @instances.size()
   end
 end
+

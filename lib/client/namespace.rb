@@ -1,4 +1,5 @@
 module Client
-  class FailedDeployment< Exception;end
-
+  class FailedDeployment < Exception
+  end
 end
+
