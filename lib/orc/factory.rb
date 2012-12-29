@@ -10,17 +10,20 @@ require 'progress/log'
 
 class Orc::Factory
   def self.cmdb
-    return CMDB::Yaml.new(:data_dir=>"/opt/orctool/data/cmdb/")
+    CMDB::Yaml.new( :data_dir => "/opt/orctool/data/cmdb/")
   end
 
   def self.remote_client(options)
-    return Client::DeployClient.new(:environment=>options[:environment],:application=>options[:application])
+    Client::DeployClient.new(
+      :environment => options[:environment],
+      :application=>options[:application]
+    )
   end
 
   def self.high_level_orchestration(options)
     options[:cmdb] = self.cmdb
     options[:git] = CMDB::Git.new()
-    return CMDB::HighLevelOrchrestration.new(options)
+    CMDB::HighLevelOrchrestration.new(options)
   end
 
   def self.engine(options)
@@ -28,10 +31,14 @@ class Orc::Factory
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
 
     return Orc::Engine.new(
-    :progress_logger => Progress.logger(),
-    :environment=>options[:environment],
-    :application=>options[:application],
-    :live_model_creator=>Orc::LiveModelCreator.new(:remote_client=>remote_client,:cmdb=>self.cmdb),    :group_mismatch_resolver=>mismatch_resolver
+      :progress_logger    => Progress.logger(),
+      :environment        => options[:environment],
+      :application        => options[:application],
+      :live_model_creator => Orc::LiveModelCreator.new(
+        :remote_client => remote_client,
+        :cmdb          => self.cmdb
+      ),
+      :group_mismatch_resolver => mismatch_resolver
     )
   end
 end
