@@ -13,20 +13,22 @@ class MCollective::RPC::DeploytoolWrapper
   end
 
   def status(spec)
-    mc = rpcclient("deployapp",{:options => @options})
-    mc.discover :verbose=>false
-    mc.progress = false
-    mc.verbose = true
-    mc.status(:spec=>spec)
+    get_client.status( :spec => spec )
   end
 
 
   def custom_request(action,request,hosts,identity_hash)
-    mc = rpcclient("deployapp",{:options => @options})
-    mc.discover :verbose=>false
+    get_client.custom_request(action, request, hosts, identity_hash)
+  end
+
+  private
+
+  def get_client
+    mc = rpcclient( "deployapp", { :options => @options })
+    mc.discover :verbose => false
     mc.progress = false
-    mc.verbose = true
-    mc.custom_request(action, request, hosts, identity_hash)
+    mc.verbose  = true
+    mc
   end
 end
 
