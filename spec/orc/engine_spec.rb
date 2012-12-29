@@ -4,6 +4,9 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 require 'rubygems'
 require 'rspec'
 require 'orc/engine'
+require 'model/instance_model'
+require 'model/group_model'
+require 'model/application_model'
 
 describe Orc::Engine do
 

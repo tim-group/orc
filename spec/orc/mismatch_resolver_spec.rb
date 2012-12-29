@@ -7,6 +7,7 @@ require 'orc/actions'
 require 'orc/mismatch_resolver'
 require 'model/group_model'
 require 'model/instance_model'
+require 'model/application_model'
 
 describe Orc::MismatchResolver do
 
