@@ -13,7 +13,7 @@ class Model::InstanceModel
     @version = instance[:version]
     @host = instance[:host]
     @failed = false
-    @healthy = true
+    @healthy = instance[:health] == "healthy" ? true : false
   end
 
   def version_mismatch?
