@@ -25,16 +25,16 @@ describe Orc::Engine do
 
   it 'does nothing if all groups say they are resolved' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
 
-    mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(@resolution_complete)
+    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(@resolution_complete)
     mock_live_model_creator.stub(:create_live_model).with('test_env', 'app1').and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :group_mismatch_resolver=>mock_group_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver)
 
     @progress_logger.should_receive(:log_resolution_complete)
 
@@ -43,22 +43,22 @@ describe Orc::Engine do
 
   it 'executes proposed actions when required' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
 
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
 
-    mock_group_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
-    mock_group_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
+    mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
+    mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
     engine = Orc::Engine.new(
     :progress_logger => @progress_logger,
     :environment=>'test_env',
     :application=>'app1',
     :live_model_creator=>mock_live_model_creator,
-    :group_mismatch_resolver=>mock_group_mismatch_resolver)
+    :mismatch_resolver=>mock_mismatch_resolver)
 
     action.should_receive(:execute)
     @progress_logger.should_receive(:log_resolution_complete)
@@ -68,7 +68,7 @@ describe Orc::Engine do
 
   it 'executes actions with higher precedence first' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
 
     application = double()
 
@@ -81,8 +81,8 @@ describe Orc::Engine do
     enable_action.stub(:complete?).and_return(false)
     disable_action.stub(:complete?).and_return(false)
 
-    mock_group_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
-    mock_group_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
+    mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
+    mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
 
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
     engine = Orc::Engine.new(
@@ -90,7 +90,7 @@ describe Orc::Engine do
     :environment=>'test_env',
     :application=>'app1',
     :live_model_creator=>mock_live_model_creator,
-    :group_mismatch_resolver=>mock_group_mismatch_resolver)
+    :mismatch_resolver=>mock_mismatch_resolver)
 
     enable_action.should_receive(:execute)
     disable_action.should_receive(:execute)
@@ -101,7 +101,7 @@ describe Orc::Engine do
 
   it 'aborts when head action raises an error' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
 
     application = double()
     action = double()
@@ -110,14 +110,14 @@ describe Orc::Engine do
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
 
-    mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
+    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
     engine = Orc::Engine.new(
     :progress_logger => @progress_logger,
     :environment=>'test_env',
     :application=>'app1',
     :live_model_creator=>mock_live_model_creator,
-    :group_mismatch_resolver=>mock_group_mismatch_resolver)
+    :mismatch_resolver=>mock_mismatch_resolver)
 
     action.should_receive(:execute)
 
@@ -126,21 +126,21 @@ describe Orc::Engine do
 
   it 'aborts if it does not resolve after the max loops is hit' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
 
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
 
-    mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
+    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :group_mismatch_resolver=>mock_group_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver)
 
     action.should_receive(:execute).at_least(:once)
     expect {engine.resolve()}.to raise_error(Orc::FailedToResolve)
@@ -148,14 +148,14 @@ describe Orc::Engine do
 
   it 'if an action fails the instance is marked as failed' do
     mock_live_model_creator = double()
-    mock_group_mismatch_resolver = double()
+    mock_mismatch_resolver = double()
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:execute).and_return(false)
     action.stub(:complete?).and_return(false)
 
-    mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
+    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
 
     engine = Orc::Engine.new(
@@ -163,7 +163,7 @@ describe Orc::Engine do
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :group_mismatch_resolver=>mock_group_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver)
 
     action.should_receive(:execute).at_least(:once)
 

@@ -38,7 +38,7 @@ class Orc::Factory
         :remote_client => remote_client,
         :cmdb          => self.cmdb
       ),
-      :group_mismatch_resolver => mismatch_resolver
+      :mismatch_resolver => mismatch_resolver
     )
   end
 end

@@ -6,7 +6,7 @@ class Orc::Engine
     @environment = args[:environment]
     @application = args[:application]
     @live_model_creator = args[:live_model_creator]
-    @group_mismatch_resolver = args[:group_mismatch_resolver]
+    @mismatch_resolver = args[:mismatch_resolver]
     @progress_logger = args[:progress_logger]
     @max_loop = 100
   end
@@ -20,7 +20,7 @@ class Orc::Engine
       application_model.instances.each do |instance|
         proposed_resolutions << {
             :instance=>instance,
-            :resolution=>@group_mismatch_resolver.resolve(instance)
+            :resolution=>@mismatch_resolver.resolve(instance)
         }
       end
 
