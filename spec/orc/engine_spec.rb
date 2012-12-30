@@ -48,6 +48,7 @@ describe Orc::Engine do
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
+    action.stub(:complete?).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_group_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
@@ -77,6 +78,8 @@ describe Orc::Engine do
     enable_action.stub(:precedence).and_return(1)
     disable_action.stub(:check_valid).with(anything)
     enable_action.stub(:check_valid).with(anything)
+    enable_action.stub(:complete?).and_return(false)
+    disable_action.stub(:complete?).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_group_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
@@ -105,6 +108,7 @@ describe Orc::Engine do
     action.stub(:precedence).and_return(2)
     action.stub(:execute).and_raise(Orc::FailedToResolve.new)
     action.stub(:check_valid).with(anything)
+    action.stub(:complete?).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
@@ -127,6 +131,7 @@ describe Orc::Engine do
     action = double()
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
+    action.stub(:complete?).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
@@ -148,6 +153,7 @@ describe Orc::Engine do
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:execute).and_return(false)
+    action.stub(:complete?).and_return(false)
 
     mock_group_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)

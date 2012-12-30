@@ -21,6 +21,10 @@ module Orc::Action
     def timeout?
       ! @timeout.nil?
     end
+
+    def complete?
+      false
+    end
   end
 
   class UpdateVersionAction < Base
@@ -89,6 +93,10 @@ module Orc::Action
 
     def precedence
       return 3
+    end
+
+    def complete?
+      true
     end
   end
 end

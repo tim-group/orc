@@ -27,7 +27,7 @@ class Orc::Engine
       sorted_resolutions = proposed_resolutions.sort_by { |resolution_pair|
         resolution_pair[:resolution].precedence()
       }.reject { |resolution_pair|
-        resolution_pair[:resolution].kind_of? Orc::Action::ResolvedCompleteAction or resolution_pair[:instance].failed?
+        resolution_pair[:resolution].complete? or resolution_pair[:instance].failed?
       }
 
       if (sorted_resolutions.size>0)
