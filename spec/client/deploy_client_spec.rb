@@ -12,7 +12,7 @@ describe Client::DeployClient do
     mcollective_client.stub(:status).and_return(well_formed_message)
 
     client = Client::DeployClient.new(:mcollective_client=>mcollective_client)
-    client.status().instances.should eql([])
+    client.status().should eql([])
   end
 
   it 'process status messages from new agents' do
@@ -26,7 +26,7 @@ describe Client::DeployClient do
     mcollective_client.stub(:status).and_return(well_formed_message)
 
     client = Client::DeployClient.new(:mcollective_client=>mcollective_client)
-    client.status().instances.should eql([{
+    client.status().should eql([{
       :environment=>"latest",:application=>"fed",:host=>"mars"
       }])
   end
@@ -42,7 +42,7 @@ describe Client::DeployClient do
     mcollective_client.stub(:status).and_return(well_formed_message)
 
     client = Client::DeployClient.new(:mcollective_client=>mcollective_client)
-    client.status().instances.should eql([{
+    client.status().should eql([{
       :environment=>"latest",:application=>"fed",:host=>"mars"
       }])
   end

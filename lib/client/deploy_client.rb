@@ -1,6 +1,5 @@
 require 'mcollective'
 require 'client/namespace'
-require 'client/statuses'
 require 'progress/progress_log'
 require 'pp'
 
@@ -73,7 +72,7 @@ class Client::DeployClient
       end
     end
 
-    return Statuses.new(instances)
+    instances
   end
 
   def update_to_version(spec,hosts,version)

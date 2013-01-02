@@ -1,6 +1,8 @@
 require 'orc/namespace'
 require 'cmdb/namespace'
 require 'orc/actions'
+require 'model/group_model'
+require 'model/instance_model'
 
 class Orc::LiveModelCreator
 
@@ -15,19 +17,23 @@ class Orc::LiveModelCreator
     @max_loop = 100
   end
 
-  def create_live_model()
-    statuses = @remote_client.status(:environment=>@environment, :application=>@application)
-    application_model = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
-    groups = {}
-
-    raise CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if application_model.nil?
-
-    application_model.each do |group|
-      groups[group[:name]] = Model::GroupModel.new(group)
+  def get_cmdb_groups
+    return @groups unless @groups.nil?
+    cmdb_model_for_app = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
+    raise CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
+    @groups = {}
+    cmdb_model_for_app.each do |group|
+      @groups[group[:name]] = Model::GroupModel.new(group)
     end
+    @groups
+  end
+
+  def create_live_model()
+    groups = get_cmdb_groups()
+    statuses = @remote_client.status(:environment=>@environment, :application=>@application)
 
     @models = []
-    statuses.instances.each do |instance|
+    statuses.each do |instance|
       group = groups[instance[:group]]
       raise Orc::GroupMissing.new("#{instance[:group]}") if group.nil?
       instance_model = Model::InstanceModel.new(instance, group)

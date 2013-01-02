@@ -4,7 +4,6 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 require 'rubygems'
 require 'rspec'
 require 'orc/live_model_creator'
-require 'client/statuses'
 
 describe Orc::LiveModelCreator do
   before do
@@ -14,8 +13,8 @@ describe Orc::LiveModelCreator do
 
   it 'gives sensible error message when cmdb info is missing' do
     environment="env"
-    application="app"
-    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new([]))
+    application="app_missing"
+    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return([])
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(nil)
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
@@ -38,7 +37,7 @@ describe Orc::LiveModelCreator do
     application = 'app1'
     static_model = [blue_group, green_group]
 
-    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
+    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
@@ -64,7 +63,7 @@ describe Orc::LiveModelCreator do
     application = 'app1'
     static_model = []
 
-    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
+    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
@@ -85,7 +84,7 @@ describe Orc::LiveModelCreator do
     application = 'app1'
     static_model = [blue_group, green_group]
 
-    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
+    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
