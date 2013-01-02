@@ -36,7 +36,9 @@ class Orc::Factory
       :application        => options[:application],
       :live_model_creator => Orc::LiveModelCreator.new(
         :remote_client => remote_client,
-        :cmdb          => self.cmdb
+        :cmdb          => self.cmdb,
+        :environment        => options[:environment],
+        :application        => options[:application],
       ),
       :mismatch_resolver => mismatch_resolver
     )

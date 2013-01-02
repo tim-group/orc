@@ -18,7 +18,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new([]))
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(nil)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
+    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
     expect {
       live_model = live_model_creator.create_live_model(environment, application)
@@ -41,7 +41,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
+    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
     live_model = live_model_creator.create_live_model(environment, application)
 
@@ -67,7 +67,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
+    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
     expect {live_model_creator.create_live_model(environment, application)}.to raise_error(Orc::GroupMissing)
   end
@@ -88,7 +88,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(Statuses.new(instances))
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb)
+    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
     live_model = live_model_creator.create_live_model(environment, application)
     live_model.instances[0].fail

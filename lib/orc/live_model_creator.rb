@@ -8,6 +8,8 @@ class Orc::LiveModelCreator
     @remote_client = args[:remote_client]
     @cmdb = args[:cmdb]
     @instance_models = {}
+    @environment = args[:environment] || raise('Must pass environment')
+    @application = args[:application] || raise('Must pass application')
   end
 
   def create_live_model(environment, application)
