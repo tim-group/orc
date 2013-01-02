@@ -3,8 +3,6 @@ require 'orc/actions'
 
 class Orc::Engine
   def initialize(args)
-    @environment = args[:environment]
-    @application = args[:application]
     @live_model_creator = args[:live_model_creator]
     @mismatch_resolver = args[:mismatch_resolver]
     @progress_logger = args[:progress_logger]

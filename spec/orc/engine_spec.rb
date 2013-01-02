@@ -31,8 +31,6 @@ describe Orc::Engine do
     mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :environment=>'test_env',
-      :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
       :mismatch_resolver=>mock_mismatch_resolver
     )
@@ -56,8 +54,6 @@ describe Orc::Engine do
     mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :environment=>'test_env',
-      :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
       :mismatch_resolver=>mock_mismatch_resolver
     )
@@ -89,8 +85,6 @@ describe Orc::Engine do
     mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
     :progress_logger => @progress_logger,
-    :environment=>'test_env',
-    :application=>'app1',
     :live_model_creator=>mock_live_model_creator,
     :mismatch_resolver=>mock_mismatch_resolver)
 
@@ -116,8 +110,6 @@ describe Orc::Engine do
     mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :environment=>'test_env',
-      :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
       :mismatch_resolver=>mock_mismatch_resolver
     )
@@ -140,8 +132,6 @@ describe Orc::Engine do
     mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :environment=>'test_env',
-      :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
       :mismatch_resolver=>mock_mismatch_resolver
     )
@@ -164,8 +154,6 @@ describe Orc::Engine do
 
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :environment=>'test_env',
-      :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
       :mismatch_resolver=>mock_mismatch_resolver
     )

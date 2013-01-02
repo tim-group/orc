@@ -16,7 +16,7 @@ class Orc::Factory
   def self.remote_client(options)
     Client::DeployClient.new(
       :environment => options[:environment],
-      :application=>options[:application]
+      :application => options[:application]
     )
   end
 
@@ -32,11 +32,9 @@ class Orc::Factory
 
     return Orc::Engine.new(
       :progress_logger    => Progress.logger(),
-      :environment        => options[:environment],
-      :application        => options[:application],
       :live_model_creator => Orc::LiveModelCreator.new(
-        :remote_client => remote_client,
-        :cmdb          => self.cmdb,
+        :remote_client      => remote_client,
+        :cmdb               => self.cmdb,
         :environment        => options[:environment],
         :application        => options[:application],
       ),
