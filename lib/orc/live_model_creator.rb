@@ -57,7 +57,7 @@ class Orc::LiveModelCreator
     @loop_count=0
     while(true) do
       @progress_logger.log("creating live model")
-      application_model = self.create_live_model()
+      create_live_model()
       proposed_resolutions =[]
       instances.each do |instance|
         proposed_resolutions << {
@@ -75,14 +75,14 @@ class Orc::LiveModelCreator
       if (sorted_resolutions.size>0)
         next_resolution = sorted_resolutions.shift
         action = next_resolution[:resolution]
-        action.check_valid(application_model)
+        action.check_valid(self)
         action_successful = action.execute()
 
         if action_successful == false
           next_resolution[:instance].fail
         end
       else
-        if (application_model.instances.reject {|instance| not instance.failed?}.size>0)
+        if (instances.reject {|instance| not instance.failed?}.size>0)
           raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
         end
 
