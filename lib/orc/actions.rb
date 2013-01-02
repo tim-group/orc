@@ -9,6 +9,7 @@ module Orc::Action
       @instance = instance
       @remote_client = remote_client
       @timeout = timeout || default_timeout
+      @failed = false
     end
 
     def default_timeout
@@ -25,10 +26,18 @@ module Orc::Action
     def complete?
       false
     end
+
+    def execute
+      status = do_execute
+      if !status
+        @failed = true
+      end
+      status
+    end
   end
 
   class UpdateVersionAction < Base
-    def execute
+    def do_execute
       logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
 
       @remote_client.update_to_version({
@@ -48,7 +57,7 @@ module Orc::Action
       10
     end
 
-    def execute
+    def do_execute
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.enable_participation({
         :group=>@instance.group.name,
@@ -74,7 +83,7 @@ module Orc::Action
       end
     end
 
-    def execute
+    def do_execute
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.disable_participation({
         :group=>@instance.group.name,
@@ -89,7 +98,7 @@ module Orc::Action
   end
 
   class ResolvedCompleteAction < Base
-    def execute
+    def do_execute
       true
     end
 
