@@ -6,7 +6,6 @@ require 'rspec'
 require 'orc/engine'
 require 'model/instance_model'
 require 'model/group_model'
-require 'model/application_model'
 
 describe Orc::Engine do
 
@@ -19,7 +18,8 @@ describe Orc::Engine do
 
     @blue_instance = Model::InstanceModel.new({:group=>"blue"}, @blue_group)
     @green_instance = Model::InstanceModel.new({:group=>"green"}, @green_group)
-    @application_model = Model::ApplicationModel.new([@blue_instance, @green_instance])
+    @application_model = double()
+    @application_model.stub(:instances).and_return([@blue_instance, @green_instance])
     @progress_logger.should_receive(:log).any_number_of_times
   end
 

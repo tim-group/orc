@@ -1,6 +1,5 @@
 require 'orc/namespace'
 require 'cmdb/namespace'
-require 'model/application_model'
 
 class Orc::LiveModelCreator
 
@@ -23,7 +22,7 @@ class Orc::LiveModelCreator
       groups[group[:name]] = Model::GroupModel.new(group)
     end
 
-    models = []
+    @models = []
     statuses.instances.each do |instance|
       group = groups[instance[:group]]
       raise Orc::GroupMissing.new("#{instance[:group]}") if group.nil?
@@ -31,14 +30,17 @@ class Orc::LiveModelCreator
       previous = @instance_models[instance_model.key]
       if previous!=nil and previous.failed?
         instance_model.fail
-      else
-        @instance_models[instance_model.key] = instance_model
       end
+      @instance_models[instance_model.key] = instance_model
 
-      models << instance_model
+      @models << instance_model
     end
 
-    return Model::ApplicationModel.new(models)
+    return self
+  end
+
+  def instances
+    @models
   end
 
 end

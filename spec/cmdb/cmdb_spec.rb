@@ -91,11 +91,14 @@ describe CMDB::Yaml do
       },
     ]
 
-    Dir.mkdir "build/cmdb_test_#{rand}"
-    File.open( "build/cmdb_test_#{rand}/testfred.yaml", "w" ) do |f|
+    testdir = "build/cmdb_test_#{rand}"
+    if !Pathname.new(testdir).exist?
+      Dir.mkdir testdir
+    end
+    File.open( "#{testdir}/testfred.yaml", "w" ) do |f|
       f.write( yaml_content["testfred"].to_yaml )
     end
-    File.open( "build/cmdb_test_#{rand}/testbob.yaml", "w" ) do |f|
+    File.open( "#{testdir}/testbob.yaml", "w" ) do |f|
       f.write( yaml_content["testbob"].to_yaml )
     end
 
