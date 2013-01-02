@@ -15,7 +15,7 @@ class Orc::Engine
     @loop_count=0
     while(true) do
       @progress_logger.log("creating live model")
-      application_model = @live_model_creator.create_live_model(@environment, @application)
+      application_model = @live_model_creator.create_live_model()
       proposed_resolutions =[]
       application_model.instances.each do |instance|
         proposed_resolutions << {

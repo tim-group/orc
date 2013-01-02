@@ -21,7 +21,7 @@ describe Orc::LiveModelCreator do
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
     expect {
-      live_model = live_model_creator.create_live_model(environment, application)
+      live_model = live_model_creator.create_live_model()
     }.to raise_error(CMDB::ApplicationMissing)
   end
 
@@ -43,7 +43,7 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
-    live_model = live_model_creator.create_live_model(environment, application)
+    live_model = live_model_creator.create_live_model()
 
     live_model.instances.size.should eql(2)
 
@@ -69,7 +69,7 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
-    expect {live_model_creator.create_live_model(environment, application)}.to raise_error(Orc::GroupMissing)
+    expect {live_model_creator.create_live_model()}.to raise_error(Orc::GroupMissing)
   end
 
   it 'marks models as failed if a previous action on that model failed' do
@@ -90,9 +90,9 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application)
 
-    live_model = live_model_creator.create_live_model(environment, application)
+    live_model = live_model_creator.create_live_model()
     live_model.instances[0].fail
-    live_model2 = live_model_creator.create_live_model(environment, application)
+    live_model2 = live_model_creator.create_live_model()
 
     live_model2.instances[0].failed?.should == true
   end

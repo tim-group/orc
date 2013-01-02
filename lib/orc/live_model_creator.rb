@@ -12,12 +12,12 @@ class Orc::LiveModelCreator
     @application = args[:application] || raise('Must pass application')
   end
 
-  def create_live_model(environment, application)
-    statuses = @remote_client.status(:environment=>environment, :application=>application)
-    application_model = @cmdb.retrieve_application(:environment=>environment, :application=>application)
+  def create_live_model()
+    statuses = @remote_client.status(:environment=>@environment, :application=>@application)
+    application_model = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
     groups = {}
 
-    raise CMDB::ApplicationMissing.new("#{application} not found in CMDB for environment:#{environment}") if application_model.nil?
+    raise CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if application_model.nil?
 
     application_model.each do |group|
       groups[group[:name]] = Model::GroupModel.new(group)

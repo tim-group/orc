@@ -28,13 +28,14 @@ describe Orc::Engine do
     mock_mismatch_resolver = double()
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(@resolution_complete)
-    mock_live_model_creator.stub(:create_live_model).with('test_env', 'app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :mismatch_resolver=>mock_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     @progress_logger.should_receive(:log_resolution_complete)
 
@@ -52,13 +53,14 @@ describe Orc::Engine do
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
-    mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
-    :progress_logger => @progress_logger,
-    :environment=>'test_env',
-    :application=>'app1',
-    :live_model_creator=>mock_live_model_creator,
-    :mismatch_resolver=>mock_mismatch_resolver)
+      :progress_logger => @progress_logger,
+      :environment=>'test_env',
+      :application=>'app1',
+      :live_model_creator=>mock_live_model_creator,
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     action.should_receive(:execute)
     @progress_logger.should_receive(:log_resolution_complete)
@@ -84,7 +86,7 @@ describe Orc::Engine do
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
 
-    mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
     :progress_logger => @progress_logger,
     :environment=>'test_env',
@@ -111,13 +113,14 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
-    :progress_logger => @progress_logger,
-    :environment=>'test_env',
-    :application=>'app1',
-    :live_model_creator=>mock_live_model_creator,
-    :mismatch_resolver=>mock_mismatch_resolver)
+      :progress_logger => @progress_logger,
+      :environment=>'test_env',
+      :application=>'app1',
+      :live_model_creator=>mock_live_model_creator,
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     action.should_receive(:execute)
 
@@ -134,13 +137,14 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :mismatch_resolver=>mock_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     action.should_receive(:execute).at_least(:once)
     expect {engine.resolve()}.to raise_error(Orc::FailedToResolve)
@@ -156,14 +160,15 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).with('test_env','app1').and_return(@application_model)
+    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
 
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
       :environment=>'test_env',
       :application=>'app1',
       :live_model_creator=>mock_live_model_creator,
-      :mismatch_resolver=>mock_mismatch_resolver)
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     action.should_receive(:execute).at_least(:once)
 
@@ -173,3 +178,4 @@ describe Orc::Engine do
  end
 
 end
+
