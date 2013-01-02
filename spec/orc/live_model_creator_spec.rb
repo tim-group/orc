@@ -46,10 +46,12 @@ describe Orc::LiveModelCreator do
 
     live_model.instances.size.should eql(2)
 
-    live_model.instances[0].group.name.should eql("blue")
-    live_model.instances[1].group.name.should eql("green")
-    live_model.instances[0].group.target_version.should eql("2.3")
-    live_model.instances[1].group.target_version.should eql("2.4")
+    instances = live_model.instances.sort_by { |instance| instance.group.name }
+
+    instances[0].group.name.should eql("blue")
+    instances[1].group.name.should eql("green")
+    instances[0].group.target_version.should eql("2.3")
+    instances[1].group.target_version.should eql("2.4")
   end
 
   it 'raises an error when there is no cmdb information for the given group' do

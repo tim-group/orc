@@ -32,7 +32,6 @@ class Orc::LiveModelCreator
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:environment=>@environment, :application=>@application)
 
-    @models = []
     statuses.each do |instance|
       group = groups[instance[:group]]
       raise Orc::GroupMissing.new("#{instance[:group]}") if group.nil?
@@ -42,15 +41,13 @@ class Orc::LiveModelCreator
         instance_model.fail
       end
       @instance_models[instance_model.key] = instance_model
-
-      @models << instance_model
     end
 
     return self
   end
 
   def instances
-    @models || raise("We have not yet calculated the instances")
+    @instance_models.values || raise("We have not yet calculated the instances")
   end
 
   def resolve()
