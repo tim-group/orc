@@ -6,8 +6,30 @@ require 'rspec'
 require 'orc/engine'
 require 'model/instance_model'
 require 'model/group_model'
+require 'orc/live_model_creator'
+
+class MockLiveModelCreator < Orc::LiveModelCreator
+  def initialize(args)
+    super
+    @saved_app_model = args[:stub_app_model]
+  end
+  def create_live_model
+    self
+  end
+  def instances
+    @saved_app_model
+  end
+end
 
 describe Orc::Engine do
+
+  def get_mock_livemodelcreator(args)
+    args[:stub_app_model] = [@blue_instance, @green_instance]
+    args[:environment] = "latest"
+    args[:application] = 'fnar'
+    args[:progress_logger] = @progress_logger
+    MockLiveModelCreator.new(args)
+  end
 
   before do
     @progress_logger = double()
@@ -18,20 +40,17 @@ describe Orc::Engine do
 
     @blue_instance = Model::InstanceModel.new({:group=>"blue"}, @blue_group)
     @green_instance = Model::InstanceModel.new({:group=>"green"}, @green_group)
-    @application_model = double()
-    @application_model.stub(:instances).and_return([@blue_instance, @green_instance])
     @progress_logger.should_receive(:log).any_number_of_times
+
   end
 
   it 'does nothing if all groups say they are resolved' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(@resolution_complete)
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :live_model_creator=>mock_live_model_creator,
+      :live_model_creator=> get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
       :mismatch_resolver=>mock_mismatch_resolver
     )
 
@@ -41,7 +60,6 @@ describe Orc::Engine do
   end
 
   it 'executes proposed actions when required' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
 
     action = double()
@@ -51,10 +69,9 @@ describe Orc::Engine do
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :live_model_creator=>mock_live_model_creator,
+      :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
       :mismatch_resolver=>mock_mismatch_resolver
     )
 
@@ -65,7 +82,6 @@ describe Orc::Engine do
   end
 
   it 'executes actions with higher precedence first' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
 
     application = double()
@@ -82,10 +98,9 @@ describe Orc::Engine do
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
 
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
     :progress_logger => @progress_logger,
-    :live_model_creator=>mock_live_model_creator,
+    :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
     :mismatch_resolver=>mock_mismatch_resolver)
 
     enable_action.should_receive(:execute)
@@ -96,7 +111,6 @@ describe Orc::Engine do
   end
 
   it 'aborts when head action raises an error' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
 
     application = double()
@@ -107,10 +121,9 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :live_model_creator=>mock_live_model_creator,
+      :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
       :mismatch_resolver=>mock_mismatch_resolver
     )
 
@@ -120,7 +133,6 @@ describe Orc::Engine do
   end
 
   it 'aborts if it does not resolve after the max loops is hit' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
 
     action = double()
@@ -129,10 +141,9 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :live_model_creator=>mock_live_model_creator,
+      :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
       :mismatch_resolver=>mock_mismatch_resolver
     )
 
@@ -141,7 +152,6 @@ describe Orc::Engine do
   end
 
   it 'if an action fails the instance is marked as failed' do
-    mock_live_model_creator = double()
     mock_mismatch_resolver = double()
     action = double()
     action.stub(:precedence).and_return(999)
@@ -150,11 +160,10 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-    mock_live_model_creator.stub(:create_live_model).and_return(@application_model)
 
     engine = Orc::Engine.new(
       :progress_logger => @progress_logger,
-      :live_model_creator=>mock_live_model_creator,
+      :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
       :mismatch_resolver=>mock_mismatch_resolver
     )
 

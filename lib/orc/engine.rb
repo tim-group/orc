@@ -10,47 +10,7 @@ class Orc::Engine
   end
 
   def resolve()
-    @loop_count=0
-    while(true) do
-      @progress_logger.log("creating live model")
-      application_model = @live_model_creator.create_live_model()
-      proposed_resolutions =[]
-      application_model.instances.each do |instance|
-        proposed_resolutions << {
-            :instance=>instance,
-            :resolution=>@mismatch_resolver.resolve(instance)
-        }
-      end
-
-      sorted_resolutions = proposed_resolutions.sort_by { |resolution_pair|
-        resolution_pair[:resolution].precedence()
-      }.reject { |resolution_pair|
-        resolution_pair[:resolution].complete? or resolution_pair[:instance].failed?
-      }
-
-      if (sorted_resolutions.size>0)
-        next_resolution = sorted_resolutions.shift
-        action = next_resolution[:resolution]
-        action.check_valid(application_model)
-        action_successful = action.execute()
-
-        if action_successful == false
-          next_resolution[:instance].fail
-        end
-      else
-        if (application_model.instances.reject {|instance| not instance.failed?}.size>0)
-          raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
-        end
-
-        @progress_logger.log_resolution_complete()
-        break
-      end
-
-      @loop_count+=1
-      if (@loop_count>100)
-        raise Orc::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
-      end
-    end
+    @live_model_creator.resolve()
   end
 end
 
