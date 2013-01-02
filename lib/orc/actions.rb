@@ -31,9 +31,10 @@ module Orc::Action
     def execute
       logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
 
-      return @remote_client.update_to_version({
-        :group=>@instance.group.name,
-      }, [@instance.host], @instance.group.target_version)
+      @remote_client.update_to_version({
+          :group=>@instance.group.name,
+        }, [@instance.host], @instance.group.target_version
+      )
 
     end
 
@@ -53,7 +54,7 @@ module Orc::Action
         :group=>@instance.group.name,
       }, [@instance.host])
       sleep(@timeout)
-      return successful
+      successful
     end
 
     def precedence
@@ -79,7 +80,7 @@ module Orc::Action
         :group=>@instance.group.name,
       }, [@instance.host])
       sleep(@timeout)
-      return successful
+      successful
     end
 
     def precedence
@@ -89,6 +90,7 @@ module Orc::Action
 
   class ResolvedCompleteAction < Base
     def execute
+      true
     end
 
     def precedence
