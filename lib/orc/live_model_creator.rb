@@ -16,7 +16,7 @@ class Orc::LiveModelCreator
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass progress_logger')
     @max_loop = 100
-    @debug = true
+    @debug = false
   end
 
   def get_cmdb_groups
