@@ -36,8 +36,8 @@ class Client::DeployClient
   include MCollective::RPC
 
   def initialize(args)
-    @environment = args[:environment] or "default"
-    @application = args[:application] or "default"
+    @environment = args[:environment] or raise("Need environment")
+    @application = args[:application] or raise("Need application")
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200
 
