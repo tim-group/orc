@@ -19,5 +19,13 @@ module Progress
     def log_resolution_complete()
       print "[\e[1;32msuccess - resolution complete\e[0m]\n"
     end
+
+    def log_client_response(host, log)
+      print  "  [\e[1;50m#{host}\e[0m] #{log}\n"
+    end
+
+    def log_client_response_error(host, log)
+      print  "  [\e[1;31m#{host}\e[0m] #{log}\n"
+    end
   end
 end

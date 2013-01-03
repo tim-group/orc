@@ -1,6 +1,6 @@
 require 'mcollective'
 require 'client/namespace'
-require 'progress/progress_log'
+require 'progress/log'
 require 'pp'
 
 class MCollective::RPC::DeploytoolWrapper
@@ -32,12 +32,12 @@ class MCollective::RPC::DeploytoolWrapper
 end
 
 class Client::DeployClient
-  include ProgressLog
   include MCollective::RPC
 
   def initialize(args)
     @environment = args[:environment] or raise("Need environment")
     @application = args[:application] or raise("Need application")
+    @logger = args[:log] || ::Progress::Logger.new()
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200
 
@@ -105,13 +105,13 @@ class Client::DeployClient
   def log_response(resp)
     data  = resp[:data]
     data[:logs][:infos].each do |log|
-      log_client_response(resp[:sender], log)
+      @logger.log_client_response(resp[:sender], log)
     end
     data[:logs][:warns].each do |log|
-      log_client_response(resp[:sender], log)
+      @logger.log_client_response(resp[:sender], log)
     end
     data[:logs][:errors].each do |log|
-      log_client_response_error(resp[:sender], log)
+      @logger.log_client_response_error(resp[:sender], log)
     end
   end
 
