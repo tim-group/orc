@@ -12,5 +12,8 @@ module Orc
 
   class GroupMissing < Exception
   end
+
+  class TimeoutError < Exception
+  end
 end
 
