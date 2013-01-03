@@ -4,7 +4,11 @@ require 'logger'
 
 require 'dl/import'
 module Alarm
-  extend DL::Importable
+  begin
+    extend DL::Importable
+  rescue # For ruby >= 1.9
+    extend DL::Importer
+  end
   if RUBY_PLATFORM =~ /darwin/
     so_ext = 'dylib'
   else
