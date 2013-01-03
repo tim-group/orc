@@ -1,5 +1,4 @@
 require 'orc/namespace'
-require 'orc/engine'
 require 'orc/live_model_creator'
 require 'orc/mismatch_resolver'
 require 'client/deploy_client'
@@ -30,16 +29,12 @@ class Orc::Factory
     remote_client = self.remote_client(options)
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
 
-    return Orc::Engine.new(
+    Orc::LiveModelCreator.new(
+      :remote_client      => remote_client,
+      :cmdb               => self.cmdb,
+      :environment        => options[:environment],
+      :application        => options[:application],
       :progress_logger    => Progress.logger(),
-      :live_model_creator => Orc::LiveModelCreator.new(
-        :remote_client      => remote_client,
-        :cmdb               => self.cmdb,
-        :environment        => options[:environment],
-        :application        => options[:application],
-        :progress_logger    => Progress.logger(),
-        :mismatch_resolver => mismatch_resolver
-      ),
       :mismatch_resolver => mismatch_resolver
     )
   end
