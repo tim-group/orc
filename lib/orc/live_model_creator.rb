@@ -40,8 +40,6 @@ class Orc::LiveModelCreator
       instance_model = Model::InstanceModel.new(instance, group)
       @instance_models[instance_model.key] = instance_model
     end
-
-    return self
   end
 
   def instances
@@ -54,52 +52,67 @@ class Orc::LiveModelCreator
     failed_actions.size > 0
   end
 
-  def resolve()
-    @loop_count=0
-    while(true) do
-      @progress_logger.log("creating live model")
-      create_live_model()
-      proposed_resolutions =[]
-      instances.each do |instance|
-        proposed_resolutions << @mismatch_resolver.resolve(instance)
-      end
+  def get_proposed_resolutions
+    proposed_resolutions =[]
+    instances.each do |instance|
+      proposed_resolutions << @mismatch_resolver.resolve(instance)
+    end
+    proposed_resolutions
+  end
 
+  def execute_action(action)
+    action.check_valid(self)
+    success = action.execute()
+
+    if @instance_actions[action.key].nil?
+      @instance_actions[action.key] = []
+    end
+    @instance_actions[action.key].push action
+    success
+  end
+
+  def resolve_one_step
+    @progress_logger.log("creating live model")
+    create_live_model()
+    proposed_resolutions = get_proposed_resolutions
+
+    if @debug
+      @progress_logger.log("Proposed resolutions:")
+      proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+    end
+
+    sorted_resolutions = proposed_resolutions.sort_by { |resolution|
+      resolution.precedence()
+    }.reject { |resolution|
+      resolution.complete? or has_failed_actions(resolution)
+    }
+
+    if (sorted_resolutions.size>0)
       if @debug
-        @progress_logger.log("Proposed resolutions:")
-        proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+        @progress_logger.log("Sorted resolutions:")
+        sorted_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
       end
 
-      sorted_resolutions = proposed_resolutions.sort_by { |resolution|
-        resolution.precedence()
-      }.reject { |resolution|
-        resolution.complete? or has_failed_actions(resolution)
-      }
-
-      if (sorted_resolutions.size>0)
-        if @debug
-          @progress_logger.log("Sorted resolutions:")
-          sorted_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
-        end
-
-        action = sorted_resolutions.shift
-        action.check_valid(self)
-        success = action.execute()
-
-        if @instance_actions[action.key].nil?
-          @instance_actions[action.key] = []
-        end
-        @instance_actions[action.key].push action
-      else
-        if (instances.reject {|instance| not has_failed_actions(instance) }.size>0)
-          raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
-        end
-
-        @progress_logger.log_resolution_complete()
-        break
+      execute_action sorted_resolutions.shift
+    else
+      if (instances.reject {|instance| not has_failed_actions(instance) }.size>0)
+        raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
       end
 
-      @loop_count+=1
-      if (@loop_count>100)
+      @progress_logger.log_resolution_complete()
+      return true
+    end
+    false
+  end
+
+  def resolve()
+    @loop_count = 0
+    finished = false
+    while( not finished ) do
+      finished = resolve_one_step
+
+      @loop_count += 1
+      if (@loop_count > @max_loop)
         raise Orc::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
       end
     end

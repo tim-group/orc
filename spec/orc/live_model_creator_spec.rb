@@ -42,11 +42,11 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
-    live_model = live_model_creator.create_live_model()
+    live_model_creator.create_live_model()
 
-    live_model.instances.size.should eql(2)
+    live_model_creator.instances.size.should eql(2)
 
-    instances = live_model.instances.sort_by { |instance| instance.group.name }
+    instances = live_model_creator.instances.sort_by { |instance| instance.group.name }
 
     instances[0].group.name.should eql("blue")
     instances[1].group.name.should eql("green")
@@ -104,3 +104,4 @@ describe Orc::LiveModelCreator do
   end
 
 end
+
