@@ -16,6 +16,7 @@ class Orc::LiveModelCreator
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass progress_logger')
     @max_loop = 100
+    @debug = true
   end
 
   def get_cmdb_groups
@@ -63,6 +64,11 @@ class Orc::LiveModelCreator
         proposed_resolutions << @mismatch_resolver.resolve(instance)
       end
 
+      if @debug
+        @progress_logger.log("Proposed resolutions:")
+        proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+      end
+
       sorted_resolutions = proposed_resolutions.sort_by { |resolution|
         resolution.precedence()
       }.reject { |resolution|
@@ -70,6 +76,11 @@ class Orc::LiveModelCreator
       }
 
       if (sorted_resolutions.size>0)
+        if @debug
+          @progress_logger.log("Sorted resolutions:")
+          sorted_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+        end
+
         action = sorted_resolutions.shift
         action.check_valid(self)
         success = action.execute()
