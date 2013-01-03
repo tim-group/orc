@@ -7,7 +7,7 @@ class AnsiStatusRenderer
       lengths[key] = key.to_s.length
     end
 
-    statuses.instances.each do |status|
+    statuses.each do |status|
       keys.each do |key|
          len = status[key].to_s.length
          if lengths[key] < len
@@ -25,7 +25,7 @@ class AnsiStatusRenderer
 
     buffer << Color.new(:text=>header_buffer).header().display()
 
-    statuses.instances.each do |status|
+    statuses.each do |status|
       color = status[:group]
       present = status[:present]
       status_buffer = ""
