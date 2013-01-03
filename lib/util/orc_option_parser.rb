@@ -112,6 +112,10 @@ class Util::OrcOptionParser
       high_level_orchestration = Orc::Factory.high_level_orchestration(options)
       high_level_orchestration.swap()
     end
+
+    def self.command_options
+      ['-c','--swap','changes the cmdb, swaps the online group to offline and vice-versa']
+    end
   end
 
   class ResolveRequest < Base
