@@ -12,7 +12,6 @@ class Model::InstanceModel
     @participation = instance[:participating]
     @version = instance[:version]
     @host = instance[:host]
-    @failed = false
     @healthy = instance[:health] == "healthy" ? true : false
   end
 
@@ -25,14 +24,6 @@ class Model::InstanceModel
       :group => group.name,
       :host  => host
     }
-  end
-
-  def fail
-    @failed = true
-  end
-
-  def failed?
-    return @failed
   end
 
   def healthy?

@@ -27,6 +27,10 @@ module Orc::Action
       false
     end
 
+    def failed?
+      @failed
+    end
+
     def execute
       status = do_execute
       if !status

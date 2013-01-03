@@ -66,6 +66,7 @@ describe Orc::Engine do
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
+    action.stub(:key).and_return('foo')
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
@@ -94,6 +95,8 @@ describe Orc::Engine do
     enable_action.stub(:check_valid).with(anything)
     enable_action.stub(:complete?).and_return(false)
     disable_action.stub(:complete?).and_return(false)
+    enable_action.stub(:key).and_return('foo')
+    disable_action.stub(:key).and_return('bar')
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
@@ -119,6 +122,7 @@ describe Orc::Engine do
     action.stub(:execute).and_raise(Orc::FailedToResolve.new)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
+    action.stub(:key).and_return('foo')
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     engine = Orc::Engine.new(
@@ -139,6 +143,8 @@ describe Orc::Engine do
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
+    action.stub(:key).and_return('foo')
+    action.stub(:failed?).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     engine = Orc::Engine.new(
@@ -158,6 +164,8 @@ describe Orc::Engine do
     action.stub(:check_valid).with(anything)
     action.stub(:execute).and_return(false)
     action.stub(:complete?).and_return(false)
+    action.stub(:key).and_return('bar')
+    action.stub(:failed?).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
 
@@ -170,8 +178,6 @@ describe Orc::Engine do
     action.should_receive(:execute).at_least(:once)
 
     expect {engine.resolve()}.to raise_error(Orc::FailedToResolve)
-    @blue_instance.failed?.should eql(true)
-    @green_instance.failed?.should eql(true)
  end
 
 end
