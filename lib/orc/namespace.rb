@@ -15,5 +15,8 @@ module Orc
 
   class TimeoutError < Exception
   end
+
+  module Util
+  end
 end
 

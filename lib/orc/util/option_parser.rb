@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'orc/namespace'
 require 'orc/factory'
 require 'optparse'
 require 'cmdb/git'
@@ -10,10 +11,7 @@ user = ENV['USER']
 ENV['MCOLLECTIVE_SSL_PRIVATE']="/home/#{user}/.mc/#{user}-private.pem"
 ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem"
 
-module Util
-end
-
-class Util::OrcOptionParser
+class Orc::Util::OptionParser
   class Base
     def self.setup_command_options(opts, commands)
       opts.on( *self.command_options ) do
@@ -28,7 +26,7 @@ class Util::OrcOptionParser
 
   class PullCmdbRequest < Base
     def required
-      return []
+      []
     end
 
     def execute(options)
@@ -198,3 +196,4 @@ class Util::OrcOptionParser
     end
   end
 end
+

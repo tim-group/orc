@@ -3,11 +3,11 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'util/orc_option_parser'
+require 'orc/util/option_parser'
 
-describe Util::OrcOptionParser do
+describe Orc::Util::OptionParser do
 
   it 'can be constructed' do
-    foo = Util::OrcOptionParser.new
+    foo = Orc::Util::OptionParser.new
   end
 end
