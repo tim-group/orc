@@ -29,5 +29,9 @@ class Model::InstanceModel
   def healthy?
     @healthy
   end
+
+  def group_name
+    @group.name
+  end
 end
 

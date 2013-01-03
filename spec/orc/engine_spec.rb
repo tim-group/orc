@@ -33,7 +33,11 @@ describe Orc::Engine do
 
   before do
     @progress_logger = double()
-    @resolution_complete = Orc::Action::ResolvedCompleteAction.new('a', 'b')
+    instance = double()
+    instance.stub(:host).and_return('Somehost')
+    instance.stub(:group_name).and_return('blue')
+
+    @resolution_complete = Orc::Action::ResolvedCompleteAction.new('a', instance)
 
     @blue_group = Model::GroupModel.new(:name=>"blue")
     @green_group = Model::GroupModel.new(:name=>"green")
@@ -67,6 +71,8 @@ describe Orc::Engine do
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return('foo')
+    action.stub(:host).and_return("Somehost")
+    action.stub(:group_name).and_return("blue")
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
@@ -97,14 +103,19 @@ describe Orc::Engine do
     disable_action.stub(:complete?).and_return(false)
     enable_action.stub(:key).and_return('foo')
     disable_action.stub(:key).and_return('bar')
+    disable_action.stub(:host).and_return("Somehost")
+    enable_action.stub(:host).and_return("Somehost")
+    disable_action.stub(:group_name).and_return("blue")
+    enable_action.stub(:group_name).and_return("green")
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
 
     engine = Orc::Engine.new(
-    :progress_logger => @progress_logger,
-    :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
-    :mismatch_resolver=>mock_mismatch_resolver)
+      :progress_logger => @progress_logger,
+      :live_model_creator=>get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver}),
+      :mismatch_resolver=>mock_mismatch_resolver
+    )
 
     enable_action.should_receive(:execute)
     disable_action.should_receive(:execute)
@@ -123,6 +134,8 @@ describe Orc::Engine do
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return('foo')
+    action.stub(:host).and_return("Somehost")
+    action.stub(:group_name).and_return("blue")
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     engine = Orc::Engine.new(
@@ -145,6 +158,8 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return({:group => 'green', :host => nil})
     action.stub(:failed?).and_return(true)
+    action.stub(:host).and_return("Somehost")
+    action.stub(:group_name).and_return("blue")
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     engine = Orc::Engine.new(
@@ -166,6 +181,8 @@ describe Orc::Engine do
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return({:group => 'green', :host => nil})
     action.stub(:failed?).and_return(true)
+    action.stub(:host).and_return("Somehost")
+    action.stub(:group_name).and_return("blue")
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
 

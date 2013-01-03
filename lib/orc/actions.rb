@@ -40,7 +40,7 @@ module Orc::Action
     end
 
     def group_name
-      @instance.group.name
+      @instance.group_name
     end
 
     def execute
