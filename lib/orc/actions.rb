@@ -116,7 +116,7 @@ module Orc::Action
   class WaitForHealthyAction < Base
     def do_execute
       logger.log_action "Waiting for #{@instance.group.name} to become healthy on #{@instance.host}"
-      sleep 5
+      sleep 30
       true
     end
 
