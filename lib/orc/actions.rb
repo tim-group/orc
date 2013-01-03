@@ -35,6 +35,14 @@ module Orc::Action
       @instance.key
     end
 
+    def host
+      @instance.host
+    end
+
+    def group_name
+      @instance.group.name
+    end
+
     def execute
       status = do_execute
       if !status
@@ -107,7 +115,7 @@ module Orc::Action
 
   class WaitForHealthyAction < Base
     def do_execute
-      logger.log_action "Waiting for #{instance.group.name} to  ↪become healthy on #{@instance.host}"
+      logger.log_action "Waiting for #{@instance.group.name} to become healthy on #{@instance.host}"
       sleep 5
       true
     end
