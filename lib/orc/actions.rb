@@ -109,7 +109,7 @@ module Orc::Action
     end
 
     def precedence
-      return 2
+      return 3
     end
   end
 
@@ -121,7 +121,7 @@ module Orc::Action
     end
 
     def precedence
-      return 3
+      return 2
     end
   end
 
