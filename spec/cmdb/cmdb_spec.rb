@@ -25,8 +25,6 @@ describe CMDB::Yaml do
     group_static_models = cmdb.retrieve_application(:environment=>"cmdb_test", :application=>"testx")
     group_static_models.size().should eql(2)
 
-    print group_static_models[0].keys
-
     group_static_models[0][:name].should eql("blue")
     group_static_models[0][:target_version].should eql("2.2")
     group_static_models[0][:target_participation].should eql(false)
