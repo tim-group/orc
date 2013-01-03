@@ -1,5 +1,6 @@
 require 'cmdb/namespace'
 require 'pathname'
+require 'yaml'
 
 class CMDB::Yaml
   def initialize(args)

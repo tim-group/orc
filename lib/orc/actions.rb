@@ -31,6 +31,10 @@ module Orc::Action
       @failed
     end
 
+    def key
+      @instance.key
+    end
+
     def execute
       status = do_execute
       if !status
@@ -83,7 +87,7 @@ module Orc::Action
     def check_valid(application_model)
       participating_instances = application_model.instances.reject {|instance|!instance.participation or instance==@instance}
       if (participating_instances.size==0)
-        raise Orc::FailedToResolve.new("action would result in zero participating instances - please resolve manually")
+        raise Orc::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
       end
     end
 
@@ -101,13 +105,25 @@ module Orc::Action
     end
   end
 
+  class WaitForHealthyAction < Base
+    def do_execute
+      logger.log_action "Waiting for #{instance.group.name} to  ↪become healthy on #{@instance.host}"
+      sleep 5
+      true
+    end
+
+    def precedence
+      return 3
+    end
+  end
+
   class ResolvedCompleteAction < Base
     def do_execute
       true
     end
 
     def precedence
-      return 3
+      return 4
     end
 
     def complete?

@@ -28,7 +28,14 @@ class Orc::MismatchResolver
       :should_participate => true,
       :does_participate   => true,
       :version_mismatch   => false,
+      :is_healthy         => true,
     }, 'ResolvedCompleteAction')
+    in_case({
+      :should_participate => true,
+      :does_participate   => true,
+      :version_mismatch   => false,
+      :is_healthy         => false,
+    }, 'WaitForHealthyAction')
     in_case({
       :should_participate => false,
       :does_participate   => false,
@@ -58,7 +65,14 @@ class Orc::MismatchResolver
       :should_participate => true,
       :does_participate   => false,
       :version_mismatch   => false,
+      :is_healthy         => true,
     }, 'EnableParticipationAction')
+    in_case({
+       :should_participate => true,
+       :does_participate   => false,
+       :version_mismatch   => false,
+       :is_healthy         => false,
+     }, 'WaitForHealthyAction')
     in_case({
       :should_participate => false,
       :does_participate   => true,

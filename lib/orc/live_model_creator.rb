@@ -49,7 +49,7 @@ class Orc::LiveModelCreator
 
   def has_failed_actions(action)
     return false if @instance_actions[action.key].nil?
-    failed_actions = @instance_actions[action.key].reject { |action| action.failed? }
+    failed_actions = @instance_actions[action.key].reject { |action| not action.failed? }
     failed_actions.size > 0
   end
 
@@ -72,7 +72,7 @@ class Orc::LiveModelCreator
       if (sorted_resolutions.size>0)
         action = sorted_resolutions.shift
         action.check_valid(self)
-        action.execute()
+        success = action.execute()
 
         if @instance_actions[action.key].nil?
           @instance_actions[action.key] = []
