@@ -143,7 +143,7 @@ describe Orc::Engine do
     action.stub(:precedence).and_return(999)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
-    action.stub(:key).and_return('foo')
+    action.stub(:key).and_return({:group => 'green', :host => nil})
     action.stub(:failed?).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
@@ -164,7 +164,7 @@ describe Orc::Engine do
     action.stub(:check_valid).with(anything)
     action.stub(:execute).and_return(false)
     action.stub(:complete?).and_return(false)
-    action.stub(:key).and_return('bar')
+    action.stub(:key).and_return({:group => 'green', :host => nil})
     action.stub(:failed?).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
