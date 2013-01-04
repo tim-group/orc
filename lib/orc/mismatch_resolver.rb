@@ -7,7 +7,7 @@ class Orc::MismatchResolver
       :does_participate,
       :version_mismatch,
       :is_healthy,
-      :is_stoppable,
+      :is_drained,
     ].each { |k|
       if state[k].nil?
         t_state = state.clone
@@ -50,13 +50,13 @@ class Orc::MismatchResolver
     in_case({
       :does_participate   => false,
       :version_mismatch   => true,
-      :is_stoppable       => true,
+      :is_drained         => true,
     }, 'UpdateVersionAction')
     in_case({
       :does_participate   => false,
       :version_mismatch   => true,
-      :is_stoppable       => false,
-    }, 'WaitForStoppableAction')
+      :is_drained         => false,
+    }, 'WaitForDrainedAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,
@@ -72,12 +72,10 @@ class Orc::MismatchResolver
     in_case({
       :should_participate => false,
       :does_participate   => true,
-      :version_mismatch   => false,
     }, 'DisableParticipationAction')
     in_case({
       :should_participate => false,
       :does_participate   => true,
-      :version_mismatch   => true,
     }, 'DisableParticipationAction')
   end
 
@@ -91,7 +89,7 @@ class Orc::MismatchResolver
       :does_participate   => instance.participation,
       :version_mismatch   => instance.version_mismatch?,
       :is_healthy         => instance.healthy?,
-      :is_stoppable       => instance.stoppable?,
+      :is_drained         => instance.stoppable?, # FIXME - should come from model of LB connections instead?
     ).call(instance)
   end
 end

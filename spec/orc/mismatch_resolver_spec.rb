@@ -51,7 +51,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
   end
 
   it 'sends disable when should be participating, is participating and has a version mismatch' do
@@ -95,7 +95,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
   end
 
 
@@ -183,7 +183,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
   end
 
   it 'is waiting for healthy when is unhealthy but should be participating, is not yet participating and has correct version' do
