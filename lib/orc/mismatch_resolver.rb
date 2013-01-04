@@ -89,7 +89,7 @@ class Orc::MismatchResolver
       :does_participate   => instance.participation,
       :version_mismatch   => instance.version_mismatch?,
       :is_healthy         => instance.healthy?,
-      :is_drained         => instance.stoppable?, # FIXME - should come from model of LB connections instead?
+      :is_drained         => instance.stoppable? # FIXME - should come from model of LB connections instead?
     ).call(instance)
   end
 end
