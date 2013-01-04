@@ -4,7 +4,7 @@ require 'orc/actions'
 require 'orc/model/group'
 require 'orc/model/instance'
 
-class Orc::LiveModelCreator
+class Orc::Model::Application
 
   def initialize(args)
     @remote_client = args[:remote_client]

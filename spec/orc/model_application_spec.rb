@@ -3,11 +3,11 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'orc/live_model_creator'
+require 'orc/model/application'
 require 'orc/model/instance'
 require 'orc/model/group'
 
-class MockLiveModelCreator < Orc::LiveModelCreator
+class MockApplicationModel < Orc::Model::Application
   def initialize(args)
     super
     @saved_app_model = args[:stub_app_model]
@@ -21,13 +21,13 @@ class MockLiveModelCreator < Orc::LiveModelCreator
 end
 
 
-describe Orc::LiveModelCreator do
+describe Orc::Model::Application do
   def get_mock_livemodelcreator(args)
     args[:stub_app_model] = [@blue_instance, @green_instance]
     args[:environment] = "latest"
     args[:application] = 'fnar'
     args[:progress_logger] = @progress_logger
-    MockLiveModelCreator.new(args)
+    MockApplicationModel.new(args)
   end
 
   before do
@@ -55,7 +55,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return([])
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(nil)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
     expect {
       live_model = live_model_creator.create_live_model()
@@ -78,7 +78,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
     live_model_creator.create_live_model()
 
@@ -106,7 +106,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
     expect {live_model_creator.create_live_model()}.to raise_error(Orc::Exception::GroupMissing)
   end
@@ -127,7 +127,7 @@ describe Orc::LiveModelCreator do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
     live_model = live_model_creator.create_live_model()
     #live_model.instances[0].fail
