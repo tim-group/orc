@@ -44,7 +44,9 @@ class Orc::Model::Application
 
   def instances
     actions = @instance_actions.values || raise("We have not yet calculated the instances")
-    actions.map { |a| a.instance }
+    instances = []
+    actions.each { |l| a = l[-1]; instances << a.instance if a != nil }
+    instances
   end
 
   def participating_instances
