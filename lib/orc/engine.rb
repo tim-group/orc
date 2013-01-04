@@ -4,6 +4,7 @@ class Orc::Engine
   def initialize(options)
     @application_model = options[:application_model] || raise("Need application model")
     @logger = options[:log] || raise("Need logger")
+    @max_loop = 100
   end
 
   def resolve_one_step
