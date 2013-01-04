@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/exceptions'
 require 'dl/import'
 
 module Orc::Util::Timeout
@@ -20,7 +20,7 @@ module Orc::Util::Timeout
 
   def timeout(interval)
     Signal.trap("ALRM") do
-      raise Orc::TimeoutError.new("Timed out after #{interval}")
+      raise Orc::Exception::Timeout.new("Timed out after #{interval}")
     end
     Alarm.alarm(interval)
     yield

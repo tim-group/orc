@@ -18,7 +18,7 @@ describe Orc::Util::Timeout do
 
   it 'can be constructed' do
     i = TimeoutTestClass.new
-    expect { i.test }.to raise_error(Orc::TimeoutError)
+    expect { i.test }.to raise_error(Orc::Exception::Timeout)
   end
 end
 

@@ -108,7 +108,7 @@ describe Orc::LiveModelCreator do
 
     live_model_creator = Orc::LiveModelCreator.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
-    expect {live_model_creator.create_live_model()}.to raise_error(Orc::GroupMissing)
+    expect {live_model_creator.create_live_model()}.to raise_error(Orc::Exception::GroupMissing)
   end
 
   it 'marks models as failed if a previous action on that model failed' do
@@ -211,7 +211,7 @@ describe Orc::LiveModelCreator do
     application = double()
     action = double()
     action.stub(:precedence).and_return(2)
-    action.stub(:execute).and_raise(Orc::FailedToResolve.new)
+    action.stub(:execute).and_raise(Orc::Exception::FailedToResolve.new)
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return('foo')
@@ -224,7 +224,7 @@ describe Orc::LiveModelCreator do
 
     action.should_receive(:execute)
 
-    expect {live_model_creator.resolve()}.to raise_error(Orc::FailedToResolve)
+    expect {live_model_creator.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'aborts if it does not resolve after the max loops is hit' do
@@ -243,7 +243,7 @@ describe Orc::LiveModelCreator do
     live_model_creator = get_mock_livemodelcreator({:mismatch_resolver=>mock_mismatch_resolver})
 
     action.should_receive(:execute).at_least(:once)
-    expect {live_model_creator.resolve()}.to raise_error(Orc::FailedToResolve)
+    expect {live_model_creator.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'if an action fails the instance is marked as failed' do
@@ -264,7 +264,7 @@ describe Orc::LiveModelCreator do
 
     action.should_receive(:execute).at_least(:once)
 
-    expect {live_model_creator.resolve()}.to raise_error(Orc::FailedToResolve)
+    expect {live_model_creator.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
  end
 
 end

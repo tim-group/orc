@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/exceptions'
 require 'cmdb/namespace'
 require 'orc/actions'
 require 'model/group_model'
@@ -36,7 +36,7 @@ class Orc::LiveModelCreator
 
     statuses.each do |instance|
       group = groups[instance[:group]]
-      raise Orc::GroupMissing.new("#{instance[:group]}") if group.nil?
+      raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
       instance_model = Model::InstanceModel.new(instance, group)
       @instance_models[instance_model.key] = instance_model
     end
@@ -96,7 +96,7 @@ class Orc::LiveModelCreator
       execute_action sorted_resolutions.shift
     else
       if (instances.reject {|instance| not has_failed_actions(instance) }.size>0)
-        raise Orc::FailedToResolve.new("Some instances failed actions, see logs")
+        raise Orc::Exception::FailedToResolve.new("Some instances failed actions, see logs")
       end
 
       @progress_logger.log_resolution_complete()
@@ -113,7 +113,7 @@ class Orc::LiveModelCreator
 
       @loop_count += 1
       if (@loop_count > @max_loop)
-        raise Orc::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
+        raise Orc::Exception::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
       end
     end
   end

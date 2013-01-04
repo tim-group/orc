@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/exceptions'
 require 'progress/log'
 
 module Orc::Action
@@ -95,7 +95,7 @@ module Orc::Action
     def check_valid(application_model)
       participating_instances = application_model.instances.reject {|instance|!instance.participation or instance==@instance}
       if (participating_instances.size==0)
-        raise Orc::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
+        raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
       end
     end
 

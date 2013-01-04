@@ -176,7 +176,7 @@ describe Orc::MismatchResolver do
     mock_appmodel = double()
     mock_appmodel.stub(:instances).and_return(instances)
 
-    expect {resolution.check_valid(mock_appmodel)}.to raise_error(Orc::FailedToResolve)
+    expect {resolution.check_valid(mock_appmodel)}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'after evaluating all groups transitions, all enablements should take precedence over disablements'
