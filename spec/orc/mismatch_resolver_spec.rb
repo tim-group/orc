@@ -186,6 +186,33 @@ describe Orc::MismatchResolver do
     resolution.class.should eql(Orc::Action::WaitForStoppableAction)
   end
 
+  it 'is waiting for healthy when is unhealthy but should be participating, is not yet participating and has correct version' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "correct",
+        :health        => "ill",
+      },
+      @should_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::WaitForHealthyAction)
+  end
+
+  it 'also waits for healthy when a participating instance is ill' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => true,
+        :version       => "correct",
+        :health        => "ill",
+      },
+      @should_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::WaitForHealthyAction)
+  end
 
   it 'is resolved when should be participating, is participating and has correct version' do
     instance = Orc::Model::Instance.new(
@@ -207,6 +234,20 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "correct",
         :health        => "healthy",
+      },
+      @should_not_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
+  end
+
+  it 'is resolved when should not be participating, is not participating and has correct version even if unhealthy' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "correct",
+        :health        => "ill",
       },
       @should_not_be_participating_group
     )
