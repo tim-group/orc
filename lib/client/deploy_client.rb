@@ -23,8 +23,13 @@ class MCollective::RPC::DeploytoolWrapper
   private
 
   def get_client
-    mc = rpcclient( "deployapp", { :options => @options })
-    mc.discover :verbose => false
+    begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
+      mc = rpcclient( "deployapp", { :options => @options })
+      mc.discover :verbose => false
+    rescue
+      mc = rpcclient( "deployapp", { :options => @options })
+      mc.discover :verbose => false
+    end
     mc.progress = false
     mc.verbose  = true
     mc
