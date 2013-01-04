@@ -39,6 +39,7 @@ describe Orc::Model::Application do
     instance = double()
     instance.stub(:host).and_return('Somehost')
     instance.stub(:group_name).and_return('blue')
+    instance.stub(:key).and_return({:host => 'Somehost', :group => 'blue'})
 
     @resolution_complete = Orc::Action::ResolvedCompleteAction.new('a', instance)
 
@@ -160,6 +161,8 @@ describe Orc::Model::Application do
     action.stub(:key).and_return('foo')
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
+    action.stub(:failed?).and_return(false)
+    action.stub(:execute).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(action,@resolution_complete)
@@ -192,6 +195,8 @@ describe Orc::Model::Application do
     enable_action.stub(:group_name).and_return("green")
     disable_action.stub(:failed?).and_return(false)
     enable_action.stub(:failed?).and_return(false)
+    disable_action.stub(:execute).and_return(true)
+    enable_action.stub(:execute).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
@@ -217,13 +222,13 @@ describe Orc::Model::Application do
     action.stub(:key).and_return('foo')
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
+    action.stub(:failed?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
 
     engine = get_mock_engine({:mismatch_resolver=>mock_mismatch_resolver})
 
     action.should_receive(:execute)
-
     expect {engine.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
@@ -235,9 +240,10 @@ describe Orc::Model::Application do
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return({:group => 'green', :host => nil})
-    action.stub(:failed?).and_return(true)
+    action.stub(:failed?).and_return(false)
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
+    action.stub(:execute).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
     engine = get_mock_engine({:mismatch_resolver=>mock_mismatch_resolver})
@@ -245,27 +251,6 @@ describe Orc::Model::Application do
     action.should_receive(:execute).at_least(:once)
     expect {engine.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
   end
-
-  it 'if an action fails the instance is marked as failed' do
-    mock_mismatch_resolver = double()
-    action = double()
-    action.stub(:precedence).and_return(999)
-    action.stub(:check_valid).with(anything)
-    action.stub(:execute).and_return(false)
-    action.stub(:complete?).and_return(false)
-    action.stub(:key).and_return({:group => 'green', :host => nil})
-    action.stub(:failed?).and_return(true)
-    action.stub(:host).and_return("Somehost")
-    action.stub(:group_name).and_return("blue")
-
-    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
-
-    engine = get_mock_engine({:mismatch_resolver=>mock_mismatch_resolver})
-
-    action.should_receive(:execute).at_least(:once)
-
-    expect {engine.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
- end
 
 end
 

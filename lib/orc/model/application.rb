@@ -68,13 +68,17 @@ class Orc::Model::Application
   end
 
   def execute_action(action)
-    action.check_valid(self)
-    action.execute(@instance_actions[action.key])
+    action.check_valid(self) # FIXME - This throws if invalid, execute returns false if invalid?
+    if ! action.execute(@instance_actions[action.key])
+      raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
+    end
   end
 
   def resolve_one_step
     @progress_logger.log("creating live model")
+
     live_instances = create_live_model
+
     proposed_resolutions = get_proposed_resolutions_for live_instances
 
     if @debug
@@ -101,10 +105,6 @@ class Orc::Model::Application
 
       execute_action useable_resolutions[0]
     else
-      if (instances.reject {|instance| not has_failed_actions(instance) }.size > 0)
-        raise Orc::Exception::FailedToResolve.new("Some instances failed actions, see logs")
-      end
-
       @progress_logger.log_resolution_complete()
       return true
     end
