@@ -44,7 +44,7 @@ module Orc::Action
     end
 
     def execute(all_actions)
-      status = do_execute(all_actions)
+      status = do_execute(all_actions.clone) # clone to stop do_execute methods from being able to permute previous actions
       if !status
         @failed = true
       end

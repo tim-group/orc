@@ -82,16 +82,16 @@ class Orc::Model::Application
       proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
     end
 
-    useable_resolutions = proposed_resolutions.reject { |resolution|
-      resolution.complete? or has_failed_actions(resolution)
-    }
-
-    useable_resolutions.each do |action|
+    proposed_resolutions.each do |action|
       if @instance_actions[action.key].nil?
         @instance_actions[action.key] = []
       end
       @instance_actions[action.key].push action
     end
+
+    useable_resolutions = proposed_resolutions.reject { |resolution|
+      resolution.complete? or has_failed_actions(resolution)
+    }
 
     if (useable_resolutions.size>0)
       if @debug
