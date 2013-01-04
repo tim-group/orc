@@ -125,11 +125,12 @@ module Orc::Action
       while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name do
         first_action = all_actions.pop
       end
-      if Time.now.to_i > (first_action.start_time + @max_wait)
+      has_waited_for = Time.now.to_i - first_action.start_time
+      if has_waited_for > @max_wait
         # FIXME - Should we throw an exception here, or just return false to indicate the action failed?
         raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for #{@instance.group.name} on #{@instance.host}")
       end
-      logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}"
+      logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: #{has_waited_for}s of #{@max_wait} seconds"
       true
     end
     def precedence
