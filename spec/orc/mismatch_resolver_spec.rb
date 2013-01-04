@@ -39,6 +39,21 @@ describe Orc::MismatchResolver do
     resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
 
+  it 'sends wait when should not be participating, is not participating and has a version mismatch but not stoppable' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "incorrect_version",
+        :health        => "healthy",
+        :stoppable     => "unwise",
+      },
+      @should_not_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+  end
+
   it 'sends disable when should be participating, is participating and has a version mismatch' do
     instance = Orc::Model::Instance.new(
       {
@@ -67,6 +82,22 @@ describe Orc::MismatchResolver do
     resolution = @mismatch_resolver.resolve(instance)
     resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
+
+  it 'sends wait when is not participating and there is a version mismatch only but not stoppable' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "incorrect_version",
+        :health        => "healthy",
+        :stoppable     => "unwise",
+      },
+      @should_not_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+  end
+
 
   it 'sends disable when is participating and there is a version mismatch only' do
     instance = Orc::Model::Instance.new(
@@ -124,6 +155,37 @@ describe Orc::MismatchResolver do
     resolution = @mismatch_resolver.resolve(instance)
     resolution.class.should eql(Orc::Action::UpdateVersionAction)
   end
+
+  it 'sends update when should be participating, is not participating and has a version mismatch' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "incorrect",
+        :health        => "healthy",
+        :stoppable     => "safe",
+      },
+      @should_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::UpdateVersionAction)
+  end
+
+  it 'sends wait when should be participating, is not participating and has a version mismatch' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "incorrect",
+        :health        => "healthy",
+        :stoppable     => "unwise",
+      },
+      @should_be_participating_group
+    )
+
+    resolution = @mismatch_resolver.resolve(instance)
+    resolution.class.should eql(Orc::Action::WaitForStoppableAction)
+  end
+
 
   it 'is resolved when should be participating, is participating and has correct version' do
     instance = Orc::Model::Instance.new(

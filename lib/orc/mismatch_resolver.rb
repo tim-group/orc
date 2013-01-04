@@ -56,7 +56,7 @@ class Orc::MismatchResolver
       :does_participate   => false,
       :version_mismatch   => true,
       :is_stoppable       => false,
-    }, 'WaitForStopableAction')
+    }, 'WaitForStoppableAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,

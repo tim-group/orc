@@ -125,7 +125,7 @@ module Orc::Action
     end
   end
 
-  class WaitForStopableAction < WaitForHealthyAction
+  class WaitForStoppableAction < WaitForHealthyAction
     def do_execute
       logger.log_action "Waiting for #{@instance.group.name} to become stopable on #{@instance.host}"
       sleep 30
