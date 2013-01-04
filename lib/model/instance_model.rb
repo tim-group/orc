@@ -13,6 +13,7 @@ class Model::InstanceModel
     @version = instance[:version]
     @host = instance[:host]
     @healthy = instance[:health] == "healthy" ? true : false
+    @stoppable = instance[:stoppable] == "safe" ? true : false
   end
 
   def version_mismatch?
@@ -28,6 +29,10 @@ class Model::InstanceModel
 
   def healthy?
     @healthy
+  end
+
+  def stoppable?
+    @stoppable
   end
 
   def group_name
