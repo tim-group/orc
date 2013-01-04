@@ -1,5 +1,6 @@
 require 'orc/namespace'
 require 'orc/model/application'
+require 'orc/engine'
 require 'orc/mismatch_resolver'
 require 'client/deploy_client'
 require 'cmdb/yaml'
