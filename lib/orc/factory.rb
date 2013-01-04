@@ -34,7 +34,7 @@ class Orc::Factory
       :cmdb               => self.cmdb,
       :environment        => options[:environment],
       :application        => options[:application],
-      :progress_logger    => progress_logger,
+      :progress_logger    => logger,
       :mismatch_resolver  => mismatch_resolver
     )
 
