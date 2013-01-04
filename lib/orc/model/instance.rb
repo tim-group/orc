@@ -13,7 +13,7 @@ class Orc::Model::Instance
     @version = instance[:version]
     @host = instance[:host]
     @healthy = instance[:health] == "healthy" ? true : false
-    @stoppable = instance[:stoppable] == "safe" ? true : false
+    @stoppable = instance[:stoppable] == "unwise" ? false : true
   end
 
   def version_mismatch?
