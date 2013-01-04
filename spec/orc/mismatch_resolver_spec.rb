@@ -5,19 +5,19 @@ require 'rubygems'
 require 'rspec'
 require 'orc/actions'
 require 'orc/mismatch_resolver'
-require 'model/group_model'
-require 'model/instance_model'
+require 'orc/model/group'
+require 'orc/model/instance'
 
 describe Orc::MismatchResolver do
 
   before do
     @mismatch_resolver = Orc::MismatchResolver.new(nil)
-    @should_be_participating_group = Model::GroupModel.new(
+    @should_be_participating_group = Orc::Model::Group.new(
       :name                 => "spg",
       :target_participation => true,
       :target_version       => "correct"
     )
-    @should_not_be_participating_group = Model::GroupModel.new(
+    @should_not_be_participating_group = Orc::Model::Group.new(
       :name                 => "snpg",
       :target_participation => false,
       :target_version       => "correct"
@@ -25,7 +25,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends update when should not be participating, is not participating and has a version mismatch' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => false,
         :version       => "incorrect_version",
@@ -39,7 +39,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends disable when should be participating, is participating and has a version mismatch' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => true,
         :version       => "incorrect_version",
@@ -53,7 +53,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends update when is not participating and there is a version mismatch only' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => false,
         :version       => "incorrect_version",
@@ -67,7 +67,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends disable when is participating and there is a version mismatch only' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => true,
         :version       => "incorrect_version",
@@ -81,7 +81,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends enable when should be participating but is not and there is no version mismatch' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => false,
         :version       => "correct",
@@ -95,7 +95,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends disable when should not be participating but is and there is no version mismatch' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => true,
         :version       => "correct",
@@ -108,7 +108,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'sends update when should be participating, is not participating and has a version mismatch' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => false,
         :version       => "incorrect",
@@ -122,7 +122,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'is resolved when should be participating, is participating and has correct version' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => true,
         :version       => "correct",
@@ -136,7 +136,7 @@ describe Orc::MismatchResolver do
   end
 
   it 'is resolved when should not be participating, is not participating and has correct version' do
-    instance = Model::InstanceModel.new(
+    instance = Orc::Model::Instance.new(
       {
         :participating => false,
         :version       => "correct",
@@ -152,7 +152,7 @@ describe Orc::MismatchResolver do
   it 'will not send a disable when there would be no groups left in the lb pool' do
 
     instances = [
-      Model::InstanceModel.new(
+      Orc::Model::Instance.new(
         {
           :participating => true,
           :version       => "correct",
@@ -160,7 +160,7 @@ describe Orc::MismatchResolver do
         },
         @should_not_be_participating_group
       ),
-      Model::InstanceModel.new(
+      Orc::Model::Instance.new(
         {
           :participating => false,
           :version       => "correct",

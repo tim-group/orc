@@ -1,8 +1,8 @@
 require 'orc/exceptions'
 require 'cmdb/namespace'
 require 'orc/actions'
-require 'model/group_model'
-require 'model/instance_model'
+require 'orc/model/group'
+require 'orc/model/instance'
 
 class Orc::LiveModelCreator
 
@@ -25,7 +25,7 @@ class Orc::LiveModelCreator
     raise CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
     @groups = {}
     cmdb_model_for_app.each do |group|
-      @groups[group[:name]] = Model::GroupModel.new(group)
+      @groups[group[:name]] = Orc::Model::Group.new(group)
     end
     @groups
   end
@@ -37,7 +37,7 @@ class Orc::LiveModelCreator
     statuses.each do |instance|
       group = groups[instance[:group]]
       raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
-      instance_model = Model::InstanceModel.new(instance, group)
+      instance_model = Orc::Model::Instance.new(instance, group)
       @instance_models[instance_model.key] = instance_model
     end
   end

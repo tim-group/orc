@@ -1,6 +1,6 @@
-require 'model/namespace'
+require 'orc/model/namespace'
 
-class Model::GroupModel
+class Orc::Model::Group
   attr_accessor :name
   attr_accessor :target_version
   attr_accessor :target_participation

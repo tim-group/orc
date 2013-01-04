@@ -4,8 +4,8 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 require 'rubygems'
 require 'rspec'
 require 'orc/actions'
-require 'model/instance_model'
-require 'model/group_model'
+require 'orc/model/instance'
+require 'orc/model/group'
 require 'client/deploy_client'
 
 describe Orc::Action::UpdateVersionAction do
@@ -15,8 +15,8 @@ describe Orc::Action::UpdateVersionAction do
   end
 
   it 'sends an update message to the given host' do
-    group = Model::GroupModel.new(:name=>"blue",:target_version=>"16")
-    instance_model = Model::InstanceModel.new({
+    group = Orc::Model::Group.new(:name=>"blue",:target_version=>"16")
+    instance_model = Orc::Model::Instance.new({
       :host=>"host1"
     },group)
 

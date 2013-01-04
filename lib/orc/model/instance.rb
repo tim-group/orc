@@ -1,7 +1,7 @@
-require 'model/namespace'
-require 'model/group_model'
+require 'orc/model/namespace'
+require 'orc/model/group'
 
-class Model::InstanceModel
+class Orc::Model::Instance
   attr_accessor :group
   attr_accessor :participation
   attr_accessor :version

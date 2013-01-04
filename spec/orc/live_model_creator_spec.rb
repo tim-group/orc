@@ -4,8 +4,8 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 require 'rubygems'
 require 'rspec'
 require 'orc/live_model_creator'
-require 'model/instance_model'
-require 'model/group_model'
+require 'orc/model/instance'
+require 'orc/model/group'
 
 class MockLiveModelCreator < Orc::LiveModelCreator
   def initialize(args)
@@ -38,11 +38,11 @@ describe Orc::LiveModelCreator do
 
     @resolution_complete = Orc::Action::ResolvedCompleteAction.new('a', instance)
 
-    @blue_group = Model::GroupModel.new(:name=>"blue")
-    @green_group = Model::GroupModel.new(:name=>"green")
+    @blue_group = Orc::Model::Group.new(:name=>"blue")
+    @green_group = Orc::Model::Group.new(:name=>"green")
 
-    @blue_instance = Model::InstanceModel.new({:group=>"blue"}, @blue_group)
-    @green_instance = Model::InstanceModel.new({:group=>"green"}, @green_group)
+    @blue_instance = Orc::Model::Instance.new({:group=>"blue"}, @blue_group)
+    @green_instance = Orc::Model::Instance.new({:group=>"green"}, @green_group)
     @progress_logger.should_receive(:log).any_number_of_times
 
     @remote_client = double()
