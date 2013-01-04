@@ -7,6 +7,7 @@ class Orc::MismatchResolver
       :does_participate,
       :version_mismatch,
       :is_healthy,
+      :is_stoppable,
     ].each { |k|
       if state[k].nil?
         t_state = state.clone
@@ -42,25 +43,20 @@ class Orc::MismatchResolver
       :version_mismatch   => false,
     }, 'ResolvedCompleteAction')
     in_case({
-      :should_participate => false,
-      :does_participate   => false,
-      :version_mismatch   => true,
-    }, 'UpdateVersionAction')
-    in_case({
       :should_participate => true,
       :does_participate   => true,
       :version_mismatch   => true,
     }, 'DisableParticipationAction')
     in_case({
-      :should_participate => false,
       :does_participate   => false,
       :version_mismatch   => true,
+      :is_stoppable       => true,
     }, 'UpdateVersionAction')
     in_case({
-      :should_participate => true,
       :does_participate   => false,
       :version_mismatch   => true,
-    }, 'UpdateVersionAction')
+      :is_stoppable       => false,
+    }, 'WaitForStopableAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,
@@ -94,7 +90,8 @@ class Orc::MismatchResolver
       :should_participate => instance.group.target_participation,
       :does_participate   => instance.participation,
       :version_mismatch   => instance.version_mismatch?,
-      :is_healthy         => instance.healthy?
+      :is_healthy         => instance.healthy?,
+      :is_stoppable       => instance.stoppable?,
     ).call(instance)
   end
 end

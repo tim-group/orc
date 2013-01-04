@@ -30,6 +30,7 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
+        :stoppable     => "safe",
       },
       @should_not_be_participating_group
     )
@@ -58,6 +59,7 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
+        :stoppable     => "safe",
       },
       @should_not_be_participating_group
     )
@@ -72,6 +74,7 @@ describe Orc::MismatchResolver do
         :participating => true,
         :version       => "incorrect_version",
         :health        => "healthy",
+        :stoppable     => "safe",
       },
       @should_be_participating_group
     )
@@ -113,6 +116,7 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect",
         :health        => "healthy",
+        :stoppable     => "safe",
       },
       @should_be_participating_group
     )
