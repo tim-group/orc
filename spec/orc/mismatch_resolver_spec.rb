@@ -175,6 +175,7 @@ describe Orc::MismatchResolver do
 
     mock_appmodel = double()
     mock_appmodel.stub(:instances).and_return(instances)
+    mock_appmodel.stub(:participating_instances).and_return([instances[0]])
 
     expect {resolution.check_valid(mock_appmodel)}.to raise_error(Orc::Exception::FailedToResolve)
   end

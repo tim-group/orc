@@ -9,7 +9,6 @@ class Orc::Model::Application
   def initialize(args)
     @remote_client = args[:remote_client]
     @cmdb = args[:cmdb]
-    @instance_models = {}
     @instance_actions = {}
     @environment = args[:environment] || raise('Must pass environment')
     @application = args[:application] || raise('Must pass application')
@@ -34,16 +33,22 @@ class Orc::Model::Application
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:environment=>@environment, :application=>@application)
 
+    instance_models = []
     statuses.each do |instance|
       group = groups[instance[:group]]
       raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
-      instance_model = Orc::Model::Instance.new(instance, group)
-      @instance_models[instance_model.key] = instance_model
+      instance_models << Orc::Model::Instance.new(instance, group)
     end
+    instance_models.sort_by { |instance| instance.group_name }
   end
 
   def instances
-    @instance_models.values || raise("We have not yet calculated the instances")
+    actions = @instance_actions.values || raise("We have not yet calculated the instances")
+    actions.map { |a| a.instance }
+  end
+
+  def participating_instances
+    instances.reject { |instance| not instance.participation }
   end
 
   def has_failed_actions(action)
@@ -52,50 +57,49 @@ class Orc::Model::Application
     failed_actions.size > 0
   end
 
-  def get_proposed_resolutions
+  def get_proposed_resolutions_for(live_instances)
     proposed_resolutions =[]
-    instances.each do |instance|
+    live_instances.each do |instance|
       proposed_resolutions << @mismatch_resolver.resolve(instance)
     end
-    proposed_resolutions
+    proposed_resolutions.sort_by { |resolution| resolution.precedence }
   end
 
   def execute_action(action)
     action.check_valid(self)
-    success = action.execute()
-
-    if @instance_actions[action.key].nil?
-      @instance_actions[action.key] = []
-    end
-    @instance_actions[action.key].push action
-    success
+    action.execute
   end
 
   def resolve_one_step
     @progress_logger.log("creating live model")
-    create_live_model()
-    proposed_resolutions = get_proposed_resolutions
+    live_instances = create_live_model
+    proposed_resolutions = get_proposed_resolutions_for live_instances
 
     if @debug
       @progress_logger.log("Proposed resolutions:")
       proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
     end
 
-    sorted_resolutions = proposed_resolutions.sort_by { |resolution|
-      resolution.precedence()
-    }.reject { |resolution|
+    useable_resolutions = proposed_resolutions.reject { |resolution|
       resolution.complete? or has_failed_actions(resolution)
     }
 
-    if (sorted_resolutions.size>0)
+    useable_resolutions.each do |action|
+      if @instance_actions[action.key].nil?
+        @instance_actions[action.key] = []
+      end
+      @instance_actions[action.key].push action
+    end
+
+    if (useable_resolutions.size>0)
       if @debug
-        @progress_logger.log("Sorted resolutions:")
-        sorted_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+        @progress_logger.log("Useable resolutions:")
+        useable_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
       end
 
-      execute_action sorted_resolutions.shift
+      execute_action useable_resolutions[0]
     else
-      if (instances.reject {|instance| not has_failed_actions(instance) }.size>0)
+      if (instances.reject {|instance| not has_failed_actions(instance) }.size > 0)
         raise Orc::Exception::FailedToResolve.new("Some instances failed actions, see logs")
       end
 

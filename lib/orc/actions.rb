@@ -4,7 +4,7 @@ require 'progress/log'
 module Orc::Action
   class Base
     include Progress
-
+    attr_reader :instance
     def initialize(remote_client, instance, timeout=nil)
       @instance = instance
       @remote_client = remote_client
@@ -93,7 +93,7 @@ module Orc::Action
     end
 
     def check_valid(application_model)
-      participating_instances = application_model.instances.reject {|instance|!instance.participation or instance==@instance}
+      participating_instances = application_model.participating_instances.reject {|instance| instance == @instance}
       if (participating_instances.size==0)
         raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
       end

@@ -13,7 +13,7 @@ class MockApplicationModel < Orc::Model::Application
     @saved_app_model = args[:stub_app_model]
   end
   def create_live_model
-    self
+    @saved_app_model
   end
   def instances
     @saved_app_model
@@ -80,11 +80,9 @@ describe Orc::Model::Application do
 
     live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
-    live_model_creator.create_live_model()
+    instances = live_model_creator.create_live_model()
 
-    live_model_creator.instances.size.should eql(2)
-
-    instances = live_model_creator.instances.sort_by { |instance| instance.group.name }
+    instances.size.should eql(2)
 
     instances[0].group.name.should eql("blue")
     instances[1].group.name.should eql("green")
@@ -192,6 +190,8 @@ describe Orc::Model::Application do
     enable_action.stub(:host).and_return("Somehost")
     disable_action.stub(:group_name).and_return("blue")
     enable_action.stub(:group_name).and_return("green")
+    disable_action.stub(:failed?).and_return(false)
+    enable_action.stub(:failed?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(disable_action,disable_action,@resolution_complete)
     mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(enable_action,@resolution_complete,@resolution_complete)
