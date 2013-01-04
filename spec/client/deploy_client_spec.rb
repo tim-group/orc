@@ -9,7 +9,7 @@ describe Client::DeployClient do
     Client::DeployClient.new(
       :mcollective_client=>mcollective_client,
       :application => 'SomeApp',
-      :environment => 'foo',
+      :environment => 'foo'
     )
   end
 
