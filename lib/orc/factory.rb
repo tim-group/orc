@@ -28,14 +28,19 @@ class Orc::Factory
   def self.engine(options)
     remote_client = self.remote_client(options)
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
-
-    Orc::Model::Application.new(
+    logger = Progress.logger()
+    app_model = Orc::Model::Application.new(
       :remote_client      => remote_client,
       :cmdb               => self.cmdb,
       :environment        => options[:environment],
       :application        => options[:application],
-      :progress_logger    => Progress.logger(),
+      :progress_logger    => progress_logger,
       :mismatch_resolver  => mismatch_resolver
+    )
+
+    Orc::Engine.new(
+      :application_model => app_model,
+      :log               => logger
     )
   end
 end
