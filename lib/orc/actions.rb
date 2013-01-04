@@ -43,8 +43,8 @@ module Orc::Action
       @instance.group_name
     end
 
-    def execute
-      status = do_execute
+    def execute(all_actions)
+      status = do_execute(all_actions)
       if !status
         @failed = true
       end
@@ -53,7 +53,7 @@ module Orc::Action
   end
 
   class UpdateVersionAction < Base
-    def do_execute
+    def do_execute(all_actions)
       logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
 
       @remote_client.update_to_version({
@@ -73,7 +73,7 @@ module Orc::Action
       10
     end
 
-    def do_execute
+    def do_execute(all_actions)
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.enable_participation({
         :group=>@instance.group.name,
@@ -99,7 +99,7 @@ module Orc::Action
       end
     end
 
-    def do_execute
+    def do_execute(all_actions)
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.disable_participation({
         :group=>@instance.group.name,
@@ -113,28 +113,37 @@ module Orc::Action
     end
   end
 
-  class WaitForHealthyAction < Base
-    def do_execute
-      logger.log_action "Waiting for #{@instance.group.name} to become healthy on #{@instance.host}"
-      sleep 30
+  class WaitActionBase < Base
+    attr_reader :start_time, :max_wait
+    def initialize(*args)
+      super
+      @start_time = Time.now.to_i
+      @max_wait ||= 10 * 60 # 10m
+    end
+    def do_execute(all_actions)
+      first_action = all_actions.pop
+      while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name do
+        first_action = all_actions.pop
+      end
+      if Time.now.to_i > (first_action.start_time + @max_wait)
+        raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for #{@instance.group.name} on #{@instance.host}")
+      end
+      logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}"
       true
     end
-
     def precedence
       return 2
     end
   end
 
-  class WaitForDrainedAction < WaitForHealthyAction
-    def do_execute
-      logger.log_action "Waiting for #{@instance.group.name} to drain and become stoppable on #{@instance.host}"
-      sleep 30
-      true
-    end
+  class WaitForHealthyAction < WaitActionBase
+  end
+
+  class WaitForDrainedAction < WaitActionBase
   end
 
   class ResolvedCompleteAction < Base
-    def do_execute
+    def do_execute(all_actions)
       true
     end
 

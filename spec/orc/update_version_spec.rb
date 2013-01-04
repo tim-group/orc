@@ -22,6 +22,6 @@ describe Orc::Action::UpdateVersionAction do
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
     @remote_client.should_receive(:update_to_version).with( {:group=>"blue"}, ["host1"], "16")
-    update_version_action.execute()
+    update_version_action.execute([])
   end
 end

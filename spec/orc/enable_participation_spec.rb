@@ -22,6 +22,6 @@ describe Orc::Action::EnableParticipationAction do
 
     update_version_action = Orc::Action::EnableParticipationAction.new(@remote_client, instance_model, 0)
     @remote_client.should_receive(:enable_participation).with( {:group=>"blue"}, ["host1"])
-    update_version_action.execute()
+    update_version_action.execute([])
   end
 end

@@ -67,7 +67,7 @@ class Orc::Model::Application
 
   def execute_action(action)
     action.check_valid(self)
-    action.execute
+    action.execute(@instance_actions[action.key])
   end
 
   def resolve_one_step

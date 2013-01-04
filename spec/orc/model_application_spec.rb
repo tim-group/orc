@@ -135,10 +135,6 @@ describe Orc::Model::Application do
     #live_model2.instances[0].failed?.should == true
   end
 
-  it 'missed messages...' do
-
-  end
-
   it 'does nothing if all groups say they are resolved' do
     mock_mismatch_resolver = double()
 
@@ -267,6 +263,5 @@ describe Orc::Model::Application do
     expect {live_model_creator.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
  end
 
- it 'after evaluating all groups transitions, all enablements should take precedence over disablements'
 end
 
