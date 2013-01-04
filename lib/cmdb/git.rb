@@ -10,12 +10,14 @@ class CMDB::Git
     @local_path = options[:local_path] || '/opt/orctool/data/cmdb/'
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 10
+    @debug = false
   end
 
   def update()
     if File.directory?(@local_path)
       timeout(@timeout) do
-        @git = Git.open(@local_path, :log => Logger.new(STDOUT))
+        logger = @debug ? STDOUT : '/dev/null'
+        @git = Git.open(@local_path, :log => Logger.new(logger))
         @git.remotes.first.fetch
         @git.fetch( 'origin' )
         @git.merge('origin', 'merge concurrent modifications')
