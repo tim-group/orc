@@ -108,18 +108,5 @@ class Orc::Model::Application
     end
     false
   end
-
-  def resolve()
-    @loop_count = 0
-    finished = false
-    while( not finished ) do
-      finished = resolve_one_step
-
-      @loop_count += 1
-      if (@loop_count > @max_loop)
-        raise Orc::Exception::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
-      end
-    end
-  end
 end
 
