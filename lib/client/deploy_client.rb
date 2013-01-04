@@ -36,7 +36,7 @@ class Client::DeployClient
 
   def initialize(args)
     @environment = args[:environment] or raise("Need environment")
-    @application = args[:application] or raise("Need application")
+    @application = args[:application]
     @logger = args[:log] || ::Progress::Logger.new()
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200

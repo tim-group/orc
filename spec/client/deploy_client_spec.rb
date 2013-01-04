@@ -8,9 +8,12 @@ describe Client::DeployClient do
     mcollective_client.stub(:custom_request).and_return(msg)
     Client::DeployClient.new(
       :mcollective_client=>mcollective_client,
-      :application => 'SomeApp',
       :environment => 'foo'
     )
+  end
+
+  it 'Can be constructed without an application' do
+    client = get_client([])
   end
 
   it 'handles messages correctly when the agent throws an exception' do
