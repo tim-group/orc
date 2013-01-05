@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
+require 'rdoc/task'
 require 'fileutils'
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
@@ -106,3 +107,22 @@ end
 
 desc "Setup, package, test, and upload"
 task :build  => [:setup,:package,:test]
+
+task :pre_doc do
+  sh "if [ -d html ]; then rm -r html; fi"
+end
+
+Rake::RDocTask.new do |rd|
+    rd.rdoc_files.include("lib/**/*.rb")
+end
+
+desc "Build docs"
+task :docs do
+  sh "git read-tree --prefix=gh-pages/ -u gh-pages"
+  sh "cp -r html/* gh-pages/rdoc"
+  sh "rm -r html"
+  sh "git add -f gh-pages"
+  sh "tree=$(git write-tree --prefix=gh-pages/) && commit=$(echo \"Generated docs\" | git commit-tree $tree -p gh-pages) && git update-ref refs/heads/gh-pages $commit && git reset HEAD"
+end
+task :docs => [:pre_doc, :rdoc]
+
