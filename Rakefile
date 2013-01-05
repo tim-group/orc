@@ -118,6 +118,7 @@ end
 
 desc "Build docs"
 task :docs do
+  sh "stat=$(git status 2> /dev/null | tail -n1); if [ \"nothing to commit (working directory clean)\" != \"$stat\" ]; then echo \"Unclean - please commit before docs\"; exit 2; fi"
   sh "git read-tree --prefix=gh-pages/ -u gh-pages"
   sh "cp -r html/* gh-pages/rdoc"
   sh "rm -r html"
