@@ -4,6 +4,11 @@ require 'cmdb/git'
 require 'tmpdir'
 require 'git'
 describe CMDB::Git do
+  def local_git
+    #Git.open(@local, :log => Logger.new(STDOUT))
+    Git.open(@local, :log => nil)
+  end
+
   before do
     @tempdir = Dir.mktmpdir( nil, "/tmp" )
     @origin = "#{@tempdir}/cmdb_origin"
@@ -108,7 +113,7 @@ end
 
     gitcmdb.get_branch().should eql("master")
 
-    g = Git.open(@local, :log => Logger.new(STDOUT))
+    g = local_git
     commits = g.log
     commits.size.should eql( 2 )
     commits.to_a[0].parents.size.should eql( 1 )
@@ -134,7 +139,7 @@ end
 
     gitcmdb.get_branch().should eql("master")
 
-    g = Git.open(@local, :log => Logger.new(STDOUT))
+    g = local_git
     commits = g.log
     commits.size.should eql( 3 )
     commits.to_a[0].parents.size.should eql( 1 )
@@ -162,7 +167,7 @@ end
 
     gitcmdb.get_branch().should eql("master")
 
-    g = Git.open(@local, :log => Logger.new(STDOUT))
+    g = local_git
     commits = g.log
     commits.size.should eql( 3 )
     commits.to_a[0].parents.size.should eql( 1 )

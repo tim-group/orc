@@ -14,10 +14,10 @@ class CMDB::Git
   end
 
   def update()
+    logger = @debug ? Logger.new(STDOUT) : nil
     if File.directory?(@local_path)
       timeout(@timeout) do
-        logger = @debug ? STDOUT : '/dev/null'
-        @git = Git.open(@local_path, :log => Logger.new(logger))
+        @git = Git.open(@local_path, :log => logger)
         @git.remotes.first.fetch
         @git.fetch( 'origin' )
         @git.merge('origin', 'merge concurrent modifications')
@@ -25,7 +25,7 @@ class CMDB::Git
       end
     else
       timeout(@timeout) do
-        @git = Git.clone(@repo_url, @local_path, :log => Logger.new(STDOUT))
+        @git = Git.clone(@repo_url, @local_path, :log => logger)
       end
     end
 
