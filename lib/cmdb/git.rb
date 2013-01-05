@@ -6,8 +6,8 @@ require 'orc/util/timeout'
 class CMDB::Git
   include Orc::Util::Timeout
   def initialize(options={})
-    @repo_url = options[:origin] || 'git@git:cmdb'
-    @local_path = options[:local_path] || '/opt/orctool/data/cmdb/'
+    @repo_url = options[:origin] || raise("Need origin option")
+    @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 10
     @debug = false
@@ -25,7 +25,7 @@ class CMDB::Git
       end
     else
       timeout(@timeout) do
-        @git = Git.clone(@repo_url,@local_path, :log => Logger.new(STDOUT))
+        @git = Git.clone(@repo_url, @local_path, :log => Logger.new(STDOUT))
       end
     end
 

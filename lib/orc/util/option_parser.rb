@@ -29,8 +29,8 @@ class Orc::Util::OptionParser
       []
     end
 
-    def execute(options)
-      CMDB::Git.new().update()
+    def execute(factory)
+      factory.cmdb_git.update
     end
 
     def self.command_options
@@ -43,8 +43,8 @@ class Orc::Util::OptionParser
       return [:environment]
     end
 
-    def execute(options)
-      deploy_client = Client::DeployClient.new(options)
+    def execute(factory)
+      deploy_client = factory.remote_client
       renderer = AnsiStatusRenderer.new()
       statuses = deploy_client.status(options)
       rendered_status = renderer.render(statuses)
@@ -61,9 +61,8 @@ class Orc::Util::OptionParser
       return [:environment,:application,:version]
     end
 
-    def execute(options)
-      high_level_orchestration = Orc::Factory.high_level_orchestration(options)
-      high_level_orchestration.deploy(options[:version])
+    def execute(factory)
+      factory.high_level_orchestration.deploy(options[:version])
     end
 
     def self.command_options
@@ -76,9 +75,8 @@ class Orc::Util::OptionParser
       return [:environment,:application,:promote_from_environment]
     end
 
-    def execute(options)
-      high_level_orchestration = Orc::Factory.high_level_orchestration(options)
-      high_level_orchestration.promote_from_environment(options[:promote_from_environment])
+    def execute(factory)
+      factory.high_level_orchestration.promote_from_environment(options[:promote_from_environment])
     end
 
     def self.command_options
@@ -91,9 +89,8 @@ class Orc::Util::OptionParser
       return [:environment,:application,:version]
     end
 
-    def execute(options)
-      high_level_orchestration = Orc::Factory.high_level_orchestration(options)
-      high_level_orchestration.install(options[:version])
+    def execute(factory)
+      factory.high_level_orchestration.install(options[:version])
     end
 
     def self.command_options
@@ -106,9 +103,8 @@ class Orc::Util::OptionParser
       return [:environment,:application]
     end
 
-    def execute(options)
-      high_level_orchestration = Orc::Factory.high_level_orchestration(options)
-      high_level_orchestration.swap()
+    def execute(factory)
+      factory.high_level_orchestration.swap()
     end
 
     def self.command_options
@@ -121,9 +117,8 @@ class Orc::Util::OptionParser
       return [:environment,:application]
     end
 
-    def execute(options)
-      engine = Orc::Factory.engine(options)
-      engine.resolve()
+    def execute(factory)
+      factory.engine.resolve()
     end
 
     def self.command_options
@@ -192,7 +187,7 @@ class Orc::Util::OptionParser
     end
 
     @commands.each do |command|
-      command.execute(@options)
+      command.execute(Orc::Factory.new(@options))
     end
   end
 end

@@ -1,4 +1,5 @@
 require 'orc/namespace'
+require 'orc/config'
 require 'orc/model/application'
 require 'orc/engine'
 require 'orc/mismatch_resolver'
@@ -9,32 +10,49 @@ require 'cmdb/high_level_orchestration'
 require 'progress/log'
 
 class Orc::Factory
-  def self.cmdb
-    CMDB::Yaml.new( :data_dir => "/opt/orctool/data/cmdb/")
+  attr_reader :application, :environment
+  def initialize(options)
+    @application = options[:application]
+    @environment = options[:environment]
   end
 
-  def self.remote_client(options)
-    Client::DeployClient.new(
-      :environment => options[:environment],
-      :application => options[:application]
+  def config
+    @config ||= Orc::Config.new
+  end
+  def cmdb
+    @cmdb ||= CMDB::Yaml.new( :data_dir => config['cmdb']['local_path'])
+  end
+
+  def remote_client(options)
+    @remote_client ||= Client::DeployClient.new(
+      :environment => environment,
+      :application => application
     )
   end
 
-  def self.high_level_orchestration(options)
-    options[:cmdb] = self.cmdb
-    options[:git] = CMDB::Git.new()
-    CMDB::HighLevelOrchrestration.new(options)
+  def cmdb_git
+    @cmdb_git ||= CMDB::Git.new(
+      :origin     => config['cmdb']['repo_url'],
+      :local_path => config['cmdb']['local_path']
+    )
   end
 
-  def self.engine(options)
-    remote_client = self.remote_client(options)
+  def high_level_orchestration(options)
+    return @high_level_orchestration if @high_level_orchestration
+    options[:cmdb] = cmdb
+    options[:git] = cmdb_git
+    @high_level_orchestration = CMDB::HighLevelOrchrestration.new(options)
+  end
+
+  def engine
+    remote_client = remote_client
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
     logger = Progress.logger()
     app_model = Orc::Model::Application.new(
       :remote_client      => remote_client,
-      :cmdb               => self.cmdb,
-      :environment        => options[:environment],
-      :application        => options[:application],
+      :cmdb               => cmdb,
+      :environment        => environment,
+      :application        => application,
       :progress_logger    => logger,
       :mismatch_resolver  => mismatch_resolver
     )
