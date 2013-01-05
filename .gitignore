@@ -1,3 +1,4 @@
+orc-*.gem
 build/
 spec/reports/*.xml
 .*.sw[a-z]
