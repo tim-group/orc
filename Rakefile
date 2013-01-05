@@ -124,6 +124,8 @@ task :docs do
   sh "rm -r html"
   sh "git add -f gh-pages"
   sh "tree=$(git write-tree --prefix=gh-pages/) && commit=$(echo \"Generated docs\" | git commit-tree $tree -p gh-pages) && git update-ref refs/heads/gh-pages $commit && git reset HEAD"
+  sh "if [ -d html ]; then rm -r html; fi"
+  sh "if [ -d gh-pages ]; then rm -r gh-pages; fi"
 end
 task :docs => [:pre_doc, :rdoc]
 
