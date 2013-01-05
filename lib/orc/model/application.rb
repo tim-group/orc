@@ -67,14 +67,7 @@ class Orc::Model::Application
     proposed_resolutions.sort_by { |resolution| resolution.precedence }
   end
 
-  def execute_action(action)
-    action.check_valid(self) # FIXME - This throws if invalid, execute returns false if invalid?
-    if ! action.execute(@instance_actions[action.key])
-      raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
-    end
-  end
-
-  def resolve_one_step
+  def get_resolutions
     @progress_logger.log("creating live model")
 
     live_instances = create_live_model
@@ -97,18 +90,7 @@ class Orc::Model::Application
       resolution.complete? or has_failed_actions(resolution)
     }
 
-    if (useable_resolutions.size>0)
-      if @debug
-        @progress_logger.log("Useable resolutions:")
-        useable_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
-      end
-
-      execute_action useable_resolutions[0]
-    else
-      @progress_logger.log_resolution_complete()
-      return true
-    end
-    false
+    useable_resolutions
   end
 end
 
