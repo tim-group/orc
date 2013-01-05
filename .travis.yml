@@ -1,0 +1,15 @@
+---
+language: ruby
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq mcollective
+ - ln -s /usr/lib/ruby/1.8/mcollective lib/mcollective
+ - ln -s /usr/lib/ruby/1.8/mcollective.rb lib/mcollective.rb
+rvm:
+  - 1.9.3
+  - 1.8.7
+script: "bundle exec rake spec"
+notifications:
+  email:
+    - infra@timgroup.com
+

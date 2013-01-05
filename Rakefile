@@ -26,9 +26,9 @@ class Project
 end
 
 @project = Project.new(
-:name=>"orctool",
-:description=>"orchestration tool",
-:version=>"1.0.#{ENV['BUILD_NUMBER']}"
+  :name=>"orctool",
+  :description=>"orchestration tool",
+  :version=>"1.0.#{ENV['BUILD_NUMBER']}"
 )
 
 task :default do
