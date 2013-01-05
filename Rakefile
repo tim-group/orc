@@ -35,6 +35,19 @@ task :default do
   sh "rake -s -T"
 end
 
+desc "Create gem"
+task :gem do
+  sh "if [ -f *.gem ]; then rm *.gem; fi"
+  sh "gem build orc.gemspec"
+end
+
+desc "Create debian package from gem"
+task :gemdeb do
+  sh "if [ -f *.deb ]; then rm *.deb; fi"
+  sh "/var/lib/gems/1.8/bin/fpm -s gem -t deb orc-*.gem"
+end
+task :gemdeb => [:gem]
+
 desc "Remove build directory, etc."
 task :clean do
   FileUtils.rmtree( "build"  )
