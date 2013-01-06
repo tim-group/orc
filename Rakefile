@@ -1,7 +1,11 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
-require 'rdoc/task'
+begin # Ruby 1.8 vs 1.9 fuckery
+  require 'rake/rdoctask'
+rescue Exception
+  require 'rdoc/task'
+end
 require 'fileutils'
 require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
