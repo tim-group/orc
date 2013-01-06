@@ -1,12 +1,13 @@
 require 'orc/model/application'
 
 class Orc::Engine
+  attr_reader :debug
   def initialize(options)
     @application_model = options[:application_model] || raise("Need application model")
-    @logger = options[:log] || raise("Need logger")
+    @logger = options[:log] || raise("Need :log")
     @max_loop = 100
     @resolution_steps = []
-    @debug = true
+    @debug = false
   end
 
   def execute_action(action)
@@ -22,7 +23,7 @@ class Orc::Engine
 
     if (resolutions.size > 0)
 
-      if @debug
+      if debug
         @logger.log("Useable resolutions:")
         resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
       end
