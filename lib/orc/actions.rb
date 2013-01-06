@@ -50,6 +50,12 @@ module Orc::Action
       end
       status
     end
+
+    def to_s
+      self.class.name =~ /Orc::Action::(\w+)/
+      type = $1
+      "#{type}: on #{host} #{group_name}"
+    end
   end
 
   class UpdateVersionAction < Base

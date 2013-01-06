@@ -16,8 +16,11 @@ module Progress
       print "[\e[0;33m#{msg}\e[0m]\n"
     end
 
-    def log_resolution_complete()
+    def log_resolution_complete(resolutions)
       print "[\e[1;32msuccess - resolution complete\e[0m]\n"
+      resolutions.each do |r|
+        print "    #{r.to_s}\n"
+      end
     end
 
     def log_client_response(host, log)
