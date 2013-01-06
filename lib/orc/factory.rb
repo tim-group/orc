@@ -11,16 +11,18 @@ require 'progress/log'
 
 class Orc::Factory
   attr_reader :application, :environment
-  def initialize(options)
+  def initialize(options={})
     @application = options[:application]
     @environment = options[:environment]
   end
-
+  def config_location
+    "#{ENV['HOME']}/.orc.yaml"
+  end
   def config
-    @config ||= Orc::Config.new
+    @config ||= Orc::Config.new(config_location)
   end
   def cmdb
-    @cmdb ||= CMDB::Yaml.new( :data_dir => config['cmdb']['local_path'])
+    @cmdb ||= CMDB::Yaml.new( :data_dir => config['cmdb_local_path'])
   end
 
   def remote_client(options)
@@ -32,8 +34,8 @@ class Orc::Factory
 
   def cmdb_git
     @cmdb_git ||= CMDB::Git.new(
-      :origin     => config['cmdb']['repo_url'],
-      :local_path => config['cmdb']['local_path']
+      :origin     => config['cmdb_repo_url'],
+      :local_path => config['cmdb_local_path']
     )
   end
 
