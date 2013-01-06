@@ -69,7 +69,21 @@ class Orc::Model::Application
       resolution.complete?
     }
 
-    incomplete_resolutions
+    useable_resolutions = incomplete_resolutions.reject { |resolution|
+      reject = true
+      begin
+        resolution.check_valid(instances)
+        reject = false
+      rescue Exception
+      end
+      reject
+    }
+
+    if useable_resolutions.size == 0 and incomplete_resolutions.size > 0
+      raise Orc::Exception::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all result in invalid state) - manual intervention required")
+    end
+
+    useable_resolutions
   end
 end
 

@@ -23,13 +23,16 @@ end
 
 
 describe Orc::Model::Application do
-  def get_mock_engine(args)
+  def get_mock_appmodel(args)
     args[:stub_app_model] = [@blue_instance, @green_instance]
     args[:environment] = "latest"
     args[:application] = 'fnar'
     args[:progress_logger] = @progress_logger
+    MockApplicationModel.new(args)
+  end
+  def get_mock_engine(args)
     Orc::Engine.new(
-      :application_model => MockApplicationModel.new(args),
+      :application_model => get_mock_appmodel(args),
       :log => @progress_logger
     )
   end
@@ -112,32 +115,6 @@ describe Orc::Model::Application do
     live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
 
     expect {live_model_creator.create_live_model()}.to raise_error(Orc::Exception::GroupMissing)
-  end
-
-  it 'marks models as failed if a previous action on that model failed' do
-    blue_instance = {:group=>"blue", :version=>"2.2", :application=>"app1"}
-    green_instance = {:group=>"green", :version=>"2.2", :application=>"app1"}
-    instances = [blue_instance, green_instance]
-
-    blue_group= {:name=>"blue", :target_version=>"2.3"}
-    green_group= {:name=>"green", :target_version=>"2.4"}
-    static_model = [blue_group,green_group]
-
-    environment = 'test_env'
-    application = 'app1'
-    static_model = [blue_group, green_group]
-
-    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
-    @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
-
-    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
-
-    live_model = live_model_creator.create_live_model()
-    #live_model.instances[0].fail
-    live_model2 = live_model_creator.create_live_model()
-
-    # FIXME
-    #live_model2.instances[0].failed?.should == true
   end
 
   it 'does nothing if all groups say they are resolved' do
@@ -230,6 +207,54 @@ describe Orc::Model::Application do
 
     action.should_receive(:execute)
     expect {engine.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
+  end
+
+  it 'will not run actions which are invalid' do
+    mock_mismatch_resolver = double()
+
+    application = double()
+    paction = double()
+    naction = double() # [@blue_instance, @green_instance]
+    actions = [paction, naction]
+    mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(paction)
+    mock_mismatch_resolver.stub(:resolve).with(@green_instance).and_return(naction)
+    paction.stub(:precedence).and_return(2)
+    naction.stub(:precedence).and_return(2)
+    paction.stub(:host).and_return('host1')
+    naction.stub(:host).and_return('host2')
+    paction.stub(:execute).and_raise(Orc::Exception::FailedToResolve.new)
+    paction.stub(:check_valid).and_raise(Orc::Exception::FailedToResolve.new)
+    naction.stub(:check_valid).with(anything)
+    naction.stub(:execute).and_return(true)
+    [naction, paction].each do |action|
+      action.stub(:complete?).and_return(false)
+      action.stub(:key).and_return('foo')
+      action.stub(:group_name).and_return("blue")
+      action.stub(:failed?).and_return(false)
+    end
+
+    model = get_mock_appmodel({:mismatch_resolver=>mock_mismatch_resolver})
+
+    expect(model.get_resolutions).to eq([naction])
+  end
+
+  it 'aborts if there are actions, but all actions are invalid' do
+    mock_mismatch_resolver = double()
+
+    application = double()
+    action = double()
+    mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
+    action.stub(:precedence).and_return(2)
+    action.stub(:execute).and_raise(Orc::Exception::FailedToResolve.new)
+    action.stub(:check_valid).and_raise(Orc::Exception::FailedToResolve.new)
+    action.stub(:complete?).and_return(false)
+      action.stub(:key).and_return('foo')
+      action.stub(:group_name).and_return("blue")
+      action.stub(:failed?).and_return(false)
+
+    model = get_mock_appmodel({:mismatch_resolver=>mock_mismatch_resolver})
+
+    expect { model.get_resolutions}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'aborts if it does not resolve after the max loops is hit' do
