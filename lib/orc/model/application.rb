@@ -65,11 +65,11 @@ class Orc::Model::Application
       proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
     end
 
-    useable_resolutions = proposed_resolutions.reject { |resolution|
+    incomplete_resolutions = proposed_resolutions.reject { |resolution|
       resolution.complete?
     }
 
-    useable_resolutions
+    incomplete_resolutions
   end
 end
 
