@@ -28,6 +28,7 @@ describe Orc::Model::Application do
     args[:environment] = "latest"
     args[:application] = 'fnar'
     args[:progress_logger] = @progress_logger
+    args[:remote_client] = double()
     MockApplicationModel.new(args)
   end
   def get_mock_engine(args)
