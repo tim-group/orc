@@ -3,5 +3,5 @@ $: << File.join(File.dirname(__FILE__), "..", "lib")
 $: << '/opt/orctool/lib'
 require 'orc/util/option_parser'
 
-Orc::Util::OptionParser.new.parse()
+Orc::Util::OptionParser.new.parse.execute
 

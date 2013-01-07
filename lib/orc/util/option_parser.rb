@@ -13,10 +13,15 @@ ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem"
 
 class Orc::Util::OptionParser
   class Base
-    def self.setup_command_options(opts, commands)
+    attr_reader :options
+    def self.setup_command_options(options, opts, commands)
       opts.on( *self.command_options ) do
-        commands << self.new()
+        commands << self.new(options)
       end
+    end
+
+    def initialize(options)
+       @options = options
     end
 
     def long_command_name
@@ -153,7 +158,7 @@ class Orc::Util::OptionParser
       end
 
       [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest].each do |req|
-        req.setup_command_options(opts, @commands)
+        req.setup_command_options(@options, opts, @commands)
       end
     end
   end
@@ -185,7 +190,10 @@ class Orc::Util::OptionParser
       print @option_parser.help()
       exit(1)
     end
+    self
+  end
 
+  def execute
     @commands.each do |command|
       command.execute(Orc::Factory.new(@options))
     end

@@ -40,8 +40,6 @@ class Client::DeployClient
   include MCollective::RPC
 
   def initialize(args)
-    @environment = args[:environment] or raise("Need environment")
-    @application = args[:application]
     @logger = args[:log] || ::Progress::Logger.new()
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200
@@ -54,10 +52,7 @@ class Client::DeployClient
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
   end
 
-  def status
-    spec = {}
-    spec[:environment] = @environment
-    spec[:application] = @application if @application
+  def status(spec={})
     instances=[]
 
     @mcollective_client.status(spec).each do |resp|

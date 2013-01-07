@@ -30,7 +30,7 @@ class Orc::Model::Application
 
   def create_live_model()
     groups = get_cmdb_groups()
-    statuses = @remote_client.status
+    statuses = @remote_client.status(:application => @application, :environment => @environment)
 
     instance_models = []
     statuses.each do |instance|

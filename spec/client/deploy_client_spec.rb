@@ -7,8 +7,7 @@ describe Client::DeployClient do
     mcollective_client.stub(:status).and_return(msg)
     mcollective_client.stub(:custom_request).and_return(msg)
     Client::DeployClient.new(
-      :mcollective_client=>mcollective_client,
-      :environment => 'foo'
+      :mcollective_client=>mcollective_client
     )
   end
 
