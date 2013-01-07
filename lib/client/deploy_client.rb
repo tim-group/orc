@@ -54,8 +54,10 @@ class Client::DeployClient
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
   end
 
-  def status(spec={})
+  def status
+    spec = {}
     spec[:environment] = @environment
+    spec[:application] = @application if @application
     instances=[]
 
     @mcollective_client.status(spec).each do |resp|

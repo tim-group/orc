@@ -25,7 +25,7 @@ class Orc::Factory
     @cmdb ||= CMDB::Yaml.new( :data_dir => config['cmdb_local_path'])
   end
 
-  def remote_client(options)
+  def remote_client
     @remote_client ||= Client::DeployClient.new(
       :environment => environment,
       :application => application
@@ -39,7 +39,7 @@ class Orc::Factory
     )
   end
 
-  def high_level_orchestration(options)
+  def high_level_orchestration
     return @high_level_orchestration if @high_level_orchestration
     options[:cmdb] = cmdb
     options[:git] = cmdb_git
@@ -47,7 +47,6 @@ class Orc::Factory
   end
 
   def engine
-    remote_client = remote_client
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
     logger = Progress.logger()
     app_model = Orc::Model::Application.new(

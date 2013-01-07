@@ -12,7 +12,7 @@ class Orc::Engine
 
   def execute_action(action)
     @resolution_steps.push action
-    action.check_valid(@resolution_steps) # FIXME - This throws if invalid, execute returns false if invalid?
+    action.check_valid(@application_model) # FIXME - This throws if invalid, execute returns false if invalid?
     if ! action.execute(@resolution_steps)
       raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
     end

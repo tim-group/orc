@@ -7,12 +7,12 @@ require 'orc/model/instance'
 class Orc::Model::Application
   attr_reader :instances
   def initialize(args)
-    @remote_client = args[:remote_client]
+    @remote_client = args[:remote_client] || raise('Nust pass :remote_client')
     @cmdb = args[:cmdb]
-    @environment = args[:environment] || raise('Must pass environment')
-    @application = args[:application] || raise('Must pass application')
-    @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass mismatch resolver')
-    @progress_logger = args[:progress_logger] || raise('Must pass progress_logger')
+    @environment = args[:environment] || raise('Must pass :environment')
+    @application = args[:application] || raise('Must pass :application')
+    @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
+    @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
     @debug = false
   end
@@ -30,7 +30,7 @@ class Orc::Model::Application
 
   def create_live_model()
     groups = get_cmdb_groups()
-    statuses = @remote_client.status(:environment=>@environment, :application=>@application)
+    statuses = @remote_client.status
 
     instance_models = []
     statuses.each do |instance|
@@ -72,9 +72,10 @@ class Orc::Model::Application
     useable_resolutions = incomplete_resolutions.reject { |resolution|
       reject = true
       begin
-        resolution.check_valid(instances)
+        resolution.check_valid(self)
         reject = false
-      rescue Exception
+      rescue Exception => e
+        #puts "Exception from #{resolution.to_s} was #{e}"
       end
       reject
     }
