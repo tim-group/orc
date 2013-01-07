@@ -40,10 +40,12 @@ class Orc::Factory
   end
 
   def high_level_orchestration
-    return @high_level_orchestration if @high_level_orchestration
-    options[:cmdb] = cmdb
-    options[:git] = cmdb_git
-    @high_level_orchestration = CMDB::HighLevelOrchrestration.new(options)
+    @high_level_orchestration||= CMDB::HighLevelOrchrestration.new(
+        :cmdb => cmdb,
+        :git => cmdb_git,
+        :environment => environment,
+        :application => application
+    )
   end
 
   def engine

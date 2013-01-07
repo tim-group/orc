@@ -2,10 +2,10 @@ require 'cmdb/namespace'
 
 class CMDB::HighLevelOrchrestration
   def initialize(args)
-    @cmdb = args[:cmdb]
-    @git = args[:git]
-    @environment = args[:environment]
-    @application = args[:application]
+    @cmdb = args[:cmdb] || raise('Need :cmdb')
+    @git = args[:git] || raise('Need :git')
+    @environment = args[:environment] || raise('Need :environment')
+    @application = args[:application] || raise('Need :application')
     @spec = {:environment => @environment, :application=>@application}
   end
 
