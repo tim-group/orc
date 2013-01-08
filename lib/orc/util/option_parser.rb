@@ -180,8 +180,12 @@ class Orc::Util::OptionParser
     end
   end
 
+  def argv
+    ARGV
+  end
+
   def parse
-    @option_parser.parse!
+    @option_parser.parse! argv
     @commands.each do |command|
       check_required(command)
     end
