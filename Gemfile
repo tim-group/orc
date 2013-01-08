@@ -6,6 +6,7 @@ source "http://rubygems.org"
 group :test do
   gem "rake"
   gem "rspec"
+  gen "rdoc"
   gem "ci_reporter"
   gem "stomp"
   gem "systemu"
