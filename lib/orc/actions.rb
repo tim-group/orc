@@ -9,7 +9,6 @@ module Orc::Action
       @instance = instance
       @remote_client = remote_client
       @timeout = timeout || default_timeout
-      @failed = false
     end
 
     def default_timeout
@@ -27,10 +26,6 @@ module Orc::Action
       false
     end
 
-    def failed?
-      @failed
-    end
-
     def key
       @instance.key
     end
@@ -44,11 +39,7 @@ module Orc::Action
     end
 
     def execute(all_actions)
-      status = do_execute(all_actions.clone) # clone to stop do_execute methods from being able to permute previous actions
-      if !status
-        @failed = true
-      end
-      status
+      do_execute(all_actions.clone) # clone to stop do_execute methods from being able to permute previous actions
     end
 
     def to_s

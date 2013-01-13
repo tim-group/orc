@@ -139,7 +139,6 @@ describe Orc::Model::Application do
     action.stub(:key).and_return('foo')
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
-    action.stub(:failed?).and_return(false)
     action.stub(:execute).and_return(true)
 
     mock_mismatch_resolver.stub(:resolve).with(@blue_instance).and_return(action,@resolution_complete)
@@ -171,8 +170,6 @@ describe Orc::Model::Application do
     enable_action.stub(:host).and_return("Somehost")
     disable_action.stub(:group_name).and_return("blue")
     enable_action.stub(:group_name).and_return("green")
-    disable_action.stub(:failed?).and_return(false)
-    enable_action.stub(:failed?).and_return(false)
     disable_action.stub(:execute).and_return(true)
     enable_action.stub(:execute).and_return(true)
 
@@ -200,7 +197,6 @@ describe Orc::Model::Application do
     action.stub(:key).and_return('foo')
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
-    action.stub(:failed?).and_return(false)
 
     mock_mismatch_resolver.stub(:resolve).with(anything).and_return(action)
 
@@ -231,7 +227,6 @@ describe Orc::Model::Application do
       action.stub(:complete?).and_return(false)
       action.stub(:key).and_return('foo')
       action.stub(:group_name).and_return("blue")
-      action.stub(:failed?).and_return(false)
     end
 
     model = get_mock_appmodel({:mismatch_resolver=>mock_mismatch_resolver})
@@ -251,7 +246,6 @@ describe Orc::Model::Application do
     action.stub(:complete?).and_return(false)
       action.stub(:key).and_return('foo')
       action.stub(:group_name).and_return("blue")
-      action.stub(:failed?).and_return(false)
 
     model = get_mock_appmodel({:mismatch_resolver=>mock_mismatch_resolver})
 
@@ -266,7 +260,6 @@ describe Orc::Model::Application do
     action.stub(:check_valid).with(anything)
     action.stub(:complete?).and_return(false)
     action.stub(:key).and_return({:group => 'green', :host => nil})
-    action.stub(:failed?).and_return(false)
     action.stub(:host).and_return("Somehost")
     action.stub(:group_name).and_return("blue")
     action.stub(:execute).and_return(true)
