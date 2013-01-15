@@ -26,7 +26,7 @@ describe Orc::Factory do
       end
 
       f = Orc::Factory.new()
-      data.keys.each { |k| expect(f.config[k]).to eq data[k] }
+      data.keys.each { |k| f.config[k].should eql( data[k] ) }
       ENV['HOME'] = home
     end
   end

@@ -15,7 +15,7 @@ describe Orc::Config do
 
   it 'can construct and read defaults' do
     c = Orc::Config.new('/tmp/does_not_exist.yaml')
-    expect(c.config).to eq({
+    c.config.should eql({
       'cmdb_repo_url' => 'git@git:cmdb',
       'cmdb_local_path' => '/opt/orctool/data/cmdb/',
     })
@@ -34,8 +34,8 @@ describe Orc::Config do
         end
 
         c = Orc::Config.new(fn)
-        expect(c['cmdb']).to eq data['cmdb']
-        expect(c['other']).to eq 'stuff'
+        c['cmdb'].should eql( data['cmdb'] )
+        c['other'].should eql( 'stuff' )
     end
   end
 
