@@ -98,22 +98,22 @@ describe Orc::Engine do
   end
 
   it 'can resolve when no actions needed' do
-    log = mocklog 
+    log = mocklog
     log.should_receive(:log_resolution_complete).at_least(:once)
     e = MockExecuteEngine.new(:application_model => mock_app_model([]), :log => log)
-    expect(e.resolve_one_step).to eq(true)
+    e.resolve_one_step.should eql(true)
   end
 
   it 'should execute an action' do
     e = MockExecuteEngine.new(:application_model => mock_app_model(['moo']), :log => mocklog)
-    expect(e.resolve_one_step).to eq(false)
-    expect(e.executed).to eq(['moo'])
+    e.resolve_one_step.should eql(false)
+    e.executed.should eql(['moo'])
   end
 
   it 'should execute first action' do
     e = MockExecuteEngine.new(:application_model => mock_app_model(['moo', 'foo']), :log => mocklog)
-    expect(e.resolve_one_step).to eq(false)
-    expect(e.executed).to eq(['moo'])
+    e.resolve_one_step.should eql(false)
+    e.executed.should eql(['moo'])
   end
 
 

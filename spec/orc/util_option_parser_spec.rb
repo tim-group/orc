@@ -43,14 +43,14 @@ describe Orc::Util::OptionParser do
     p = MockOptionParser.new(['-z', '--environment', 'foo', '--application', 'bar', '--version', '2.5' ])
     Orc::Util::OptionParser::TestOption.setup_command_options(p.options, p.option_parser, p.commands)
     p.parse
-    expect(p.options).to eq({:environment => 'foo', :application => 'bar', :version => '2.5'})
-    expect(p.commands.size).to eq(1)
+    p.options.should eql({:environment => 'foo', :application => 'bar', :version => '2.5'})
+    p.commands.size.should eql(1)
     command = p.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::TestOption')
-    expect(command.have_run).to eq(nil)
+    command.class.name.should eql('Orc::Util::OptionParser::TestOption')
+    command.have_run.should eql(nil)
     p.execute
-    expect(command.have_run).to eq(true)
-    expect(command.factory.class.name).to eq('Orc::Factory')
+    command.have_run.should eql(true)
+    command.factory.class.name.should eql('Orc::Factory')
   end
 
   # FIXME - We need tests for each set of command options
