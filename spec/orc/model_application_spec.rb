@@ -231,7 +231,7 @@ describe Orc::Model::Application do
 
     model = get_mock_appmodel({:mismatch_resolver=>mock_mismatch_resolver})
 
-    expect(model.get_resolutions).to eq([naction])
+    model.get_resolutions.should eql([naction])
   end
 
   it 'aborts if there are actions, but all actions are invalid' do

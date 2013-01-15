@@ -59,60 +59,60 @@ describe Orc::Util::OptionParser do
   it 'parses options from argv and passes them to option class constructor' do
     parser = MockOptionParser.new(['--environment', 'foo', '--application', 'bar', '-r']).parse
 
-    expect(parser.options).to eq({:environment => 'foo', :application => 'bar'})
-    expect(parser.commands.size).to eq(1)
+    parser.options.should eql({:environment => 'foo', :application => 'bar'})
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::ResolveRequest')
-    expect(command.options).to eq({:environment => 'foo', :application => 'bar'})
+    command.class.name.should eql('Orc::Util::OptionParser::ResolveRequest')
+    command.options.should eql({:environment => 'foo', :application => 'bar'})
   end
 
   it 'Works with just --pull-cmdb' do
     parser = MockOptionParser.new(['--pull-cmdb']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::PullCmdbRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::PullCmdbRequest')
   end
 
   it 'Works with just --show-status and --environment' do
     parser = MockOptionParser.new(['--show-status', '--environment', 'bar']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::StatusRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::StatusRequest')
   end
 
   it 'Works for DeployRequest' do
     parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::DeployRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::DeployRequest')
   end
 
   it 'Works for PromotionRequest' do
     parser = MockOptionParser.new(['-u', '--promote-from', 'baz', '--environment', 'bar', '--application', 'MyApp']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::PromotionRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::PromotionRequest')
   end
 
   it 'Works for InstallRequest' do
     parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::InstallRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::InstallRequest')
   end
 
   it 'Works for SwapRequest' do
     parser = MockOptionParser.new(['--swap', '--environment', 'bar', '--application', 'MyApp']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::SwapRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::SwapRequest')
   end
 
  it 'Works for DeployRequest' do
     parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
-    expect(parser.commands.size).to eq(1)
+    parser.commands.size.should eql(1)
     command = parser.commands[0]
-    expect(command.class.name).to eq('Orc::Util::OptionParser::DeployRequest')
+    command.class.name.should eql('Orc::Util::OptionParser::DeployRequest')
   end
 end
 
