@@ -126,6 +126,7 @@ task :docs do
   sh "git read-tree --prefix=gh-pages/ -u gh-pages"
   sh "cp -r html/* gh-pages/rdoc"
   sh "rm -r html"
+  sh "cat gh-pages/index.md.head README.md > gh-pages/index.md"
   sh "git add -f gh-pages"
   sh "tree=$(git write-tree --prefix=gh-pages/) && commit=$(echo \"Generated docs\" | git commit-tree $tree -p gh-pages) && git update-ref refs/heads/gh-pages $commit && git reset HEAD"
   sh "if [ -d html ]; then rm -r html; fi"
