@@ -14,22 +14,20 @@ It is written in ruby and currently uses MCollective as its transport for commun
 
 You can read more about how it's designed, and problems it's meant to solve in a series of blog posts on our company tech blog:
 
-  https://devblog.timgroup.com/2012/07/17/standardized-application-infrastructure-contracts/
-
-  https://devblog.timgroup.com/2012/09/03/standardized-application-infrastructure-contracts-part-2-towards-continuous-deployment/
-
-  https://devblog.timgroup.com/2012/12/20/introducing-orc-and-its-agents/
+  * [Standardized application infrastructure contracts](https://devblog.timgroup.com/2012/07/17/standardized-application-infrastructure-contracts/)
+  * [part 2 - towards continuous deployment](https://devblog.timgroup.com/2012/09/03/standardized-application-infrastructure-contracts-part-2-towards-continuous-deployment/)
+  * [Introducing Orc and it's agents](https://devblog.timgroup.com/2012/12/20/introducing-orc-and-its-agents/)
 
 Dependencies
 ------------
 
 It is expected to be used with the mcollective agent found here:
 
-  https://github.com/youdevise/deployapp
+  * https://github.com/youdevise/deployapp
 
 and the tatin service here:
 
-  https://github.com/netmelody/tatin
+  * https://github.com/netmelody/tatin
 
 Installation
 ------------
@@ -60,6 +58,8 @@ Deployapp
    * Fix artifact resolver to be pluggable (other backends, and other artifact types)
 
    * Fix application launcher to be pluggable (able to launch non-java apps)
+
+   * Make participation service pluggable, and implement other examples
 
    * Fix / cleanup configuration file parsing + defaults so that they're passed in properly from config.
 
