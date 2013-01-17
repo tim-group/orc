@@ -31,13 +31,35 @@ and the tatin service here:
 
   https://github.com/netmelody/tatin
 
+Installation
+------------
+
+FIXME - todo!
+
 Roadmap
 -------
 
-Merge transient state with live state when forming model, so that more intelligent decisions can be made (ie dont loop forever)
+Orc
+===
 
-Use health from WebApps to determine whether to enable participation (depends on above)
+  * Fix looping 100 times by failing fast if an instance doesn't start.
 
-Factor out WebApp as a type so that we can support databases
+  * Factor out WebApp as a type so that we can support database migrations
 
+  * Flatten with deployapp code so that the CLI is the same implementation as
+    Deployapp just with a remote engine, rather than the same logic re-implemented
+    for remote and local cases.
+
+Deployapp
+=========
+
+   * Fix to run on ruby 1.9.3
+
+   * Fix namespacing / installation (gem package?)
+
+   * Fix artifact resolver to be pluggable (other backends, and other artifact types)
+
+   * Fix application launcher to be pluggable (able to launch non-java apps)
+
+   * Fix / cleanup configuration file parsing + defaults so that they're passed in properly from config.
 
