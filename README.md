@@ -8,6 +8,17 @@ Orc is a model driven orchestration tool for the deployment of application clust
 
 It is written in ruby and currently uses MCollective as its transport for communication with its agents.
 
+You can read more about how it's designed, and problems it's meant to solve in a series of blog posts on our company tech blog:
+
+  https://devblog.timgroup.com/2012/07/17/standardized-application-infrastructure-contracts/
+
+  https://devblog.timgroup.com/2012/09/03/standardized-application-infrastructure-contracts-part-2-towards-continuous-deployment/
+
+  https://devblog.timgroup.com/2012/12/20/introducing-orc-and-its-agents/
+
+Dependencies
+------------
+
 It is expected to be used with the mcollective agent found here:
 
   https://github.com/youdevise/deployapp
