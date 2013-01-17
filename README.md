@@ -1,9 +1,6 @@
-Orc
-===
+  * Orc: [![Orc Build Status](https://travis-ci.org/youdevise/orc.png)](https://travis-ci.org/youdevise/orc)
 
-  * Orc Build Status: [![Orc Build Status](https://travis-ci.org/youdevise/orc.png)](https://travis-ci.org/youdevise/orc)
-
-  * Deployapp Build Status [![Deployapp Build Status](https://travis-ci.org/youdevise/deployapp.png)](https://travis-ci.org/youdevise/deployapp)
+  * Deployapp: [![Deployapp Build Status](https://travis-ci.org/youdevise/deployapp.png)](https://travis-ci.org/youdevise/deployapp)
 
 Description
 -----------
