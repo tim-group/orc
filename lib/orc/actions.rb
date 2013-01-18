@@ -1,9 +1,9 @@
 require 'orc/exceptions'
-require 'progress/log'
+require 'orc/progress'
 
 module Orc::Action
   class Base
-    include Progress
+    include Orc::Progress
     attr_reader :instance
     def initialize(remote_client, instance, timeout=nil)
       @instance = instance

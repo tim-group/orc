@@ -64,7 +64,7 @@ describe Orc::Model::Application do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return([])
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(nil)
 
-    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Orc::Progress.logger(), :mismatch_resolver => double())
 
     expect {
       live_model = live_model_creator.create_live_model()
@@ -87,7 +87,7 @@ describe Orc::Model::Application do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Orc::Progress.logger(), :mismatch_resolver => double())
 
     instances = live_model_creator.create_live_model()
 
@@ -113,7 +113,7 @@ describe Orc::Model::Application do
     @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
     @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
 
-    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Progress.logger(), :mismatch_resolver => double())
+    live_model_creator = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Orc::Progress.logger(), :mismatch_resolver => double())
 
     expect {live_model_creator.create_live_model()}.to raise_error(Orc::Exception::GroupMissing)
   end

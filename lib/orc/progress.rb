@@ -1,10 +1,12 @@
-module Progress
+require 'orc/namespace'
+
+module Orc::Progress
   def self.logger
-    return Progress::Logger.new()
+    return Orc::Progress::Logger.new()
   end
 
   def logger
-    return Progress::Logger.new()
+    return Orc::Progress::Logger.new()
   end
 
   class Logger
@@ -32,3 +34,4 @@ module Progress
     end
   end
 end
+

@@ -1,6 +1,6 @@
 require 'mcollective'
 require 'client/namespace'
-require 'progress/log'
+require 'orc/progress'
 require 'pp'
 
 class MCollective::RPC::DeploytoolWrapper
@@ -40,7 +40,7 @@ class Client::DeployClient
   include MCollective::RPC
 
   def initialize(args)
-    @logger = args[:log] || ::Progress::Logger.new()
+    @logger = args[:log] || ::Orc::Progress::Logger.new()
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200
 

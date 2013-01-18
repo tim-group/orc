@@ -3,7 +3,6 @@ $: << File.join(File.dirname(__FILE__), "..", "../test")
 
 require 'rubygems'
 require 'rspec'
-require 'progress/log'
 require 'orc/engine'
 
 class Orc::Engine

@@ -7,7 +7,7 @@ require 'client/deploy_client'
 require 'cmdb/yaml'
 require 'cmdb/git'
 require 'cmdb/high_level_orchestration'
-require 'progress/log'
+require 'orc/progress'
 
 class Orc::Factory
   attr_reader :application, :environment
@@ -50,7 +50,7 @@ class Orc::Factory
 
   def engine
     mismatch_resolver = Orc::MismatchResolver.new(remote_client)
-    logger = Progress.logger()
+    logger = Orc::Progress.logger()
     app_model = Orc::Model::Application.new(
       :remote_client      => remote_client,
       :cmdb               => cmdb,
