@@ -51,10 +51,17 @@ module Orc::Action
 
   class UpdateVersionAction < Base
     def do_execute(all_actions)
-      logger.log_action "deploying #{@instance.host} #{@instance.group.name} to version #{@instance.group.target_version}"
+      first_action = all_actions.pop
+      while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name && all_actions[-1].key == self.key do
+        first_action = all_actions.pop
+      end
+      if self != first_action
+        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction re-run on same instance multiple times - instance failing to start.")
+      end
+      logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version #{@instance.group.target_version}"
 
       @remote_client.update_to_version({
-          :group=>@instance.group.name,
+          :group=>@instance.group_name,
         }, [@instance.host], @instance.group.target_version
       )
 
