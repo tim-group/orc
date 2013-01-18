@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'rspec'
-require 'cmdb/high_level_orchestration'
+require 'orc/cmdb/high_level_orchestration'
 
-describe CMDB::HighLevelOrchrestration do
+describe Orc::CMDB::HighLevelOrchrestration do
   before do
     @cmdb = double()
     @git = double()
@@ -18,7 +18,7 @@ describe CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -53,7 +53,7 @@ describe CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -88,7 +88,7 @@ describe CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -118,7 +118,7 @@ describe CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -139,7 +139,7 @@ describe CMDB::HighLevelOrchrestration do
   end
 
   it 'promotes an application from one environment to another' do
-    high_level_orcestration = CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"env2",

@@ -1,9 +1,9 @@
-require 'cmdb/namespace'
+require 'orc/cmdb/namespace'
 require 'git'
 require 'logger'
 require 'orc/util/timeout'
 
-class CMDB::Git
+class Orc::CMDB::Git
   include Orc::Util::Timeout
   def initialize(options={})
     @repo_url = options[:origin] || raise("Need origin option")

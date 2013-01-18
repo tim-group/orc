@@ -1,9 +1,10 @@
 require 'rubygems'
 require 'rspec'
-require 'cmdb/git'
+require 'orc/cmdb/git'
 require 'tmpdir'
 require 'git'
-describe CMDB::Git do
+
+describe Orc::CMDB::Git do
   def local_git
     #Git.open(@local, :log => Logger.new(STDOUT))
     Git.open(@local, :log => nil)
@@ -28,13 +29,13 @@ describe CMDB::Git do
   end
 
   it 'pulls or clones the cmdb' do
-    gitcmdb = CMDB::Git.new(:local_path=>@local, :origin=>@origin)
+    gitcmdb = Orc::CMDB::Git.new(:local_path=>@local, :origin=>@origin)
     gitcmdb.update()
     gitcmdb.get_branch().should eql("master")
   end
 
   it 'try to commit to a repo without updating it will fail' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
@@ -44,7 +45,7 @@ end
 
   it 'can clone a specific branch' do
     branch_name = "mybranch"
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin,
       :branch=> branch_name
@@ -54,7 +55,7 @@ end
   end
 
   it 'pushes changes back to the origin' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
@@ -66,7 +67,7 @@ end
 
     gitcmdb.commit_and_push
 
-    gitcmdb2 = CMDB::Git.new(
+    gitcmdb2 = Orc::CMDB::Git.new(
       :local_path=> @second_copy_of_local,
       :origin=> @origin
     )
@@ -76,12 +77,12 @@ end
   end
 
   it 'correctly merges changes when the current repo has fast-forward commits' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
     gitcmdb.update()
-    gitcmdb2 = CMDB::Git.new(
+    gitcmdb2 = Orc::CMDB::Git.new(
       :local_path=> @second_copy_of_local,
       :origin=> @origin
     )
@@ -98,7 +99,7 @@ end
   end
 
   it 'doesnt break if we commit the same tree twice' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
@@ -121,7 +122,7 @@ end
   end
 
   it 'doesnt merge if history is linear' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
@@ -149,7 +150,7 @@ end
 
 
  it 'doesnt break if we commit the same tree twice' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )
@@ -176,7 +177,7 @@ end
   end
 
   it 'can clone and then update' do
-    gitcmdb = CMDB::Git.new(
+    gitcmdb = Orc::CMDB::Git.new(
       :local_path=> @local,
       :origin=> @origin
     )

@@ -4,9 +4,9 @@ require 'orc/model/application'
 require 'orc/engine'
 require 'orc/mismatch_resolver'
 require 'client/deploy_client'
-require 'cmdb/yaml'
-require 'cmdb/git'
-require 'cmdb/high_level_orchestration'
+require 'orc/cmdb/yaml'
+require 'orc/cmdb/git'
+require 'orc/cmdb/high_level_orchestration'
 require 'orc/progress'
 
 class Orc::Factory

@@ -1,8 +1,8 @@
-require 'cmdb/namespace'
+require 'orc/cmdb/namespace'
 require 'pathname'
 require 'yaml'
 
-class CMDB::Yaml
+class Orc::CMDB::Yaml
   def initialize(args)
     @data_dir = args[:data_dir]
     if !Pathname.new(@data_dir).exist?

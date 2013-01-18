@@ -1,6 +1,6 @@
-require 'cmdb/namespace'
+require 'orc/cmdb/namespace'
 
-class CMDB::HighLevelOrchrestration
+class Orc::CMDB::HighLevelOrchrestration
   def initialize(args)
     @cmdb = args[:cmdb] || raise('Need :cmdb')
     @git = args[:git] || raise('Need :git')
@@ -41,7 +41,7 @@ class CMDB::HighLevelOrchrestration
       :application=>@spec[:application]
     }
 
-    upstream_highlevel_orc = CMDB::HighLevelOrchrestration.new(
+    upstream_highlevel_orc = Orc::CMDB::HighLevelOrchrestration.new(
       :cmdb=>@cmdb,
       :git=>@git,
       :environment=>from_spec[:environment],

@@ -1,5 +1,5 @@
 require 'orc/exceptions'
-require 'cmdb/namespace'
+require 'orc/cmdb/namespace'
 require 'orc/actions'
 require 'orc/model/group'
 require 'orc/model/instance'
@@ -20,7 +20,7 @@ class Orc::Model::Application
   def get_cmdb_groups
     return @groups unless @groups.nil?
     cmdb_model_for_app = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
-    raise CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
+    raise Orc::CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
     @groups = {}
     cmdb_model_for_app.each do |group|
       @groups[group[:name]] = Orc::Model::Group.new(group)

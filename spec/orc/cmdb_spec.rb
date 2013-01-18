@@ -1,9 +1,9 @@
 require 'rubygems'
 require 'rspec'
-require 'cmdb/yaml'
+require 'orc/cmdb/yaml'
 require 'yaml'
 
-describe CMDB::Yaml do
+describe Orc::CMDB::Yaml do
   before do
     # write out cmdb
     #    File.open( 'README' )
@@ -21,7 +21,7 @@ describe CMDB::Yaml do
   end
 
   it 'retrieves list of groups, with target versions and target_participation' do
-    cmdb =  CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment=>"cmdb_test", :application=>"testx")
     group_static_models.size().should eql(2)
 
@@ -35,14 +35,14 @@ describe CMDB::Yaml do
   end
 
   it 'saves list of groups, with target_version and participation to a new yaml file' do
-    cmdb =  CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment=>"cmdb_test", :application=>"testx")
     group_static_models[1][:target_version]="77"
     group_static_models[1][:target_participation]=false
 
     rand = (rand()*1000).ceil
 
-    cmdb =  CMDB::Yaml.new(:data_dir=>"build/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"build/")
     cmdb.save_application({:environment=>"cmdb_test_#{rand}",:application=>"testx"}, group_static_models)
     group_static_models_again = cmdb.retrieve_application(:environment=>"cmdb_test_#{rand}", :application=>"testx")
 
@@ -100,7 +100,7 @@ describe CMDB::Yaml do
       f.write( yaml_content["testbob"].to_yaml )
     end
 
-    cmdb =  CMDB::Yaml.new(:data_dir=>"build/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"build/")
     cmdb.save_application({:environment=>"cmdb_test_#{rand}",:application=>"testx"}, group_static_models)
 
     group_static_models_again = cmdb.retrieve_application(:environment=>"cmdb_test_#{rand}", :application=>"testx")
