@@ -1,5 +1,5 @@
 require 'mcollective'
-require 'client/namespace'
+require 'orc/namespace'
 require 'orc/progress'
 require 'pp'
 
@@ -36,7 +36,7 @@ class MCollective::RPC::DeploytoolWrapper
   end
 end
 
-class Client::DeployClient
+class Orc::DeployClient
   include MCollective::RPC
 
   def initialize(args)
@@ -118,3 +118,4 @@ class Client::DeployClient
   end
 
 end
+

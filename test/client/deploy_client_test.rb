@@ -1,7 +1,7 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 
 require 'test/unit'
-require 'client/deploy_client'
+require 'orc/deploy_client'
 require 'etc'
 
 

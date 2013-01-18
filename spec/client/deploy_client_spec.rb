@@ -1,12 +1,12 @@
 
-require 'client/deploy_client'
+require 'orc/deploy_client'
 
-describe Client::DeployClient do
+describe Orc::DeployClient do
   def get_client(msg)
     mcollective_client = double()
     mcollective_client.stub(:status).and_return(msg)
     mcollective_client.stub(:custom_request).and_return(msg)
-    Client::DeployClient.new(
+    Orc::DeployClient.new(
       :mcollective_client=>mcollective_client
     )
   end

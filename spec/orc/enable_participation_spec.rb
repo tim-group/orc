@@ -6,12 +6,12 @@ require 'rspec'
 require 'orc/actions'
 require 'orc/model/instance'
 require 'orc/model/group'
-require 'client/deploy_client'
+require 'orc/deploy_client'
 
 describe Orc::Action::EnableParticipationAction do
 
   before do
-    @remote_client = double(Client::DeployClient)
+    @remote_client = double(Orc::DeployClient)
   end
 
   it 'sends an update message to the given host' do

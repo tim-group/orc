@@ -3,7 +3,7 @@ require 'orc/namespace'
 require 'orc/factory'
 require 'optparse'
 require 'orc/cmdb/git'
-require 'client/deploy_client'
+require 'orc/deploy_client'
 require 'orc/ansi_status_renderer'
 require 'etc'
 
