@@ -4,7 +4,7 @@ require 'orc/factory'
 require 'optparse'
 require 'cmdb/git'
 require 'client/deploy_client'
-require 'client/ansi_status_renderer'
+require 'orc/ansi_status_renderer'
 require 'etc'
 
 user = ENV['USER']

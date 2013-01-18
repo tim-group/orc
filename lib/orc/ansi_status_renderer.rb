@@ -1,4 +1,4 @@
-class AnsiStatusRenderer
+class Orc::AnsiStatusRenderer
   def render(statuses)
     buffer =""
     keys = [:host,:application,:group,:present,:version,:participating,:health]
@@ -40,32 +40,33 @@ class AnsiStatusRenderer
 
     return buffer
   end
-end
 
-class Color
-  def initialize args
-    @text=args[:text]
-    @colors= {"blue"=>34,"green"=>32}
-  end
-
-  def color color
-    @text="\e[1;#{@colors[color]}m#{@text}"
-    return self
-  end
-
-  def highlight highlight
-    if (highlight)
-      @text="\e[1;40m#{@text}"
+  class Color
+    def initialize args
+      @text=args[:text]
+      @colors= {"blue"=>34,"green"=>32}
     end
-    return self
-  end
 
-  def header
-    @text="\e[1;45m#{@text}"
-    return self
-  end
+    def color color
+      @text="\e[1;#{@colors[color]}m#{@text}"
+      return self
+    end
 
-  def display
-    return "#{@text}\e[0m\n"
+    def highlight highlight
+      if (highlight)
+        @text="\e[1;40m#{@text}"
+      end
+      return self
+    end
+
+    def header
+      @text="\e[1;45m#{@text}"
+      return self
+    end
+
+    def display
+      return "#{@text}\e[0m\n"
+    end
   end
 end
+
