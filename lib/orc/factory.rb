@@ -26,7 +26,7 @@ class Orc::Factory
   end
 
   def remote_client
-    @remote_client ||= Client::DeployClient.new(
+    @remote_client ||= Orc::DeployClient.new(
       :environment => environment,
       :application => application
     )

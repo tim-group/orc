@@ -50,7 +50,7 @@ class Orc::Util::OptionParser
 
     def execute(factory)
       deploy_client = factory.remote_client
-      renderer = AnsiStatusRenderer.new()
+      renderer = Orc::AnsiStatusRenderer.new()
       statuses = deploy_client.status
       rendered_status = renderer.render(statuses)
       print rendered_status
