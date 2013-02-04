@@ -33,7 +33,7 @@ class Orc::Factory
   end
 
   def cmdb_git
-    @cmdb_git ||= CMDB::Git.new(
+    @cmdb_git ||= Orc::CMDB::Git.new(
       :origin     => config['cmdb_repo_url'],
       :local_path => config['cmdb_local_path']
     )
