@@ -123,6 +123,7 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
+      factory.cmdb_git.update
       factory.engine.resolve()
     end
 
