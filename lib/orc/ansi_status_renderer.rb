@@ -30,8 +30,9 @@ class Orc::AnsiStatusRenderer
       present = status[:present]
       status_buffer = ""
       keys.each do |key|
-        status_buffer << "#{status[key]}"
-        rem = lengths[key] - status[key].to_s.length + 1
+        value = status[key].nil? ? nil.to_s : status[key].to_s.downcase
+        status_buffer << "#{value}"
+        rem = lengths[key] - value.length + 1
         (1..rem).to_a.each { |x| status_buffer << " "}
       end
       status_buffer << "\n "
