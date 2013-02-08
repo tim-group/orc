@@ -11,10 +11,10 @@ class MCollective::RPC::DeploytoolWrapper
     @options = options
   end
 
-  def status(spec)
+  def status(spec) 
+    spec[:environment] = @environment if spec[:environment].nil?
     get_client.status( :spec => spec )
   end
-
 
   def custom_request(action,request,hosts,identity_hash)
     get_client.custom_request(action, request, hosts, identity_hash)
@@ -44,6 +44,7 @@ class Orc::DeployClient
     @options =  MCollective::Util.default_options
     @options[:timeout] = 200
 
+    @environment = args[:environment]
     if args[:config]!=nil
       @options[:config] = args[:config]
     end
