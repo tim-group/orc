@@ -57,6 +57,8 @@ class Orc::DeployClient
   def status(spec={})
     instances=[]
 
+    spec[:application] = @application if !@application.nil?
+
     @mcollective_client.status(spec).each do |resp|
       data  = resp[:data]
 
