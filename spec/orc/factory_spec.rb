@@ -28,6 +28,11 @@ describe Orc::Factory do
       f = Orc::Factory.new()
       data.keys.each { |k| f.config[k].should eql( data[k] ) }
       ENV['HOME'] = home
+
+      # Test factory methods work and don't throw exceptions
+      f.cmdb
+      f.remote_client
+      f.cmdb_git
     end
   end
 end
