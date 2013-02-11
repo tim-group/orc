@@ -45,7 +45,7 @@ class Orc::DeployClient
     @options[:timeout] = 200
 
     @environment = args[:environment]
-    @application = args[:environment]
+    @application = args[:application]
     if args[:config]!=nil
       @options[:config] = args[:config]
     end
