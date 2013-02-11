@@ -25,7 +25,10 @@ describe Orc::Factory do
         f.write data.to_yaml
       end
 
-      f = Orc::Factory.new()
+      f = Orc::Factory.new(
+        :environment => 'latest',
+        :application => 'testapp'
+      )
       data.keys.each { |k| f.config[k].should eql( data[k] ) }
       ENV['HOME'] = home
 
