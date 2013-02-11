@@ -11,7 +11,7 @@ class MCollective::RPC::DeploytoolWrapper
     @options = options
   end
 
-  def status(spec) 
+  def status(spec)
     spec[:environment] = @environment if spec[:environment].nil?
     get_client.status( :spec => spec )
   end
@@ -45,6 +45,7 @@ class Orc::DeployClient
     @options[:timeout] = 200
 
     @environment = args[:environment]
+    @application = args[:environment]
     if args[:config]!=nil
       @options[:config] = args[:config]
     end
