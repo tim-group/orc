@@ -33,6 +33,7 @@ describe Orc::Factory do
       f.cmdb
       f.remote_client
       f.cmdb_git
+      f.high_level_orchestration
     end
   end
 end
