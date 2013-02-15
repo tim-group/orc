@@ -40,11 +40,11 @@ class Orc::CMDB::Git
     return @git.current_branch
   end
 
-  def commit_and_push()
+  def commit_and_push(message='orc auto-updating cmdb')
     if File.directory?(@local_path)
       if (@git.status.changed.size>0)
         timeout(@timeout) do
-          @git.commit_all('orc auto-updating cmdb')
+          @git.commit_all(message)
           @git.fetch( 'origin' )
           @git.merge('origin', 'merge concurrent modifications')
           @git.push()
@@ -55,4 +55,3 @@ class Orc::CMDB::Git
     end
   end
 end
-

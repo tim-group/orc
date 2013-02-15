@@ -14,7 +14,7 @@ class Orc::CMDB::HighLevelOrchrestration
     groups = @cmdb.retrieve_application(@spec)
     _install(groups,version)
     @cmdb.save_application(@spec, groups)
-    @git.commit_and_push()
+    @git.commit_and_push("#{@application} #{@environment}: installing #{version}")
   end
 
   def swap()
@@ -22,7 +22,7 @@ class Orc::CMDB::HighLevelOrchrestration
     groups = @cmdb.retrieve_application(@spec)
     _swap(groups)
     @cmdb.save_application(@spec, groups)
-    @git.commit_and_push()
+    @git.commit_and_push("#{@application} #{@environment}: swapping groups")
   end
 
   def deploy(version)
@@ -31,7 +31,7 @@ class Orc::CMDB::HighLevelOrchrestration
     _install(groups,version)
     _swap(groups)
     @cmdb.save_application(@spec, groups)
-    @git.commit_and_push()
+    @git.commit_and_push("#{@application} #{@environment}: deploying #{version}")
   end
 
   def promote_from_environment(upstream_environment)
