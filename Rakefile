@@ -97,6 +97,7 @@ Rake::TestTask.new { |t|
   t.pattern = 'test/**/*_test.rb'
 }
 
+task :spec => [:test]
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
   t.rspec_opts = %w[--color]
