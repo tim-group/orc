@@ -92,12 +92,6 @@ task :package do
   raise "problem creating debian package " unless FPM::Program.new.run(arguments)==0
 end
 
-task :test => [:setup]
-Rake::TestTask.new { |t|
-  t.pattern = 'test/**/*_test.rb'
-}
-
-task :spec => [:test]
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
   t.rspec_opts = %w[--color]
@@ -111,7 +105,7 @@ RSpec::Core::RakeTask.new(:coverage) do |t|
 end
 
 desc "Setup, package, test, and upload"
-task :build  => [:setup,:package,:test]
+task :build  => [:setup,:spec,:package]
 
 task :pre_doc do
   sh "if [ -d html ]; then rm -r html; fi"

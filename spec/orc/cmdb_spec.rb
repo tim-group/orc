@@ -21,7 +21,7 @@ describe Orc::CMDB::Yaml do
   end
 
   it 'retrieves list of groups, with target versions and target_participation' do
-    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"spec/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment=>"cmdb_test", :application=>"testx")
     group_static_models.size().should eql(2)
 
@@ -35,7 +35,7 @@ describe Orc::CMDB::Yaml do
   end
 
   it 'saves list of groups, with target_version and participation to a new yaml file' do
-    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"test/fixtures/cmdb/")
+    cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"spec/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment=>"cmdb_test", :application=>"testx")
     group_static_models[1][:target_version]="77"
     group_static_models[1][:target_participation]=false
