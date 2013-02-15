@@ -24,9 +24,9 @@ class Orc::CMDB::Yaml
     if !dir.exist?
         Dir.mkdir dir
     end
-    File.open( filename, "w" ) do |f|
+    File.open(filename, "w") do |f|
       flattened = groups.map { |el| Hash[el.map{|(k,v)| [k.to_s,v]}] }
-      f.write( flattened.to_yaml )
+      f.write(flattened.to_yaml)
     end
   end
 end

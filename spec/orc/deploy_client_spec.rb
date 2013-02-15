@@ -63,4 +63,3 @@ describe Orc::DeployClient do
   end
 
 end
-

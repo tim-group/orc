@@ -61,7 +61,7 @@ describe Orc::Engine do
    end
 
    it 'is ok if < 100 steps but then good' do
-     e = MockStepEngine.new(:application_model => "x", :log => mocklog )
+     e = MockStepEngine.new(:application_model => "x", :log => mocklog)
      steps = []
      [1..90].each { steps.push(false) }
      steps.push(true)
@@ -115,6 +115,4 @@ describe Orc::Engine do
     e.executed.should eql(['moo'])
   end
 
-
 end
-

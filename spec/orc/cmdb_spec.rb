@@ -6,7 +6,7 @@ require 'yaml'
 describe Orc::CMDB::Yaml do
   before do
     # write out cmdb
-    #    File.open( 'README' )
+    #    File.open('README')
     readme = YAML::load("
 -
   name: blue
@@ -93,11 +93,11 @@ describe Orc::CMDB::Yaml do
     if !Pathname.new(testdir).exist?
       Dir.mkdir testdir
     end
-    File.open( "#{testdir}/testfred.yaml", "w" ) do |f|
-      f.write( yaml_content["testfred"].to_yaml )
+    File.open("#{testdir}/testfred.yaml", "w") do |f|
+      f.write(yaml_content["testfred"].to_yaml)
     end
-    File.open( "#{testdir}/testbob.yaml", "w" ) do |f|
-      f.write( yaml_content["testbob"].to_yaml )
+    File.open("#{testdir}/testbob.yaml", "w") do |f|
+      f.write(yaml_content["testbob"].to_yaml)
     end
 
     cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"build/")
@@ -112,4 +112,3 @@ describe Orc::CMDB::Yaml do
     group_static_models_again[1][:target_participation].should eql(false)
   end
 end
-

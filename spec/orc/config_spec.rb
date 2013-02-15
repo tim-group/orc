@@ -34,10 +34,9 @@ describe Orc::Config do
         end
 
         c = Orc::Config.new(fn)
-        c['cmdb'].should eql( data['cmdb'] )
-        c['other'].should eql( 'stuff' )
+        c['cmdb'].should eql(data['cmdb'])
+        c['other'].should eql('stuff')
     end
   end
 
 end
-

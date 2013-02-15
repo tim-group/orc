@@ -15,7 +15,7 @@ class Orc::Util::OptionParser
   class Base
     attr_reader :options
     def self.setup_command_options(options, opts, commands)
-      opts.on( *self.command_options ) do
+      opts.on(*self.command_options) do
         commands << self.new(options)
       end
     end

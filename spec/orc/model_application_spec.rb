@@ -272,4 +272,3 @@ describe Orc::Model::Application do
   end
 
 end
-

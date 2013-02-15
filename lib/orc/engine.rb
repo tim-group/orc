@@ -41,7 +41,7 @@ class Orc::Engine
   def resolve()
      @loop_count = 0
      finished = false
-     while( not finished ) do
+     while(not finished) do
        finished = resolve_one_step
 
        @loop_count += 1
@@ -51,4 +51,3 @@ class Orc::Engine
      end
    end
 end
-

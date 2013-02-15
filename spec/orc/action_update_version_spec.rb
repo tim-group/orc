@@ -21,7 +21,7 @@ describe Orc::Action::UpdateVersionAction do
     },group)
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
-    @remote_client.should_receive(:update_to_version).with( {:group=>"blue"}, ["host1"], "16")
+    @remote_client.should_receive(:update_to_version).with({:group=>"blue"}, ["host1"], "16")
     update_version_action.execute([update_version_action])
   end
 
@@ -56,4 +56,3 @@ describe Orc::Action::UpdateVersionAction do
     expect { second.do_execute([first, second]) }.to raise_error(Orc::Exception::FailedToResolve)
   end
 end
-

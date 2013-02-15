@@ -93,4 +93,3 @@ class Orc::MismatchResolver
     ).call(instance)
   end
 end
-

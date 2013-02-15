@@ -162,4 +162,3 @@ module Orc::Action
     end
   end
 end
-

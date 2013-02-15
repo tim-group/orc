@@ -13,7 +13,7 @@ class MCollective::RPC::DeploytoolWrapper
 
   def status(spec)
     spec[:environment] = @environment if spec[:environment].nil?
-    get_client.status( :spec => spec )
+    get_client.status(:spec => spec)
   end
 
   def custom_request(action,request,hosts,identity_hash)
@@ -24,10 +24,10 @@ class MCollective::RPC::DeploytoolWrapper
 
   def get_client
     begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
-      mc = rpcclient( "deployapp", { :options => @options })
+      mc = rpcclient("deployapp", { :options => @options })
       mc.discover :verbose => false
     rescue
-      mc = rpcclient( "deployapp", { :options => @options })
+      mc = rpcclient("deployapp", { :options => @options })
       mc.discover :verbose => false
     end
     mc.progress = false
@@ -122,4 +122,3 @@ class Orc::DeployClient
   end
 
 end
-

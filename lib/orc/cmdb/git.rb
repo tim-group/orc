@@ -19,7 +19,7 @@ class Orc::CMDB::Git
       timeout(@timeout) do
         @git = Git.open(@local_path, :log => logger)
         @git.remotes.first.fetch
-        @git.fetch( 'origin' )
+        @git.fetch('origin')
         @git.merge('origin', 'merge concurrent modifications')
         @git.pull
       end
@@ -31,7 +31,7 @@ class Orc::CMDB::Git
 
     if self.get_branch() != @branch
       timeout(@timeout) do
-        @git.branch( @branch ).checkout
+        @git.branch(@branch).checkout
       end
     end
   end
@@ -45,7 +45,7 @@ class Orc::CMDB::Git
       if (@git.status.changed.size>0)
         timeout(@timeout) do
           @git.commit_all(message)
-          @git.fetch( 'origin' )
+          @git.fetch('origin')
           @git.merge('origin', 'merge concurrent modifications')
           @git.push()
         end

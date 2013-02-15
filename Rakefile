@@ -55,16 +55,16 @@ task :gemdeb => [:gem]
 
 desc "Remove build directory, etc."
 task :clean do
-  FileUtils.rmtree( "build"  )
-  FileUtils.rmtree( "config" )
-  if ( File.exists?("app_under_test.properties") )
-    FileUtils.rm( "app_under_test.properties" )
+  FileUtils.rmtree("build" )
+  FileUtils.rmtree("config")
+  if (File.exists?("app_under_test.properties"))
+    FileUtils.rm("app_under_test.properties")
   end
 end
 
 desc "Make build directories"
 task :setup do
-  FileUtils.makedirs( "build" )
+  FileUtils.makedirs("build")
 end
 
 desc "Create Debian package"
@@ -72,9 +72,9 @@ task :package do
   require 'fpm'
   require 'fpm/program'
 
-  FileUtils.mkdir_p( "build/package/opt/orctool/" )
-  FileUtils.cp_r( "lib", "build/package/opt/orctool/" )
-  FileUtils.cp_r( "bin", "build/package/opt/orctool/" )
+  FileUtils.mkdir_p("build/package/opt/orctool/")
+  FileUtils.cp_r("lib", "build/package/opt/orctool/")
+  FileUtils.cp_r("bin", "build/package/opt/orctool/")
 
   arguments = [
     "-p", "build/#{@project.name}.deb" ,
@@ -128,4 +128,3 @@ task :docs do
   sh "if [ -d gh-pages ]; then rm -r gh-pages; fi"
 end
 task :docs => [:pre_doc, :rdoc]
-

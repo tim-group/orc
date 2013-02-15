@@ -11,7 +11,7 @@ describe Orc::CMDB::Git do
   end
 
   before do
-    @tempdir = Dir.mktmpdir( nil, "/tmp" )
+    @tempdir = Dir.mktmpdir(nil, "/tmp")
     @origin = "#{@tempdir}/cmdb_origin"
     @repo = Git.init(@origin)
     FileUtils.touch("#{@origin}/file")
@@ -25,7 +25,7 @@ describe Orc::CMDB::Git do
   end
 
   after do
-   FileUtils.remove_dir( @tempdir )
+   FileUtils.remove_dir(@tempdir)
   end
 
   it 'pulls or clones the cmdb' do
@@ -116,9 +116,9 @@ end
 
     g = local_git
     commits = g.log
-    commits.size.should eql( 2 )
-    commits.to_a[0].parents.size.should eql( 1 )
-    commits.to_a[1].parents.size.should eql( 0 )
+    commits.size.should eql(2)
+    commits.to_a[0].parents.size.should eql(1)
+    commits.to_a[1].parents.size.should eql(0)
   end
 
   it 'doesnt merge if history is linear' do
@@ -142,10 +142,10 @@ end
 
     g = local_git
     commits = g.log
-    commits.size.should eql( 3 )
-    commits.to_a[0].parents.size.should eql( 1 )
-    commits.to_a[1].parents.size.should eql( 1 )
-    commits.to_a[2].parents.size.should eql( 0 )
+    commits.size.should eql(3)
+    commits.to_a[0].parents.size.should eql(1)
+    commits.to_a[1].parents.size.should eql(1)
+    commits.to_a[2].parents.size.should eql(0)
   end
 
 
@@ -170,10 +170,10 @@ end
 
     g = local_git
     commits = g.log
-    commits.size.should eql( 3 )
-    commits.to_a[0].parents.size.should eql( 1 )
-    commits.to_a[1].parents.size.should eql( 1 )
-    commits.to_a[2].parents.size.should eql( 0 )
+    commits.size.should eql(3)
+    commits.to_a[0].parents.size.should eql(1)
+    commits.to_a[1].parents.size.should eql(1)
+    commits.to_a[2].parents.size.should eql(0)
   end
 
   it 'can clone and then update' do
@@ -188,4 +188,3 @@ end
   end
 
 end
-

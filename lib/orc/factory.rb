@@ -22,7 +22,7 @@ class Orc::Factory
     @config ||= Orc::Config.new(config_location)
   end
   def cmdb
-    @cmdb ||= Orc::CMDB::Yaml.new( :data_dir => config['cmdb_local_path'])
+    @cmdb ||= Orc::CMDB::Yaml.new(:data_dir => config['cmdb_local_path'])
   end
 
   def remote_client
@@ -66,4 +66,3 @@ class Orc::Factory
     )
   end
 end
-

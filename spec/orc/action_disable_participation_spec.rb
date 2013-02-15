@@ -21,7 +21,7 @@ describe Orc::Action::DisableParticipationAction do
     },group)
 
     update_version_action = Orc::Action::DisableParticipationAction.new(@remote_client, instance_model,0)
-    @remote_client.should_receive(:disable_participation).with( {:group=>"blue"}, ["host1"])
+    @remote_client.should_receive(:disable_participation).with({:group=>"blue"}, ["host1"])
     update_version_action.execute([])
 
     update_version_action.to_s.should eql('DisableParticipationAction: on host1 blue')
