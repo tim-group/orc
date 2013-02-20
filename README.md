@@ -15,6 +15,8 @@ You can read more about how it's designed, and problems it's meant to solve in a
   * [part 2 - towards continuous deployment](https://devblog.timgroup.com/2012/09/03/standardized-application-infrastructure-contracts-part-2-towards-continuous-deployment/)
   * [Introducing Orc and it's agents](https://devblog.timgroup.com/2012/12/20/introducing-orc-and-its-agents/)
 
+We've also start moving our official deployment contract into the project. [It's a work in progress](http://youdevise.github.com/orc/contract.html)
+
 Dependencies
 ------------
 
