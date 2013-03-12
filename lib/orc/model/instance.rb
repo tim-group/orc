@@ -31,6 +31,14 @@ class Orc::Model::Instance
     @healthy
   end
 
+  def participating?
+    return participation
+  end
+
+  def is_in_pool?
+    return (healthy? and participating?)
+  end
+
   def stoppable?
     @stoppable
   end

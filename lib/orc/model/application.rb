@@ -42,7 +42,7 @@ class Orc::Model::Application
   end
 
   def participating_instances
-    instances.reject { |instance| not instance.participation }
+    instances.select { |instance| instance.is_in_pool? }
   end
 
   def get_proposed_resolutions_for(live_instances)

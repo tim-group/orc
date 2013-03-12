@@ -271,4 +271,28 @@ describe Orc::Model::Application do
     expect {engine.resolve()}.to raise_error(Orc::Exception::FailedToResolve)
   end
 
+  it 'returns instances that are participating and healthy? (in the pool)' do
+
+    blue_instance = {:group=>"blue", :version=>"2.2", :application=>"app1", :participating=>true, :health => "healthy"}
+    green_instance = {:group=>"green", :version=>nil, :application=>"app1", :participating=>true}
+    instances = [blue_instance, green_instance]
+
+    blue_group= {:name=>"blue", :target_version=>"2.3"}
+    green_group= {:name=>"green", :target_version=>"2.4"}
+
+    environment = 'test_env'
+    application = 'app1'
+    static_model = [blue_group, green_group]
+
+    @remote_client.stub(:status).with(:environment=>environment, :application=>application).and_return(instances)
+    @cmdb.stub(:retrieve_application).with(:environment=>environment,:application=>application).and_return(static_model)
+
+    application = Orc::Model::Application.new(:remote_client=>@remote_client, :cmdb=>@cmdb, :environment=>environment, :application=>application, :progress_logger => Orc::Progress.logger(), :mismatch_resolver => double())
+
+    application.create_live_model()
+
+    application.participating_instances.size.should eql(1)
+  end
+
+
 end
