@@ -8,8 +8,8 @@ require 'orc/ansi_status_renderer'
 require 'etc'
 
 user = ENV['USER']
-ENV['MCOLLECTIVE_SSL_PRIVATE']="/home/#{user}/.mc/#{user}-private.pem"
-ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem"
+ENV['MCOLLECTIVE_SSL_PRIVATE']="/home/#{user}/.mc/#{user}-private.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PRIVATE')
+ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PUBLIC')
 
 class Orc::Util::OptionParser
   class Base
