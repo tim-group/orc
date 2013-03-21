@@ -41,7 +41,7 @@ describe Orc::CMDB::Yaml do
     group_static_models[1][:target_participation]=false
 
     rand = (rand()*1000).ceil
-
+    Dir.mkdir("build/")
     cmdb =  Orc::CMDB::Yaml.new(:data_dir=>"build/")
     cmdb.save_application({:environment=>"cmdb_test_#{rand}",:application=>"testx"}, group_static_models)
     group_static_models_again = cmdb.retrieve_application(:environment=>"cmdb_test_#{rand}", :application=>"testx")
