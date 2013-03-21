@@ -17,7 +17,7 @@ describe Orc::Config do
     c = Orc::Config.new('/tmp/does_not_exist.yaml')
     c.config.should eql({
       'cmdb_repo_url' => 'git@git:cmdb',
-      'cmdb_local_path' => '/opt/orctool/data/cmdb/',
+      'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/",
     })
   end
 
