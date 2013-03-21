@@ -7,9 +7,10 @@ class Orc::Config
     @tried_to_load_config = false
     @config = {
       'cmdb_repo_url' => 'git@git:cmdb',
-      'cmdb_local_path' => '/opt/orctool/data/cmdb/',
+      'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/",
     }
   end
+
   def load_config
     return if @tried_to_load_config
     @tried_to_load_config = true
@@ -17,6 +18,7 @@ class Orc::Config
       @config = YAML::load(File.open(@config_location))
     end
   end
+
   def [](key)
     load_config
     @config[key]
