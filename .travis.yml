@@ -5,6 +5,8 @@ before_install:
  - sudo apt-get install -qq mcollective
  - ln -s /usr/lib/ruby/1.8/mcollective lib/mcollective
  - ln -s /usr/lib/ruby/1.8/mcollective.rb lib/mcollective.rb
+ - git config --global user.email "test@example.com"
+ - git config --global user.name "Some Name"
 rvm:
   - 1.9.3
   - 1.8.7
