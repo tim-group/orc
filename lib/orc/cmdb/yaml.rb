@@ -5,9 +5,6 @@ require 'yaml'
 class Orc::CMDB::Yaml
   def initialize(args)
     @data_dir = args[:data_dir]
-    if !Pathname.new(@data_dir).exist?
-      Dir.mkdir @data_dir
-    end
   end
 
   def convention(spec)
