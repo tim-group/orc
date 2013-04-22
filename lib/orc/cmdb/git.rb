@@ -9,7 +9,7 @@ class Orc::CMDB::Git
     @repo_url = options[:origin] || raise("Need origin option")
     @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
-    @timeout = options[:timeout] || 10
+    @timeout = options[:timeout] || 60
     @debug = false
   end
 
