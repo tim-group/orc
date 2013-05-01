@@ -2,6 +2,7 @@ require 'mcollective'
 require 'orc/namespace'
 require 'orc/progress'
 require 'pp'
+require 'orc/exceptions'
 
 class MCollective::RPC::DeploytoolWrapper
   include MCollective::RPC
@@ -76,6 +77,10 @@ class Orc::DeployClient
         instance[:host] = resp[:sender]
         instances<<instance
       end
+    end
+
+    if 0 == instances.count
+      raise Orc::Exception::FailedToDiscover.new("Did not find any instances of #{@application} in #{@environment}")
     end
 
     instances

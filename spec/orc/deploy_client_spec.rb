@@ -20,7 +20,7 @@ describe Orc::DeployClient do
       {:data=>{:status=>nil}}
     ])
 
-    client.status().should eql([])
+    expect { client.status() }.to raise_error(Orc::Exception::FailedToDiscover)
   end
 
   it 'process status messages from new agents' do
