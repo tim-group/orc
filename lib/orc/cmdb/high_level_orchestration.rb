@@ -55,7 +55,7 @@ class Orc::CMDB::HighLevelOrchrestration
   end
 
   def _swap(groups)
-    groups.each { |group|
+    groups.reject {|group| group[:never_swap] == true}.each { |group|
       group[:target_participation] = !group[:target_participation]
     }
     groups_participating = groups.reject {|group| !group[:target_participation]}

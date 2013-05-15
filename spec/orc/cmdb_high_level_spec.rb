@@ -58,7 +58,11 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> false},
       {:name=> 'green',
       :target_version=> '1',
-      :target_participation=> true}
+      :target_participation=> true},
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation => false,
+      :never_swap => true}
     ]
 
     high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
@@ -77,7 +81,13 @@ describe Orc::CMDB::HighLevelOrchrestration do
 
       {:name=> 'green',
       :target_version=> '1',
-      :target_participation=> false}
+      :target_participation=> false},
+
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation=> false,
+      :never_swap => true
+      }
     ]
     )
 
