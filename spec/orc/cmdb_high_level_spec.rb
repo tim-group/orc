@@ -8,6 +8,43 @@ describe Orc::CMDB::HighLevelOrchrestration do
     @git = double()
   end
 
+  it 'install saves the requested version in all groups if there is only one swappable one' do
+    cmdb_yaml = [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> true},
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation=> false,
+      :never_swap => true}
+   ]
+
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name=> 'blue',
+      :target_version=> '2',
+      :target_participation=> true},
+
+      {:name=> 'grey',
+      :target_version=> '2',
+      :target_participation=> false,
+      :never_swap => true},
+    ])
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orcestration.install('2')
+  end
+
+
   it 'install saves the requested version in the currently offline group' do
     cmdb_yaml = [
       {:name=> 'blue',
@@ -50,6 +87,45 @@ describe Orc::CMDB::HighLevelOrchrestration do
     @git.should_receive(:commit_and_push).ordered
     high_level_orcestration.install('2')
   end
+
+  it 'wont do anything if there is only one swappable group' do
+    cmdb_yaml = [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> true},
+     {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation => false,
+      :never_swap => true}
+    ]
+
+    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> true},
+
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation=> false,
+      :never_swap => true
+      }
+    ]
+    )
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orcestration.swap()
+  end
+
 
   it 'swap makes the currently offline group online and vice versa' do
     cmdb_yaml = [

@@ -71,8 +71,9 @@ class Orc::CMDB::HighLevelOrchrestration
       end
     }
 
-    if (groups.size==1)
-      groups[0][:target_version] = version
+    swappable_groups = groups.reject {|group| group[:never_swap] == true}
+    if (swappable_groups.size==1)
+      swappable_groups[0][:target_version] = version
     end
 
   end
