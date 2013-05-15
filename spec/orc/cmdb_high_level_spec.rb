@@ -13,7 +13,10 @@ describe Orc::CMDB::HighLevelOrchrestration do
       {:name=> 'blue',
       :target_version=> '1',
       :target_participation=> false},
-      {:name=> 'green',
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation=> false},
+       {:name=> 'green',
       :target_version=> '1',
       :target_participation=> true}
     ]
@@ -31,6 +34,11 @@ describe Orc::CMDB::HighLevelOrchrestration do
       {:name=> 'blue',
       :target_version=> '2',
       :target_participation=> false},
+
+      {:name=> 'grey',
+      :target_version=> '2',
+      :target_participation=> false},
+
 
       {:name=> 'green',
       :target_version=> '1',

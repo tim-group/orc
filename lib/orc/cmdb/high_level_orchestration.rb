@@ -65,20 +65,16 @@ class Orc::CMDB::HighLevelOrchrestration
   end
 
   def _install(groups,version)
-    upgraded_group = nil
     groups.each { |group|
       if (!group[:target_participation])
-        upgraded_group = group
+        group[:target_version] = version
       end
     }
 
     if (groups.size==1)
-      upgraded_group = groups[0]
+      groups[0][:target_version] = version
     end
 
-    if (upgraded_group!=nil)
-      upgraded_group[:target_version] = version
-    end
   end
 
 end
