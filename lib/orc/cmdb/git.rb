@@ -23,6 +23,11 @@ class Orc::CMDB::Git
         @git.merge('origin', 'merge concurrent modifications')
         @git.pull
       end
+      timeout(@timeout) do
+        Dir.chdir(@local_path) do
+          system('git gc')
+        end
+      end
     else
       timeout(@timeout) do
         @git = Git.clone(@repo_url, @local_path, :log => logger)
