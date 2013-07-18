@@ -122,7 +122,7 @@ module Orc::Action
     def initialize(*args)
       super
       @start_time = Time.now.to_i
-      @max_wait ||= 15 * 60 # 10m
+      @max_wait ||= 25 * 60 # 25m
     end
     def do_execute(all_actions)
       first_action = all_actions.pop
