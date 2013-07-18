@@ -77,7 +77,7 @@ task :package do
   FileUtils.cp_r("bin", "build/package/opt/orctool/")
 
   arguments = [
-    "-p", "build/#{@project.name}.deb" ,
+    "-p", "build/#{@project.name}_#{@project.version}.deb" ,
     "-n" ,"#{@project.name}" ,
     "-v" ,"#{@project.version}" ,
     "-m" ,"Infrastructure <infra@timgroup.com>" ,
