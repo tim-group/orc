@@ -55,13 +55,10 @@ class Orc::CMDB::HighLevelOrchrestration
   end
 
   def _swap(groups)
-    groups.reject {|group| group[:never_swap] == true}.each { |group|
+    swappable_groups = groups.reject {|group| group[:never_swap] == true}
+    swappable_groups.each { |group|
       group[:target_participation] = !group[:target_participation]
-    }
-    groups_participating = groups.reject {|group| !group[:target_participation]}
-    if (groups_participating.size==0)
-      groups[0][:target_participation] = true
-    end
+    } if swappable_groups.size > 1
   end
 
   def _install(groups,version)
