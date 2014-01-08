@@ -23,17 +23,21 @@ class MCollective::RPC::DeploytoolWrapper
 
   private
 
-  def get_client(environment, application)
+  def get_client(environment=nil, application=nil)
     begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
       mc = rpcclient("deployapp", { :options => @options })
-      mc.fact_filter "logicalenv", environment
+      unless environment.nil?
+        mc.fact_filter "logicalenv", environment
+      end
       unless application.nil?
         mc.fact_filter "application", application
       end
       mc.discover :verbose => false
     rescue
       mc = rpcclient("deployapp", { :options => @options })
-      mc.fact_filter "logicalenv", environment
+      unless environment.nil?
+        mc.fact_filter "logicalenv", environment
+      end
       unless application.nil?
         mc.fact_filter "application", application
       end
