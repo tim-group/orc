@@ -85,7 +85,7 @@ task :package do
     "-t", 'deb' ,
     "-s", 'dir' ,
     "--description", "#{@project.description}" ,
-    "--url", 'https://github.com/youdevise/orc',
+    "--url", 'https://github.com/tim-group/orc',
     "-C" ,'build/package'
   ]
 

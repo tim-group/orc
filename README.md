@@ -1,6 +1,6 @@
-  * Orc: [![Orc Build Status](https://travis-ci.org/youdevise/orc.png)](https://travis-ci.org/youdevise/orc)
+  * Orc: [![Orc Build Status](https://travis-ci.org/tim-group/orc.png)](https://travis-ci.org/tim-group/orc)
 
-  * Deployapp: [![Deployapp Build Status](https://travis-ci.org/youdevise/deployapp.png)](https://travis-ci.org/youdevise/deployapp)
+  * Deployapp: [![Deployapp Build Status](https://travis-ci.org/tim-group/deployapp.png)](https://travis-ci.org/tim-group/deployapp)
 
 Description
 -----------
@@ -15,14 +15,14 @@ You can read more about how it's designed, and problems it's meant to solve in a
   * [part 2 - towards continuous deployment](https://devblog.timgroup.com/2012/09/03/standardized-application-infrastructure-contracts-part-2-towards-continuous-deployment/)
   * [Introducing Orc and it's agents](https://devblog.timgroup.com/2012/12/20/introducing-orc-and-its-agents/)
 
-We've also start moving our official deployment contract into the project. [It's a work in progress](http://youdevise.github.com/orc/contract.html)
+We've also start moving our official deployment contract into the project. [It's a work in progress](http://tim-group.github.com/orc/contract.html)
 
-Dependencies
+Dependencies/
 ------------
 
 It is expected to be used with the mcollective agent found here:
 
-  * https://github.com/youdevise/deployapp
+  * https://github.com/tim-group/deployapp
 
 and the tatin service here:
 

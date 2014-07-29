@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = "Orc orchestration tool"
   s.description = "Orc is a model driven deployment tool, written in ruby, for deploying applications"
   s.authors     = ["David Ellis", "Tomas Doran"]
-  s.email       = 'tomas.doran@youdevise.com'
+  s.email       = 'infra@timgroup.com'
   s.files       = FileList['lib/**/*.rb',
                             'bin/*',
                             ].to_a
