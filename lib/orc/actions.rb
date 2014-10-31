@@ -60,11 +60,16 @@ module Orc::Action
       end
       logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version #{@instance.group.target_version}"
 
-      @remote_client.update_to_version({
+      response_received = @remote_client.update_to_version({
           :group=>@instance.group_name,
         }, [@instance.host], @instance.group.target_version
       )
 
+      if (!response_received)
+        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from #{@instance.host} within the timeout")
+      end
+
+      true
     end
 
     def precedence
