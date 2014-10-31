@@ -106,6 +106,8 @@ class Orc::DeployClient
       log_response(resp)
       return resp[:data][:successful]
     end
+
+    false
   end
 
   def enable_participation(spec,hosts)
