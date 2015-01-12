@@ -14,7 +14,7 @@ class MCollective::RPC::DeploytoolWrapper
 
   def status(spec)
     spec[:environment] = @environment if spec[:environment].nil?
-    get_client(spec[:environment], spec[:application]).status(:spec => spec)
+    get_client(spec[:environment], spec[:application], spec[:group]).status(:spec => spec)
   end
 
   def custom_request(action,request,hosts,identity_hash)
@@ -23,7 +23,7 @@ class MCollective::RPC::DeploytoolWrapper
 
   private
 
-  def get_client(environment=nil, application=nil)
+  def get_client(environment=nil, application=nil, group=nil)
     begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
       mc = rpcclient("deployapp", { :options => @options })
       unless environment.nil?
@@ -31,6 +31,9 @@ class MCollective::RPC::DeploytoolWrapper
       end
       unless application.nil?
         mc.fact_filter "application", application
+      end
+      unless group.nil?
+        mc.fact_filter "group", group
       end
       mc.discover :verbose => false
     rescue
@@ -40,6 +43,9 @@ class MCollective::RPC::DeploytoolWrapper
       end
       unless application.nil?
         mc.fact_filter "application", application
+      end
+      unless group.nil?
+        mc.fact_filter "group", group
       end
       mc.discover :verbose => false
     end
@@ -59,6 +65,7 @@ class Orc::DeployClient
 
     @environment = args[:environment]
     @application = args[:application]
+    @group = args[:group]
     if args[:config]!=nil
       @options[:config] = args[:config]
     end
@@ -71,6 +78,7 @@ class Orc::DeployClient
     instances=[]
 
     spec[:application] = @application if !@application.nil?
+    spec[:group] = @group if !@group.nil?
 
     @mcollective_client.status(spec).each do |resp|
       data  = resp[:data]

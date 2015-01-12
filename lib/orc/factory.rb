@@ -10,10 +10,11 @@ require 'orc/cmdb/high_level_orchestration'
 require 'orc/progress'
 
 class Orc::Factory
-  attr_reader :application, :environment
+  attr_reader :application, :environment, :group
   def initialize(options={})
     @application = options[:application]
     @environment = options[:environment]
+    @group = options[:group]
   end
   def config_location
     "#{ENV['HOME']}/.orc.yaml"
@@ -28,7 +29,8 @@ class Orc::Factory
   def remote_client
     @remote_client ||= Orc::DeployClient.new(
       :environment => environment,
-      :application => application
+      :application => application,
+      :group       => group
     )
   end
 
