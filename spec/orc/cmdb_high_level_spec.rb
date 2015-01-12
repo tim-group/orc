@@ -20,7 +20,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -42,7 +42,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.install('2', ['grey'])
+    high_level_orchestration.install('2', ['grey'])
   end
 
   it 'install saves the requested version in all groups if there is only one swappable one' do
@@ -57,7 +57,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -79,7 +79,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.install('2')
+    high_level_orchestration.install('2')
   end
 
 
@@ -96,7 +96,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -123,7 +123,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.install('2')
+    high_level_orchestration.install('2')
   end
 
   it 'wont do anything if there is only one swappable group' do
@@ -137,7 +137,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true},
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -160,7 +160,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.swap()
+    high_level_orchestration.swap()
   end
 
 
@@ -175,7 +175,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :never_swap => true},
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -197,7 +197,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.swap()
+    high_level_orchestration.swap()
   end
 
 
@@ -208,7 +208,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation => false }
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -226,7 +226,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.swap()
+    high_level_orchestration.swap()
   end
 
   it 'swap makes the currently offline group online and vice versa' do
@@ -243,7 +243,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :never_swap => true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -271,7 +271,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.swap()
+    high_level_orchestration.swap()
   end
 
   it 'deploy does an install followed by a swap' do
@@ -284,7 +284,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -305,7 +305,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.deploy('2')
+    high_level_orchestration.deploy('2')
   end
   it 'deploy when only one group just upgrades the version' do
     cmdb_yaml = [
@@ -314,7 +314,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -331,11 +331,11 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orcestration.deploy('2')
+    high_level_orchestration.deploy('2')
   end
 
   it 'promotes an application from one environment to another' do
-    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"env2",
@@ -364,7 +364,7 @@ describe Orc::CMDB::HighLevelOrchestration do
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
 
-    high_level_orcestration.promote_from_environment('env1')
+    high_level_orchestration.promote_from_environment('env1')
  end
 
 end
