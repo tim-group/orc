@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rspec'
 require 'orc/cmdb/high_level_orchestration'
 
-describe Orc::CMDB::HighLevelOrchrestration do
+describe Orc::CMDB::HighLevelOrchestration do
   before do
     @cmdb = double()
     @git = double()
@@ -20,7 +20,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -57,7 +57,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -96,7 +96,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -137,7 +137,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true},
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -175,7 +175,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :never_swap => true},
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -208,7 +208,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation => false }
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -243,7 +243,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :never_swap => true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -284,7 +284,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -314,7 +314,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
       :target_participation=> true}
     ]
 
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"test_env",
@@ -335,7 +335,7 @@ describe Orc::CMDB::HighLevelOrchrestration do
   end
 
   it 'promotes an application from one environment to another' do
-    high_level_orcestration = Orc::CMDB::HighLevelOrchrestration.new(
+    high_level_orcestration = Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => @cmdb,
     :git => @git,
     :environment=>"env2",

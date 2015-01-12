@@ -40,7 +40,7 @@ class Orc::Factory
   end
 
   def high_level_orchestration
-    @high_level_orchestration||= Orc::CMDB::HighLevelOrchrestration.new(
+    @high_level_orchestration||= Orc::CMDB::HighLevelOrchestration.new(
         :cmdb => cmdb,
         :git => cmdb_git,
         :environment => environment,
