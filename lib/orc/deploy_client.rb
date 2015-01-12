@@ -100,7 +100,9 @@ class Orc::DeployClient
     end
 
     if 0 == instances.count
-      raise Orc::Exception::FailedToDiscover.new("Did not find any instances of #{@application} in #{@environment}")
+      error = "Did not find any instances of #{@application} in #{@environment}"
+      error = "Did not find any instances of #{@application} #{@group} in #{@environment}" unless @group.nil?
+      raise Orc::Exception::FailedToDiscover.new(error)
     end
 
     instances
