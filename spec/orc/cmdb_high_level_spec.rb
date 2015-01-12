@@ -42,7 +42,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.install('2', ['grey'])
+    high_level_orchestration.install_for_group('2', 'grey')
   end
 
   it 'install saves the requested version in all groups if there is only one swappable one' do

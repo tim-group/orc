@@ -9,18 +9,23 @@ class Orc::CMDB::HighLevelOrchestration
     @spec = {:environment => @environment, :application=>@application}
   end
 
-  def install(version,groups_filter=nil)
+  def install_for_group(version,for_group)
     all_groups=@cmdb.retrieve_application(@spec)
     @git.update()
-    if (groups_filter.nil?)
-      _install(all_groups,version)
-      @cmdb.save_application(@spec, all_groups)
-    else
-      ignored_groups = all_groups.reject { |group| groups_filter.include?(group[:name]) }
-      groups = all_groups.reject { |k| !groups_filter.include?(k[:name]) }
-      _install(groups,version)
-      @cmdb.save_application(@spec, groups.concat(ignored_groups))
+    all_groups.each do |group|
+      if (group[:name] == for_group)
+        group[:target_version] = version unless group[:target_participation]
+      end
     end
+    @cmdb.save_application(@spec, all_groups)
+    @git.commit_and_push("#{@application} #{@environment}: installing #{version} for group #{for_group}")
+  end
+
+  def install(version)
+    all_groups=@cmdb.retrieve_application(@spec)
+    @git.update()
+    _install(all_groups,version)
+    @cmdb.save_application(@spec, all_groups)
     @git.commit_and_push("#{@application} #{@environment}: installing #{version}")
   end
 

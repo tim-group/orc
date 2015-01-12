@@ -95,8 +95,11 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-      groups = options[:groups].is_a?(Array) ? options[:groups] : [options[:groups]]
-      factory.high_level_orchestration.install(options[:version], groups)
+      unless options[:group].nil?
+        factory.high_level_orchestration.install_for_group(options[:version], options[:group])
+      else
+        factory.high_level_orchestration.install(options[:version])
+      end
     end
 
     def self.command_options
