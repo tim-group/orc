@@ -101,6 +101,14 @@ describe Orc::Util::OptionParser do
     command.class.name.should eql('Orc::Util::OptionParser::InstallRequest')
   end
 
+  it 'Works for InstallRequest with groups' do
+    parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1', '--group', 'blue']).parse
+    parser.commands.size.should eql(1)
+    command = parser.commands[0]
+    command.options[:group].should eql 'blue'
+    command.class.name.should eql('Orc::Util::OptionParser::InstallRequest')
+  end
+
   it 'Works for SwapRequest' do
     parser = MockOptionParser.new(['--swap', '--environment', 'bar', '--application', 'MyApp']).parse
     parser.commands.size.should eql(1)

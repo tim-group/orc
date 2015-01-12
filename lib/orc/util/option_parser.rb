@@ -95,7 +95,8 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-      factory.high_level_orchestration.install(options[:version])
+      groups = options[:groups].is_a?(Array) ? options[:groups] : [options[:groups]]
+      factory.high_level_orchestration.install(options[:version], groups)
     end
 
     def self.command_options
@@ -142,6 +143,7 @@ class Orc::Util::OptionParser
 	orc --environment=production --show-status
 	orc --environment=production --application=MyApp --resolve
 	orc --environment=production --application=MyApp --version=2.21.0 --deploy
+	orc --environment=production --application=MyApp --version=2.21.0 --group='blue' --deploy
 
 "
 
@@ -156,6 +158,9 @@ class Orc::Util::OptionParser
       end
       opts.on("-v","--version VERSION", "") do    |version|
         @options[:version] = version
+      end
+      opts.on("-e","--group GROUP", "specify the group to execute the plan") do |env|
+        @options[:group] = env
       end
 
       [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest].each do |req|
