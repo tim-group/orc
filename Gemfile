@@ -7,7 +7,7 @@ group :test do
   gem "rake"
   gem "rspec"
   gem "rdoc"
-  gem "ci_reporter_rspec"
+  gem "ci_reporter", "1.7.3"
   gem "stomp"
   gem "systemu"
   gem "git"
