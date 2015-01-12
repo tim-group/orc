@@ -144,9 +144,10 @@ class Orc::Util::OptionParser
       opts.banner =
 "Usage:
 	orc --environment=production --show-status
+	orc --environment=production --show-status --group=blue
 	orc --environment=production --application=MyApp --resolve
 	orc --environment=production --application=MyApp --version=2.21.0 --deploy
-	orc --environment=production --application=MyApp --version=2.21.0 --group='blue' --deploy
+	orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy
 
 "
 
@@ -162,7 +163,7 @@ class Orc::Util::OptionParser
       opts.on("-v","--version VERSION", "") do    |version|
         @options[:version] = version
       end
-      opts.on("-e","--group GROUP", "specify the group to execute the plan") do |env|
+      opts.on("-g","--group GROUP", "specify the group to execute the plan") do |env|
         @options[:group] = env
       end
 
