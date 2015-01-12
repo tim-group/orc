@@ -9,11 +9,18 @@ class Orc::CMDB::HighLevelOrchrestration
     @spec = {:environment => @environment, :application=>@application}
   end
 
-  def install(version)
+  def install(version,groups_filter=nil)
+    all_groups=@cmdb.retrieve_application(@spec)
     @git.update()
-    groups = @cmdb.retrieve_application(@spec)
-    _install(groups,version)
-    @cmdb.save_application(@spec, groups)
+    if (groups_filter.nil?)
+      _install(all_groups,version)
+      @cmdb.save_application(@spec, all_groups)
+    else
+      ignored_groups = all_groups.reject { |group| groups_filter.include?(group[:name]) }
+      groups = all_groups.reject { |k| !groups_filter.include?(k[:name]) }
+      _install(groups,version)
+      @cmdb.save_application(@spec, groups.concat(ignored_groups))
+    end
     @git.commit_and_push("#{@application} #{@environment}: installing #{version}")
   end
 
