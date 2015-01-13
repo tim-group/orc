@@ -14,7 +14,11 @@ class Orc::CMDB::HighLevelOrchestration
     @git.update()
     all_groups.each do |group|
       if (group[:name] == for_group)
-        group[:target_version] = version unless group[:target_participation]
+        if group[:target_participation]
+          group[:target_version] = version if group[:never_swap]
+        else
+          group[:target_version] = version
+        end
       end
     end
     @cmdb.save_application(@spec, all_groups)

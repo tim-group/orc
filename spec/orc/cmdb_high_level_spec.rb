@@ -8,13 +8,47 @@ describe Orc::CMDB::HighLevelOrchestration do
     @git = double()
   end
 
-  it 'install saves the requested version to the specified group' do
+  it 'install saves the requested version to the specified group if participation is true and all groups have never_swap' do
+    cmdb_yaml = [
+      {:name                => 'grey',
+      :target_version       => '1',
+      :target_participation => true,
+      :never_swap           => true},
+      {:name                => 'blue',
+      :target_version       => '1',
+      :target_participation => true,
+      :never_swap           => true},
+    ]
+
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name                => 'grey',
+      :target_version       => '2',
+      :target_participation => true,
+      :never_swap           => true},
+      {:name                => 'blue',
+      :target_version       => '1',
+      :target_participation => true,
+      :never_swap           => true},
+   ])
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orchestration.install_for_group('2', 'grey')
+  end
+  it 'install saves the requested version to the specified group if participation is false' do
     cmdb_yaml = [
       {:name=> 'grey',
       :target_version=> '1',
-      :target_participation=> false,
-      :never_swap => true},
-
+      :target_participation=> false},
       {:name=> 'blue',
       :target_version=> '1',
       :target_participation=> true}
@@ -32,8 +66,7 @@ describe Orc::CMDB::HighLevelOrchestration do
     [
       {:name=> 'grey',
       :target_version=> '2',
-      :target_participation=> false,
-      :never_swap => true},
+      :target_participation=> false},
 
       {:name=> 'blue',
       :target_version=> '1',
