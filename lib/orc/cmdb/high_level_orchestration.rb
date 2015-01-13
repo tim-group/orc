@@ -13,7 +13,7 @@ class Orc::CMDB::HighLevelOrchestration
     all_groups=@cmdb.retrieve_application(@spec)
     @git.update()
     all_groups.each do |group|
-      if (group[:name] == for_group)
+      if (group[:name] == for_group or for_group == 'all')
         if group[:target_participation]
           group[:target_version] = version if group[:never_swap]
         else
