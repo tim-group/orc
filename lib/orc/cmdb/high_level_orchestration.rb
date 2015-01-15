@@ -10,8 +10,8 @@ class Orc::CMDB::HighLevelOrchestration
   end
 
   def install_for_group(version,for_group)
-    all_groups=@cmdb.retrieve_application(@spec)
     @git.update()
+    all_groups=@cmdb.retrieve_application(@spec)
     all_groups.each do |group|
       if (group[:name] == for_group or for_group == 'all')
         if group[:target_participation]
@@ -26,8 +26,8 @@ class Orc::CMDB::HighLevelOrchestration
   end
 
   def install(version)
-    all_groups=@cmdb.retrieve_application(@spec)
     @git.update()
+    all_groups=@cmdb.retrieve_application(@spec)
     _install(all_groups,version)
     @cmdb.save_application(@spec, all_groups)
     @git.commit_and_push("#{@application} #{@environment}: installing #{version}")
