@@ -42,7 +42,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.install_for_group('2', 'all')
+    high_level_orchestration.install('2', 'all')
   end
   it 'install saves the requested version to the specified group if participation is true and all groups have never_swap' do
     cmdb_yaml = [
@@ -78,7 +78,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.install_for_group('2', 'grey')
+    high_level_orchestration.install('2', 'grey')
   end
   it 'install saves the requested version to the specified group if participation is false' do
     cmdb_yaml = [
@@ -111,7 +111,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.install_for_group('2', 'grey')
+    high_level_orchestration.install('2', 'grey')
   end
 
   it 'install saves the requested version in all groups if there is only one swappable one' do
@@ -436,4 +436,138 @@ describe Orc::CMDB::HighLevelOrchestration do
     high_level_orchestration.promote_from_environment('env1')
  end
 
+  it 'deploys to all machines in all groups except the group that is swapped' do
+    cmdb_yaml = [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> false},
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> true},
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation => false,
+      :never_swap => true}
+    ]
+
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name=> 'blue',
+      :target_version=> '3',
+      :target_participation=> true},
+
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> false},
+
+      {:name=> 'grey',
+      :target_version=> '3',
+      :target_participation=> false,
+      :never_swap => true
+      }
+    ]
+    )
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orchestration.deploy('3')
+  end
+
+  it 'deploys to to the machines in the specified groups' do
+    cmdb_yaml = [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> false},
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> true},
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation => false,
+      :never_swap => true}
+    ]
+
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name=> 'blue',
+      :target_version=> '3',
+      :target_participation=> true},
+
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> false},
+
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation=> false,
+      :never_swap => true
+      }
+    ]
+    )
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orchestration.deploy('3', 'blue')
+  end
+
+  it 'does no swapping if told to deploy to a group that is not swappable' do
+    cmdb_yaml = [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> false},
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> true},
+      {:name=> 'grey',
+      :target_version=> '1',
+      :target_participation => false,
+      :never_swap => true}
+    ]
+
+    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
+    :cmdb => @cmdb,
+    :git => @git,
+    :environment=>"test_env",
+    :application=>"ExampleApp")
+
+    @cmdb.stub(:retrieve_application).with({:environment=>"test_env", :application=>"ExampleApp"}).and_return(cmdb_yaml)
+
+    @cmdb.should_receive(:save_application).with({:environment=>"test_env", :application=>"ExampleApp"},
+    [
+      {:name=> 'blue',
+      :target_version=> '1',
+      :target_participation=> false},
+
+      {:name=> 'green',
+      :target_version=> '2',
+      :target_participation=> true},
+
+      {:name=> 'grey',
+      :target_version=> '3',
+      :target_participation=> false,
+      :never_swap => true
+      }
+    ]
+    )
+
+    @git.should_receive(:update).ordered
+    @git.should_receive(:commit_and_push).ordered
+    high_level_orchestration.deploy('3', 'grey')
+  end
 end

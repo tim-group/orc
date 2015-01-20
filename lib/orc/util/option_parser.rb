@@ -67,7 +67,11 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-      factory.high_level_orchestration.deploy(options[:version])
+      if options[:group].nil?
+        factory.high_level_orchestration.deploy(options[:version])
+      else
+        factory.high_level_orchestration.deploy(options[:version], options[:group])
+      end
     end
 
     def self.command_options
@@ -95,10 +99,10 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-      unless options[:group].nil?
-        factory.high_level_orchestration.install_for_group(options[:version], options[:group])
-      else
+      if options[:group].nil?
         factory.high_level_orchestration.install(options[:version])
+      else
+        factory.high_level_orchestration.install(options[:version], options[:group])
       end
     end
 
