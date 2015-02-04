@@ -18,10 +18,7 @@ class Orc::Engine
     end
   end
 
-  def resolve_one_step
-    application_model = @model_generator.create_live_model()
-    resolutions = application_model.get_resolutions
-
+  def resolve_one_step(resolutions, application_model)
     if (resolutions.size > 0)
 
       if debug
@@ -42,7 +39,12 @@ class Orc::Engine
      @loop_count = 0
      finished = false
      while(not finished) do
-       finished = resolve_one_step
+       application_models = @model_generator.create_live_model()
+       all_resolutions = application_models.map {|model| [model, model.get_resolutions]}
+
+       finished = all_resolutions.map do |model,resolutions|
+         resolve_one_step(resolutions, model)
+       end.reduce(true) {|a,b| a && b}
 
        @loop_count += 1
        if (@loop_count > @max_loop)

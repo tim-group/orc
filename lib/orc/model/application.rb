@@ -32,18 +32,21 @@ class Orc::Model::Builder
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
-    instance_models = []
-    statuses.each do |instance|
-      group = groups[instance[:group]]
-      raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
-      instance_models << Orc::Model::Instance.new(instance, group)
-    end
+    clusters = statuses.group_by {|instance| instance[:cluster]}
 
-    Orc::Model::Application.new({
-      :instances => instance_models.sort_by { |instance| instance.group_name },
-      :mismatch_resolver => @mismatch_resolver,
-      :progress_logger => @progress_logger
-    })
+    clusters.map do |name, instances|
+      instance_models = instances.map do |instance|
+        group = groups[instance[:group]]
+        raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
+        Orc::Model::Instance.new(instance, group)
+      end
+
+      Orc::Model::Application.new({
+        :instances => instance_models.sort_by { |instance| instance.group_name },
+        :mismatch_resolver => @mismatch_resolver,
+        :progress_logger => @progress_logger
+      })
+    end
   end
 end
 
