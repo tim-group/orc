@@ -11,10 +11,17 @@ require 'orc/progress'
 
 class Orc::Factory
   attr_reader :application, :environment, :group
-  def initialize(options={})
+
+  attr_accessor :cmdb
+
+  def initialize(options={}, dependencies={})
     @application = options[:application]
     @environment = options[:environment]
     @group = options[:group]
+
+    @timeout = options[:timeout]
+    @cmdb = dependencies[:cmdb]
+    @remote_client = dependencies[:remote_client]
   end
   def config_location
     "#{ENV['HOME']}/.orc.yaml"
@@ -51,7 +58,7 @@ class Orc::Factory
   end
 
   def engine
-    mismatch_resolver = Orc::MismatchResolver.new(remote_client)
+    mismatch_resolver = Orc::MismatchResolver.new(remote_client, @timeout)
     logger = Orc::Progress.logger()
     app_model = Orc::Model::Application.new(
       :remote_client      => remote_client,

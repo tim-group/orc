@@ -19,11 +19,12 @@ class Orc::MismatchResolver
         return
       end
     }
-    @cases[state] = lambda {|instance| Orc::Action.const_get(name).new(@remote_client,instance)}
+    @cases[state] = lambda {|instance| Orc::Action.const_get(name).new(@remote_client,instance, @timeout)}
   end
 
-  def initialize(remote_client)
+  def initialize(remote_client, timeout=nil)
     @remote_client = remote_client
+    @timeout=timeout
     @cases = {}
     in_case({
       :should_participate => true,

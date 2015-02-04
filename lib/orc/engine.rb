@@ -49,5 +49,7 @@ class Orc::Engine
          raise Orc::Exception::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
        end
      end
+
+     @resolution_steps.map {|step| step.to_s}
    end
 end
