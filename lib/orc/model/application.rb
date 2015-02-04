@@ -4,13 +4,13 @@ require 'orc/actions'
 require 'orc/model/group'
 require 'orc/model/instance'
 
-class Orc::Model::Application
-  attr_reader :instances
+class Orc::Model::Builder
+
   def initialize(args)
-    @remote_client = args[:remote_client] || raise('Nust pass :remote_client')
+    @remote_client = args[:remote_client] #|| raise('Nust pass :remote_client')
     @cmdb = args[:cmdb]
-    @environment = args[:environment] || raise('Must pass :environment')
-    @application = args[:application] || raise('Must pass :application')
+    @environment = args[:environment] #|| raise('Must pass :environment')
+    @application = args[:application] #|| raise('Must pass :application')
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
@@ -18,17 +18,17 @@ class Orc::Model::Application
   end
 
   def get_cmdb_groups
-    return @groups unless @groups.nil?
     cmdb_model_for_app = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
     raise Orc::CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
-    @groups = {}
+    groups = {}
     cmdb_model_for_app.each do |group|
-      @groups[group[:name]] = Orc::Model::Group.new(group)
+      groups[group[:name]] = Orc::Model::Group.new(group)
     end
-    @groups
+    groups
   end
 
   def create_live_model()
+    @progress_logger.log("creating live model")
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
@@ -38,7 +38,24 @@ class Orc::Model::Application
       raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
       instance_models << Orc::Model::Instance.new(instance, group)
     end
-    @instances = instance_models.sort_by { |instance| instance.group_name }
+
+    Orc::Model::Application.new({
+      :instances => instance_models.sort_by { |instance| instance.group_name },
+      :mismatch_resolver => @mismatch_resolver,
+      :progress_logger => @progress_logger
+    })
+  end
+end
+
+class Orc::Model::Application
+  attr_reader :instances
+  def initialize(args)
+    @instances = args[:instances]
+    @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
+    @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
+    @max_loop = 100
+    @debug = false
+    @builder = Orc::Model::Builder.new(args)
   end
 
   def participating_instances
@@ -54,11 +71,7 @@ class Orc::Model::Application
   end
 
   def get_resolutions
-    @progress_logger.log("creating live model")
-
-    live_instances = create_live_model
-
-    proposed_resolutions = get_proposed_resolutions_for live_instances
+    proposed_resolutions = get_proposed_resolutions_for @instances
 
     if @debug
       @progress_logger.log("Proposed resolutions:")

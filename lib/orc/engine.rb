@@ -3,23 +3,24 @@ require 'orc/model/application'
 class Orc::Engine
   attr_reader :debug
   def initialize(options)
-    @application_model = options[:application_model] || raise("Need application model")
+    @model_generator = options[:model_generator] || raise("Needs model generator")
     @logger = options[:log] || raise("Need :log")
     @max_loop = 1000
     @resolution_steps = []
     @debug = false
   end
 
-  def execute_action(action)
+  def execute_action(action, application_model)
     @resolution_steps.push action
-    action.check_valid(@application_model) # FIXME - This throws if invalid, execute returns false if invalid?
+    action.check_valid(application_model) # FIXME - This throws if invalid, execute returns false if invalid?
     if ! action.execute(@resolution_steps)
       raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
     end
   end
 
   def resolve_one_step
-    resolutions = @application_model.get_resolutions
+    application_model = @model_generator.create_live_model()
+    resolutions = application_model.get_resolutions
 
     if (resolutions.size > 0)
 
@@ -28,8 +29,7 @@ class Orc::Engine
         resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
       end
 
-      execute_action resolutions[0]
-
+      execute_action resolutions[0], application_model
     else
       @logger.log_resolution_complete(@resolution_steps)
       return true
