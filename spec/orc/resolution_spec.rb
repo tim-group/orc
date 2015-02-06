@@ -5,8 +5,6 @@ require 'rubygems'
 require 'rspec'
 require 'orc/factory'
 
-#TODO speed up sleeps ;)
-
 describe Orc::Engine do
 
   class InMemoryCmdb
@@ -148,6 +146,101 @@ describe Orc::Engine do
                         :host => "h3",
                         :version => "2.2",
                         :application => "app",
+                        :participating => true,
+                        :health        => "healthy"}]),
+      :cmdb => fake_cmdb(:groups => {
+            "a-app" => [{
+              :name => "blue",
+              :target_participation=>true,
+              :target_version => "5"
+            }]
+      })
+    })
+    engine = factory.engine()
+
+    expect {
+      steps = engine.resolve()
+    }.to raise_error(Orc::Exception::FailedToResolve)
+
+  end
+
+  xit 'safely deploys across multiple clusters and app types' do
+    factory = Orc::Factory.new({:environment=>"a", :application=>"app", :timeout=>0}, {
+      :remote_client => remote_client(:instances => [
+                      {:group => "blue",
+                        :cluster => "app-1",
+                        :host => "h1",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                      {:group => "blue",
+                        :cluster => "app-1",
+                        :host => "h2",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                       {:group => "blue",
+                        :cluster => "app-2",
+                        :host => "h3",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                      {:group => "blue",
+                        :cluster => "app-2",
+                        :host => "h4",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"}]),
+      :cmdb => fake_cmdb(:groups => {
+            "a-app" => [{
+              :name => "blue",
+              :target_participation=>true,
+              :target_version => "5"
+            }]
+      })
+    })
+    engine = factory.engine()
+
+    expect {
+      steps = engine.resolve()
+    }.to raise_error(Orc::Exception::FailedToResolve)
+
+  end
+
+
+  it 'safely deploys across multiple clusters and app types' do
+    factory = Orc::Factory.new({:environment=>"a", :application=>"app", :timeout=>0}, {
+      :remote_client => remote_client(:instances => [
+                      {:group => "blue",
+                        :cluster => "app-1",
+                        :host => "h1",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                      {:group => "blue",
+                        :cluster => "app-1",
+                        :host => "h2",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                       {:group => "blue",
+                        :cluster => "app-2",
+                        :host => "h3",
+                        :version => "2.2",
+                        :application => "app",
+                        :participating => true,
+                        :health        => "healthy"},
+                      {:group => "blue",
+                        :cluster => "app-2",
+                        :host => "h4",
+                        :version => "2.2",
+                        :application => "app-2",
                         :participating => true,
                         :health        => "healthy"}]),
       :cmdb => fake_cmdb(:groups => {

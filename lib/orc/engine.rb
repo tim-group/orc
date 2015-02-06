@@ -43,6 +43,7 @@ class Orc::Engine
        all_resolutions = application_models.map {|model| [model, model.get_resolutions]}
 
        finished = all_resolutions.map do |model,resolutions|
+         @logger.log("resolving one step for #{model.name}")
          resolve_one_step(resolutions, model)
        end.reduce(true) {|a,b| a && b}
 

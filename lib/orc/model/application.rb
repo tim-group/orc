@@ -32,7 +32,7 @@ class Orc::Model::Builder
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
-    clusters = statuses.group_by {|instance| instance[:cluster]}
+    clusters = statuses.group_by {|instance| "#{instance[:cluster]||"default"}:#{instance[:application]}"}
 
     clusters.map do |name, instances|
       instance_models = instances.map do |instance|
@@ -42,6 +42,7 @@ class Orc::Model::Builder
       end
 
       Orc::Model::Application.new({
+        :name => name,
         :instances => instance_models.sort_by { |instance| instance.group_name },
         :mismatch_resolver => @mismatch_resolver,
         :progress_logger => @progress_logger
@@ -51,9 +52,10 @@ class Orc::Model::Builder
 end
 
 class Orc::Model::Application
-  attr_reader :instances
+  attr_reader :instances,:name
   def initialize(args)
     @instances = args[:instances]
+    @name = args[:name]
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
