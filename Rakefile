@@ -11,22 +11,14 @@ require 'rspec/core/rake_task'
 require 'ci/reporter/rake/rspec'
 
 class Project
+  attr_reader :name
+  attr_reader :description
+  attr_reader :version
+
   def initialize args
     @name = args[:name]
     @description = args[:description]
     @version = args[:version]
-  end
-
-  def name
-    return @name
-  end
-
-  def description
-    return @description
-  end
-
-  def version
-    return @version
   end
 end
 
@@ -42,13 +34,13 @@ end
 
 desc "Create gem"
 task :gem do
-  sh "if [ -f *.gem ]; then rm *.gem; fi"
+  sh "rm -f *.gem"
   sh "gem build orc.gemspec"
 end
 
 desc "Create debian package from gem"
 task :gemdeb do
-  sh "if [ -f *.deb ]; then rm *.deb; fi"
+  sh "rm -f *.deb"
   sh "/var/lib/gems/1.8/bin/fpm -s gem -t deb orc-*.gem"
 end
 task :gemdeb => [:gem]
@@ -108,7 +100,7 @@ desc "Setup, package, test, and upload"
 task :build  => [:setup,:spec,:package]
 
 task :pre_doc do
-  sh "if [ -d html ]; then rm -r html; fi"
+  sh "rm -rf html"
 end
 
 Rake::RDocTask.new do |rd|
@@ -119,12 +111,12 @@ desc "Build docs"
 task :docs do
   sh "stat=$(git status 2> /dev/null | tail -n1); if [ \"nothing to commit (working directory clean)\" != \"$stat\" ]; then echo \"Unclean - please commit before docs\"; exit 2; fi"
   sh "git read-tree --prefix=gh-pages/ -u gh-pages"
-  sh "cp -r html/* gh-pages/rdoc"
+  sh "mv html/* gh-pages/rdoc"
   sh "rm -r html"
   sh "cat gh-pages/index.md.head README.md > gh-pages/index.md"
   sh "git add -f gh-pages"
   sh "tree=$(git write-tree --prefix=gh-pages/) && commit=$(echo \"Generated docs\" | git commit-tree $tree -p gh-pages) && git update-ref refs/heads/gh-pages $commit && git reset HEAD"
-  sh "if [ -d html ]; then rm -r html; fi"
-  sh "if [ -d gh-pages ]; then rm -r gh-pages; fi"
+  sh "rm -rf html"
+  sh "rm -rf gh-pages"
 end
 task :docs => [:pre_doc, :rdoc]
