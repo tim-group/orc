@@ -123,4 +123,3 @@ describe Orc::Util::OptionParser do
     command.class.name.should eql('Orc::Util::OptionParser::DeployRequest')
   end
 end
-

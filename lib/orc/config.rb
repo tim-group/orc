@@ -24,4 +24,3 @@ class Orc::Config
     @config[key]
   end
 end
-

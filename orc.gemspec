@@ -20,4 +20,3 @@ Gem::Specification.new do |s|
   s.add_development_dependency('ci_reporter')
   s.add_development_dependency('rake')
 end
-

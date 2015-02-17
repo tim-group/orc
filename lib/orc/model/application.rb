@@ -105,4 +105,3 @@ class Orc::Model::Application
     useable_resolutions
   end
 end
-

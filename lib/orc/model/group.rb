@@ -10,4 +10,3 @@ class Orc::Model::Group
     @target_participation = args[:target_participation]
   end
 end
-

@@ -13,4 +13,3 @@ module Orc::Exception
   class Timeout < Exception
   end
 end
-

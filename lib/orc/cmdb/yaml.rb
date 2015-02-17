@@ -27,4 +27,3 @@ class Orc::CMDB::Yaml
     end
   end
 end
-

@@ -28,4 +28,3 @@ describe Orc::Action::WaitActionBase do
     expect { new.do_execute(multi) }.to raise_error(Orc::Exception::Timeout)
   end
 end
-

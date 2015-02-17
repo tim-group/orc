@@ -217,4 +217,3 @@ class Orc::Util::OptionParser
     end
   end
 end
-

@@ -4,4 +4,3 @@ $: << '/opt/orctool/lib'
 require 'orc/util/option_parser'
 
 Orc::Util::OptionParser.new.parse.execute
-

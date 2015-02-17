@@ -21,4 +21,3 @@ describe Orc::Util::Timeout do
     expect { i.test }.to raise_error(Orc::Exception::Timeout)
   end
 end
-

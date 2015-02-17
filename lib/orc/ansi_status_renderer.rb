@@ -69,4 +69,3 @@ class Orc::AnsiStatusRenderer
     end
   end
 end
-

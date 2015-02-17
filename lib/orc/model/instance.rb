@@ -47,4 +47,3 @@ class Orc::Model::Instance
     @group.name
   end
 end
-

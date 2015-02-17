@@ -12,4 +12,3 @@ group :test do
   gem "git", "1.2.8"
   gem "json", "1.7.3"
 end
-

@@ -27,4 +27,3 @@ module Orc::Util::Timeout
     Alarm.alarm(0)
   end
 end
-

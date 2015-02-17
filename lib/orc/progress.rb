@@ -34,4 +34,3 @@ module Orc::Progress
     end
   end
 end
-
