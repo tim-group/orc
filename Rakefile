@@ -120,3 +120,8 @@ task :docs do
   sh "rm -rf gh-pages"
 end
 task :docs => [:pre_doc, :rdoc]
+
+desc "Run lint (Rubocop)"
+task :lint do
+  sh "/var/lib/gems/1.9.1/bin/rubocop"
+end
