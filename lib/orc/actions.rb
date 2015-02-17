@@ -5,7 +5,7 @@ module Orc::Action
   class Base
     include Orc::Progress
     attr_reader :instance
-    def initialize(remote_client, instance, timeout=nil)
+    def initialize(remote_client, instance, timeout = nil)
       @instance = instance
       @remote_client = remote_client
       @timeout = timeout || default_timeout
@@ -61,11 +61,11 @@ module Orc::Action
       logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version #{@instance.group.target_version}"
 
       response_received = @remote_client.update_to_version({
-          :group=>@instance.group_name,
+          :group => @instance.group_name
         }, [@instance.host], @instance.group.target_version
       )
 
-      if (!response_received)
+      if !response_received
         raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from #{@instance.host} within the timeout")
       end
 
@@ -73,7 +73,7 @@ module Orc::Action
     end
 
     def precedence
-      return 1
+      1
     end
   end
 
@@ -85,14 +85,14 @@ module Orc::Action
     def do_execute(all_actions)
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.enable_participation({
-        :group=>@instance.group.name,
+        :group => @instance.group.name
       }, [@instance.host])
       sleep(@timeout)
       successful
     end
 
     def precedence
-      return 1
+      1
     end
   end
 
@@ -102,8 +102,8 @@ module Orc::Action
     end
 
     def check_valid(application_model)
-      participating_instances = application_model.participating_instances.reject {|instance| instance == @instance}
-      if (participating_instances.size==0)
+      participating_instances = application_model.participating_instances.reject { |instance| instance == @instance }
+      if (participating_instances.size == 0)
         raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
       end
     end
@@ -111,14 +111,14 @@ module Orc::Action
     def do_execute(all_actions)
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.disable_participation({
-        :group=>@instance.group.name,
+        :group => @instance.group.name
       }, [@instance.host])
       sleep(@timeout)
       successful
     end
 
     def precedence
-      return 3
+      3
     end
   end
 
@@ -129,6 +129,7 @@ module Orc::Action
       @start_time = Time.now.to_i
       @max_wait ||= 25 * 60 # 25m
     end
+
     def do_execute(all_actions)
       first_action = all_actions.pop
       while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name do
@@ -142,8 +143,9 @@ module Orc::Action
       logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: #{has_waited_for}s of #{@max_wait} seconds"
       true
     end
+
     def precedence
-      return 2
+      2
     end
   end
 
@@ -159,7 +161,7 @@ module Orc::Action
     end
 
     def precedence
-      return 4
+      4
     end
 
     def complete?

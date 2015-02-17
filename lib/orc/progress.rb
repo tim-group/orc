@@ -2,11 +2,11 @@ require 'orc/namespace'
 
 module Orc::Progress
   def self.logger
-    return Orc::Progress::Logger.new()
+    Orc::Progress::Logger.new()
   end
 
   def logger
-    return Orc::Progress::Logger.new()
+    Orc::Progress::Logger.new()
   end
 
   class Logger
@@ -26,11 +26,11 @@ module Orc::Progress
     end
 
     def log_client_response(host, log)
-      print  "  [\e[1;50m#{host}\e[0m] #{log}\n"
+      print "  [\e[1;50m#{host}\e[0m] #{log}\n"
     end
 
     def log_client_response_error(host, log)
-      print  "  [\e[1;31m#{host}\e[0m] #{log}\n"
+      print "  [\e[1;31m#{host}\e[0m] #{log}\n"
     end
   end
 end

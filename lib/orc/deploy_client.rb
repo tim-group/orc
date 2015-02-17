@@ -17,13 +17,13 @@ class MCollective::RPC::DeploytoolWrapper
     get_client(spec[:environment], spec[:application], spec[:group]).status(:spec => spec)
   end
 
-  def custom_request(action,request,hosts,identity_hash)
+  def custom_request(action, request, hosts, identity_hash)
     get_client.custom_request(action, request, hosts, identity_hash)
   end
 
   private
 
-  def get_client(environment=nil, application=nil, group=nil)
+  def get_client(environment = nil, application = nil, group = nil)
     begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
       mc = rpcclient("deployapp", { :options => @options })
       unless environment.nil?
@@ -66,7 +66,7 @@ class Orc::DeployClient
     @environment = args[:environment]
     @application = args[:application]
     @group = args[:group]
-    if args[:config]!=nil
+    if args[:config] != nil
       @options[:config] = args[:config]
     end
 
@@ -74,8 +74,8 @@ class Orc::DeployClient
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
   end
 
-  def status(spec={})
-    instances=[]
+  def status(spec = {})
+    instances = []
 
     spec[:application] = @application if !@application.nil?
     spec[:group] = @group if !@group.nil?
@@ -89,13 +89,13 @@ class Orc::DeployClient
         raw_instances = data
       end
 
-      if ! raw_instances.kind_of?(Array)
+      if !raw_instances.kind_of?(Array)
         next
       end
 
       raw_instances.each do |instance|
         instance[:host] = resp[:sender]
-        instances<<instance
+        instances << instance
       end
     end
 
@@ -108,11 +108,11 @@ class Orc::DeployClient
     instances
   end
 
-  def update_to_version(spec,hosts,version)
+  def update_to_version(spec, hosts, version)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("update_to_version", {:spec=>spec, :version=>version}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+    @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts[0], { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
       return resp[:data][:successful]
     end
@@ -120,19 +120,19 @@ class Orc::DeployClient
     false
   end
 
-  def enable_participation(spec,hosts)
+  def enable_participation(spec, hosts)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    @mcollective_client.custom_request("enable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+    @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts[0], { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
     end
   end
 
-  def disable_participation(spec,hosts)
+  def disable_participation(spec, hosts)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("disable_participation", {:spec=>spec}, hosts[0], {"identity"=>hosts[0]}).each do |resp|
+    @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts[0], { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
     end
   end
@@ -149,5 +149,4 @@ class Orc::DeployClient
       @logger.log_client_response_error(resp[:sender], log)
     end
   end
-
 end

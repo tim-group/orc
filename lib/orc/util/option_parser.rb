@@ -8,8 +8,8 @@ require 'orc/ansi_status_renderer'
 require 'etc'
 
 user = ENV['USER']
-ENV['MCOLLECTIVE_SSL_PRIVATE']="/home/#{user}/.mc/#{user}-private.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PRIVATE')
-ENV['MCOLLECTIVE_SSL_PUBLIC']="/etc/mcollective/ssl/clients/#{user}.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PUBLIC')
+ENV['MCOLLECTIVE_SSL_PRIVATE'] = "/home/#{user}/.mc/#{user}-private.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PRIVATE')
+ENV['MCOLLECTIVE_SSL_PUBLIC'] = "/etc/mcollective/ssl/clients/#{user}.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PUBLIC')
 
 class Orc::Util::OptionParser
   class Base
@@ -21,7 +21,7 @@ class Orc::Util::OptionParser
     end
 
     def initialize(options)
-       @options = options
+      @options = options
     end
 
     def long_command_name
@@ -45,7 +45,7 @@ class Orc::Util::OptionParser
 
   class StatusRequest < Base
     def required
-      return [:environment]
+      [:environment]
     end
 
     def execute(factory)
@@ -58,12 +58,12 @@ class Orc::Util::OptionParser
 
     def self.command_options
       ['-s', '--show-status', 'Shows status']
-   end
+    end
   end
 
   class DeployRequest < Base
     def required
-      return [:environment,:application,:version]
+      [:environment, :application, :version]
     end
 
     def execute(factory)
@@ -75,13 +75,13 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-d','--deploy','changes the cmdb - does an install followed by a swap']
+      ['-d', '--deploy', 'changes the cmdb - does an install followed by a swap']
     end
   end
 
   class  PromotionRequest < Base
     def required
-      return [:environment,:application,:promote_from_environment]
+      [:environment, :application, :promote_from_environment]
     end
 
     def execute(factory)
@@ -95,7 +95,7 @@ class Orc::Util::OptionParser
 
   class  InstallRequest < Base
     def required
-      return [:environment,:application,:version]
+      [:environment, :application, :version]
     end
 
     def execute(factory)
@@ -107,13 +107,13 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-i','--install','changes the cmdb - states a new version for the inactive group']
+      ['-i', '--install', 'changes the cmdb - states a new version for the inactive group']
     end
   end
 
   class  SwapRequest < Base
     def required
-      return [:environment,:application]
+      [:environment, :application]
     end
 
     def execute(factory)
@@ -121,13 +121,13 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-c','--swap','changes the cmdb, swaps the online group to offline and vice-versa']
+      ['-c', '--swap', 'changes the cmdb, swaps the online group to offline and vice-versa']
     end
   end
 
   class ResolveRequest < Base
     def required
-      return [:environment,:application]
+      [:environment, :application]
     end
 
     def execute(factory)
@@ -147,27 +147,27 @@ class Orc::Util::OptionParser
     @option_parser = OptionParser.new do|opts|
       opts.banner =
 "Usage:
-	orc --environment=production --show-status
-	orc --environment=production --show-status --group=blue
-	orc --environment=production --application=MyApp --resolve
-	orc --environment=production --application=MyApp --version=2.21.0 --deploy
-	orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy
+  orc --environment=production --show-status
+  orc --environment=production --show-status --group=blue
+  orc --environment=production --application=MyApp --resolve
+  orc --environment=production --application=MyApp --version=2.21.0 --deploy
+  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy
 
 "
 
-      opts.on("-e","--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
+      opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
         @options[:environment] = env
       end
-      opts.on("-f","--promote-from ENVIRONMENT", "specify the environment to promote from") do |env|
+      opts.on("-f", "--promote-from ENVIRONMENT", "specify the environment to promote from") do |env|
         @options[:promote_from_environment] = env
       end
-      opts.on("-a","--application APPLICATION", "specify the application to execute the plan for") do |app|
+      opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
         @options[:application] = app
       end
-      opts.on("-v","--version VERSION", "") do    |version|
+      opts.on("-v", "--version VERSION", "") do    |version|
         @options[:version] = version
       end
-      opts.on("-g","--group GROUP", "specify the group to execute the plan") do |env|
+      opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
         @options[:group] = env
       end
 
@@ -204,7 +204,7 @@ class Orc::Util::OptionParser
       check_required(command)
     end
 
-    if @commands.size==0
+    if @commands.size == 0
       print @option_parser.help()
       exit(1)
     end

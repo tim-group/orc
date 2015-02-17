@@ -1,7 +1,7 @@
 class Orc::AnsiStatusRenderer
   def render(statuses)
-    buffer =""
-    keys = [:host,:application,:group,:present,:version,:participating,:health]
+    buffer = ""
+    keys = [:host, :application, :group, :present, :version, :participating, :health]
     lengths = {}
     keys.each do |key|
       lengths[key] = key.to_s.length
@@ -9,10 +9,10 @@ class Orc::AnsiStatusRenderer
 
     statuses.each do |status|
       keys.each do |key|
-         len = status[key].to_s.length
-         if lengths[key] < len
-           lengths[key] = len
-         end
+        len = status[key].to_s.length
+        if lengths[key] < len
+          lengths[key] = len
+        end
       end
     end
 
@@ -20,10 +20,10 @@ class Orc::AnsiStatusRenderer
     keys.each do |key|
       header_buffer << "#{key}"
       rem = lengths[key] - key.to_s.length + 1
-      (1..rem).to_a.each { |x| header_buffer << " "}
+      (1..rem).to_a.each { |x| header_buffer << " " }
     end
 
-    buffer << Color.new(:text=>header_buffer).header().display()
+    buffer << Color.new(:text => header_buffer).header().display()
 
     statuses.each do |status|
       color = status[:group]
@@ -32,40 +32,40 @@ class Orc::AnsiStatusRenderer
       keys.each do |key|
         status_buffer << "#{status[key]}"
         rem = lengths[key] - status[key].to_s.length + 1
-        (1..rem).to_a.each { |x| status_buffer << " "}
+        (1..rem).to_a.each { |x| status_buffer << " " }
       end
       status_buffer << "\n "
-      buffer << Color.new(:text=>status_buffer).color(color).highlight(present).display()
+      buffer << Color.new(:text => status_buffer).color(color).highlight(present).display()
     end
 
-    return buffer
+    buffer
   end
 
   class Color
     def initialize args
-      @text=args[:text]
-      @colors= {"cyan"=>36,"pink"=>35,"blue"=>34,"yellow"=>33,"green"=>32,"red"=>31,"grey"=>30}
+      @text = args[:text]
+      @colors = { "cyan" => 36, "pink" => 35, "blue" => 34, "yellow" => 33, "green" => 32, "red" => 31, "grey" => 30 }
     end
 
     def color color
-      @text="\e[1;#{@colors[color]}m#{@text}"
-      return self
+      @text = "\e[1;#{@colors[color]}m#{@text}"
+      self
     end
 
     def highlight highlight
-      if (highlight)
-        @text="\e[1;40m#{@text}"
+      if highlight
+        @text = "\e[1;40m#{@text}"
       end
-      return self
+      self
     end
 
     def header
-      @text="\e[1;45m#{@text}"
-      return self
+      @text = "\e[1;45m#{@text}"
+      self
     end
 
     def display
-      return "#{@text}\e[0m\n"
+      "#{@text}\e[0m\n"
     end
   end
 end

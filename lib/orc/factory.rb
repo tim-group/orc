@@ -14,7 +14,7 @@ class Orc::Factory
 
   attr_accessor :cmdb
 
-  def initialize(options={}, dependencies={})
+  def initialize(options = {}, dependencies = {})
     @application = options[:application]
     @environment = options[:environment]
     @group = options[:group]
@@ -23,12 +23,15 @@ class Orc::Factory
     @cmdb = dependencies[:cmdb]
     @remote_client = dependencies[:remote_client]
   end
+
   def config_location
     "#{ENV['HOME']}/.orc.yaml"
   end
+
   def config
     @config ||= Orc::Config.new(config_location)
   end
+
   def cmdb
     @cmdb ||= Orc::CMDB::Yaml.new(:data_dir => config['cmdb_local_path'])
   end
@@ -49,7 +52,7 @@ class Orc::Factory
   end
 
   def high_level_orchestration
-    @high_level_orchestration||= Orc::CMDB::HighLevelOrchestration.new(
+    @high_level_orchestration ||= Orc::CMDB::HighLevelOrchestration.new(
         :cmdb => cmdb,
         :git => cmdb_git,
         :environment => environment,

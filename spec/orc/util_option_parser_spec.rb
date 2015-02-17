@@ -20,7 +20,7 @@ end
 class Orc::Util::OptionParser::TestOption < Orc::Util::OptionParser::Base
   attr_accessor :have_run, :factory
   def required
-    return [:environment,:application,:version]
+    [:environment, :application, :version]
   end
 
   def execute(factory)
@@ -34,16 +34,15 @@ class Orc::Util::OptionParser::TestOption < Orc::Util::OptionParser::Base
 end
 
 describe Orc::Util::OptionParser do
-
   it 'can be constructed' do
     foo = Orc::Util::OptionParser.new
   end
 
   it 'Can parse and execute fake option' do
-    p = MockOptionParser.new(['-z', '--environment', 'foo', '--application', 'bar', '--version', '2.5' ])
+    p = MockOptionParser.new(['-z', '--environment', 'foo', '--application', 'bar', '--version', '2.5'])
     Orc::Util::OptionParser::TestOption.setup_command_options(p.options, p.option_parser, p.commands)
     p.parse
-    p.options.should eql({:environment => 'foo', :application => 'bar', :version => '2.5'})
+    p.options.should eql({ :environment => 'foo', :application => 'bar', :version => '2.5' })
     p.commands.size.should eql(1)
     command = p.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::TestOption')
@@ -59,11 +58,11 @@ describe Orc::Util::OptionParser do
   it 'parses options from argv and passes them to option class constructor' do
     parser = MockOptionParser.new(['--environment', 'foo', '--application', 'bar', '-r']).parse
 
-    parser.options.should eql({:environment => 'foo', :application => 'bar'})
+    parser.options.should eql({ :environment => 'foo', :application => 'bar' })
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::ResolveRequest')
-    command.options.should eql({:environment => 'foo', :application => 'bar'})
+    command.options.should eql({ :environment => 'foo', :application => 'bar' })
   end
 
   it 'Works with just --pull-cmdb' do
@@ -116,7 +115,7 @@ describe Orc::Util::OptionParser do
     command.class.name.should eql('Orc::Util::OptionParser::SwapRequest')
   end
 
- it 'Works for DeployRequest' do
+  it 'Works for DeployRequest' do
     parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]

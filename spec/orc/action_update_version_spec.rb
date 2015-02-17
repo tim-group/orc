@@ -9,35 +9,33 @@ require 'orc/model/group'
 require 'orc/deploy_client'
 
 describe Orc::Action::UpdateVersionAction do
-
   before do
     @remote_client = double(Orc::DeployClient)
   end
 
   it 'sends an update message to the given host' do
-    group = Orc::Model::Group.new(:name=>"blue",:target_version=>"16")
+    group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({
-      :host=>"host1"
-    },group)
+      :host => "host1"
+    }, group)
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
-    @remote_client.should_receive(:update_to_version).with({:group=>"blue"}, ["host1"], "16").and_return(true)
+    @remote_client.should_receive(:update_to_version).with({ :group => "blue" }, ["host1"], "16").and_return(true)
     update_version_action.execute([update_version_action])
   end
 
   it 'throws an exception if the agent timed out' do
-    group = Orc::Model::Group.new(:name=>"blue",:target_version=>"16")
+    group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({
-      :host=>"host1"
-    },group)
+      :host => "host1"
+    }, group)
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
     @remote_client.stub(:update_to_version).and_return(false)
-    expect {update_version_action.execute([update_version_action])}.to raise_error(Orc::Exception::FailedToResolve)
+    expect { update_version_action.execute([update_version_action]) }.to raise_error(Orc::Exception::FailedToResolve)
   end
 
-
-  def get_testaction(group_name='A')
+  def get_testaction(group_name = 'A')
     group = double()
     group.stub(:name).and_return(group_name)
     group.stub(:target_version).and_return(1.1)
@@ -67,5 +65,4 @@ describe Orc::Action::UpdateVersionAction do
     second = get_testaction()
     expect { second.do_execute([first, second]) }.to raise_error(Orc::Exception::FailedToResolve)
   end
-
 end

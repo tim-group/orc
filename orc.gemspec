@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.authors     = ["David Ellis", "Tomas Doran"]
   s.email       = 'infra@timgroup.com'
   s.files       = FileList['lib/**/*.rb',
-                            'bin/*',
+                           'bin/*',
                             ].to_a
   s.add_dependency('git', '>= 1.2.5')
   s.add_development_dependency('rspec')

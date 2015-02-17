@@ -23,9 +23,9 @@ class Project
 end
 
 @project = Project.new(
-  :name=>"orctool",
-  :description=>"orchestration tool",
-  :version=>"1.0.#{ENV['BUILD_NUMBER']}"
+  :name => "orctool",
+  :description => "orchestration tool",
+  :version => "1.0.#{ENV['BUILD_NUMBER']}"
 )
 
 task :default do
@@ -47,9 +47,9 @@ task :gemdeb => [:gem]
 
 desc "Remove build directory, etc."
 task :clean do
-  FileUtils.rmtree("build" )
+  FileUtils.rmtree("build")
   FileUtils.rmtree("config")
-  if (File.exists?("app_under_test.properties"))
+  if File.exist?("app_under_test.properties")
     FileUtils.rm("app_under_test.properties")
   end
 end
@@ -69,19 +69,19 @@ task :package do
   FileUtils.cp_r("bin", "build/package/opt/orctool/")
 
   arguments = [
-    "-p", "build/#{@project.name}_#{@project.version}.deb" ,
-    "-n" ,"#{@project.name}" ,
-    "-v" ,"#{@project.version}" ,
-    "-m" ,"Infrastructure <infra@timgroup.com>" ,
-    "-a", 'all' ,
-    "-t", 'deb' ,
-    "-s", 'dir' ,
-    "--description", "#{@project.description}" ,
+    "-p", "build/#{@project.name}_#{@project.version}.deb",
+    "-n", "#{@project.name}",
+    "-v", "#{@project.version}",
+    "-m", "Infrastructure <infra@timgroup.com>",
+    "-a", 'all',
+    "-t", 'deb',
+    "-s", 'dir',
+    "--description", "#{@project.description}",
     "--url", 'https://github.com/tim-group/orc',
-    "-C" ,'build/package'
+    "-C", 'build/package'
   ]
 
-  raise "problem creating debian package " unless FPM::Program.new.run(arguments)==0
+  raise "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
 end
 
 desc "Run specs"
@@ -97,14 +97,14 @@ RSpec::Core::RakeTask.new(:coverage) do |t|
 end
 
 desc "Setup, package, test, and upload"
-task :build  => [:setup,:spec,:package]
+task :build  => [:setup, :spec, :package]
 
 task :pre_doc do
   sh "rm -rf html"
 end
 
 Rake::RDocTask.new do |rd|
-    rd.rdoc_files.include("lib/**/*.rb")
+  rd.rdoc_files.include("lib/**/*.rb")
 end
 
 desc "Build docs"

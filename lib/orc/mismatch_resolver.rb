@@ -7,7 +7,7 @@ class Orc::MismatchResolver
       :does_participate,
       :version_mismatch,
       :is_healthy,
-      :is_drained,
+      :is_drained
     ].each { |k|
       if state[k].nil?
         t_state = state.clone
@@ -19,73 +19,73 @@ class Orc::MismatchResolver
         return
       end
     }
-    @cases[state] = lambda {|instance| Orc::Action.const_get(name).new(@remote_client,instance, @timeout)}
+    @cases[state] = lambda { |instance| Orc::Action.const_get(name).new(@remote_client, instance, @timeout) }
   end
 
-  def initialize(remote_client, timeout=nil)
+  def initialize(remote_client, timeout = nil)
     @remote_client = remote_client
-    @timeout=timeout
+    @timeout = timeout
     @cases = {}
     in_case({
       :should_participate => true,
       :does_participate   => true,
       :version_mismatch   => false,
-      :is_healthy         => true,
+      :is_healthy         => true
     }, 'ResolvedCompleteAction')
     in_case({
       :should_participate => true,
       :does_participate   => true,
       :version_mismatch   => false,
-      :is_healthy         => false,
+      :is_healthy         => false
     }, 'WaitForHealthyAction')
     in_case({
       :should_participate => false,
       :does_participate   => false,
-      :version_mismatch   => false,
+      :version_mismatch   => false
     }, 'ResolvedCompleteAction')
     in_case({
       :should_participate => true,
       :does_participate   => true,
-      :version_mismatch   => true,
+      :version_mismatch   => true
     }, 'DisableParticipationAction')
     in_case({
       :does_participate   => false,
       :version_mismatch   => true,
-      :is_drained         => true,
+      :is_drained         => true
     }, 'UpdateVersionAction')
     in_case({
       :does_participate   => false,
       :version_mismatch   => true,
-      :is_drained         => false,
+      :is_drained         => false
     }, 'WaitForDrainedAction')
     in_case({
       :should_participate => true,
       :does_participate   => false,
       :version_mismatch   => false,
-      :is_healthy         => true,
+      :is_healthy         => true
     }, 'EnableParticipationAction')
     in_case({
        :should_participate => true,
        :does_participate   => false,
        :version_mismatch   => false,
-       :is_healthy         => false,
+       :is_healthy         => false
      }, 'WaitForHealthyAction')
     in_case({
       :should_participate => false,
-      :does_participate   => true,
+      :does_participate   => true
     }, 'DisableParticipationAction')
     in_case({
       :should_participate => false,
-      :does_participate   => true,
+      :does_participate   => true
     }, 'DisableParticipationAction')
   end
 
   def get_case(state)
-    return @cases[state] || raise("CASE NOT HANDLED #{state}")
+    @cases[state] || raise("CASE NOT HANDLED #{state}")
   end
 
   def resolve(instance)
-    return get_case(
+    get_case(
       :should_participate => instance.group.target_participation,
       :does_participate   => instance.participation,
       :version_mismatch   => instance.version_mismatch?,

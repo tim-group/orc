@@ -5,12 +5,11 @@ require 'orc/model/group'
 require 'orc/model/instance'
 
 class Orc::Model::Builder
-
   def initialize(args)
-    @remote_client = args[:remote_client] #|| raise('Nust pass :remote_client')
+    @remote_client = args[:remote_client] # || raise('Nust pass :remote_client')
     @cmdb = args[:cmdb]
-    @environment = args[:environment] #|| raise('Must pass :environment')
-    @application = args[:application] #|| raise('Must pass :application')
+    @environment = args[:environment] # || raise('Must pass :environment')
+    @application = args[:application] # || raise('Must pass :application')
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
@@ -18,7 +17,7 @@ class Orc::Model::Builder
   end
 
   def get_cmdb_groups
-    cmdb_model_for_app = @cmdb.retrieve_application(:environment=>@environment, :application=>@application)
+    cmdb_model_for_app = @cmdb.retrieve_application(:environment => @environment, :application => @application)
     raise Orc::CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
     groups = {}
     cmdb_model_for_app.each do |group|
@@ -32,7 +31,7 @@ class Orc::Model::Builder
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
-    clusters = statuses.group_by {|instance| "#{instance[:cluster]||"default"}:#{instance[:application]}"}
+    clusters = statuses.group_by { |instance| "#{instance[:cluster] || "default"}:#{instance[:application]}" }
 
     clusters.map do |name, instances|
       instance_models = instances.map do |instance|
@@ -52,7 +51,7 @@ class Orc::Model::Builder
 end
 
 class Orc::Model::Application
-  attr_reader :instances,:name
+  attr_reader :instances, :name
   def initialize(args)
     @instances = args[:instances]
     @name = args[:name]
@@ -68,7 +67,7 @@ class Orc::Model::Application
   end
 
   def get_proposed_resolutions_for(live_instances)
-    proposed_resolutions =[]
+    proposed_resolutions = []
     live_instances.each do |instance|
       proposed_resolutions << @mismatch_resolver.resolve(instance)
     end
@@ -93,7 +92,7 @@ class Orc::Model::Application
         resolution.check_valid(self)
         reject = false
       rescue Exception => e
-        #puts "Exception from #{resolution.to_s} was #{e}"
+        # puts "Exception from #{resolution.to_s} was #{e}"
       end
       reject
     }

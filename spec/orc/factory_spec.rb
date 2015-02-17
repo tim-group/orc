@@ -18,7 +18,7 @@ describe Orc::Factory do
       ENV['HOME'] = dir
       data = {
         'cmdb_repo_url' => 'git@github.com:footest.git',
-        'cmdb_local_path' => '/tmp/test-cmdb',
+        'cmdb_local_path' => '/tmp/test-cmdb'
       }
       fn = "#{dir}/.orc.yaml"
       File.open(fn, 'w') do |f|

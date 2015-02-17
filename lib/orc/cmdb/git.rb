@@ -5,7 +5,7 @@ require 'orc/util/timeout'
 
 class Orc::CMDB::Git
   include Orc::Util::Timeout
-  def initialize(options={})
+  def initialize(options = {})
     @repo_url = options[:origin] || raise("Need origin option")
     @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
@@ -42,12 +42,12 @@ class Orc::CMDB::Git
   end
 
   def get_branch()
-    return @git.current_branch
+    @git.current_branch
   end
 
-  def commit_and_push(message='orc auto-updating cmdb')
+  def commit_and_push(message = 'orc auto-updating cmdb')
     if File.directory?(@local_path)
-      if (@git.status.changed.size>0)
+      if @git.status.changed.size > 0
         timeout(@timeout) do
           @git.commit_all(message)
           @git.fetch('origin')

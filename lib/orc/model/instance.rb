@@ -17,11 +17,11 @@ class Orc::Model::Instance
   end
 
   def version_mismatch?
-    return self.version != group.target_version
+    self.version != group.target_version
   end
 
   def key()
-    return {
+    {
       :group => group.name,
       :host  => host
     }
@@ -32,11 +32,11 @@ class Orc::Model::Instance
   end
 
   def participating?
-    return participation
+    participation
   end
 
   def is_in_pool?
-    return (healthy? and participating?)
+    (healthy? and participating?)
   end
 
   def stoppable?
