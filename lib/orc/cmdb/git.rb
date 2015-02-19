@@ -13,7 +13,7 @@ class Orc::CMDB::Git
     @debug = false
   end
 
-  def update()
+  def update
     logger = @debug ? Logger.new(STDOUT) : nil
     if File.directory?(@local_path)
       timeout(@timeout) do
@@ -41,7 +41,7 @@ class Orc::CMDB::Git
     end
   end
 
-  def get_branch()
+  def get_branch
     @git.current_branch
   end
 

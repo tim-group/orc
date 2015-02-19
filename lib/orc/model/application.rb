@@ -26,7 +26,7 @@ class Orc::Model::Builder
     groups
   end
 
-  def create_live_model()
+  def create_live_model
     @progress_logger.log("creating live model")
     groups = get_cmdb_groups()
     statuses = @remote_client.status(:application => @application, :environment => @environment)

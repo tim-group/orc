@@ -140,7 +140,7 @@ class Orc::Util::OptionParser
     end
   end
 
-  def initialize()
+  def initialize
     @options = {}
     @commands = []
 

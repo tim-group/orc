@@ -20,7 +20,7 @@ class Orc::Model::Instance
     self.version != group.target_version
   end
 
-  def key()
+  def key
     {
       :group => group.name,
       :host  => host

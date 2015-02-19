@@ -42,17 +42,17 @@ class Orc::AnsiStatusRenderer
   end
 
   class Color
-    def initialize args
+    def initialize(args)
       @text = args[:text]
       @colors = { "cyan" => 36, "pink" => 35, "blue" => 34, "yellow" => 33, "green" => 32, "red" => 31, "grey" => 30 }
     end
 
-    def color color
+    def color(color)
       @text = "\e[1;#{@colors[color]}m#{@text}"
       self
     end
 
-    def highlight highlight
+    def highlight(highlight)
       if highlight
         @text = "\e[1;40m#{@text}"
       end

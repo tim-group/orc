@@ -17,7 +17,7 @@ class Orc::CMDB::HighLevelOrchestration
     @git.commit_and_push("#{@application} #{@environment}: installing #{version} for group #{group}")
   end
 
-  def swap()
+  def swap
     @git.update()
     groups = @cmdb.retrieve_application(@spec)
     _swap(groups)

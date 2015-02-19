@@ -15,7 +15,7 @@ class Project
   attr_reader :description
   attr_reader :version
 
-  def initialize args
+  def initialize(args)
     @name = args[:name]
     @description = args[:description]
     @version = args[:version]
@@ -86,7 +86,7 @@ end
 
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
-  t.rspec_opts = %w[--color]
+  t.rspec_opts = %w(--color)
 end
 
 desc "Generate code coverage"

@@ -35,10 +35,10 @@ class Orc::Engine
     false
   end
 
-  def resolve()
+  def resolve
     @loop_count = 0
     finished = false
-    while not finished do
+    while !finished do
       application_models = @model_generator.create_live_model()
       all_resolutions = application_models.map { |model| [model, model.get_resolutions] }
 

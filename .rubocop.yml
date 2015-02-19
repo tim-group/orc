@@ -127,11 +127,6 @@ Style/CommentAnnotation:
 Style/CommentIndentation:
   Enabled: false
 
-# Offense count: 7
-# Cop supports --auto-correct.
-Style/DefWithParentheses:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/DeprecatedHashMethods:
@@ -141,7 +136,7 @@ Style/DeprecatedHashMethods:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 17
+# Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/FirstParameterIndentation:
@@ -168,12 +163,6 @@ Style/IndentHash:
 Style/MethodCallParentheses:
   Enabled: false
 
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/MethodDefParentheses:
-  Enabled: false
-
 # Offense count: 1
 Style/MultilineBlockChain:
   Enabled: false
@@ -197,17 +186,6 @@ Style/Next:
 # Cop supports --auto-correct.
 # Configuration parameters: IncludeSemanticChanges.
 Style/NonNilCheck:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Not:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
   Enabled: false
 
 # Offense count: 1

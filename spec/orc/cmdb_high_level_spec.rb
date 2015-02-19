@@ -21,10 +21,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -57,10 +57,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -91,10 +91,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -127,10 +127,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -165,10 +165,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -205,10 +205,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -242,10 +242,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -274,10 +274,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -309,10 +309,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -350,10 +350,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -380,10 +380,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -401,10 +401,10 @@ describe Orc::CMDB::HighLevelOrchestration do
 
   it 'promotes an application from one environment to another' do
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "env2",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "env2",
+      :application => "ExampleApp")
 
     cmdb_env1_yaml = [
       { :name => 'blue',
@@ -447,10 +447,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -492,10 +492,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
@@ -537,10 +537,10 @@ describe Orc::CMDB::HighLevelOrchestration do
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-    :cmdb => @cmdb,
-    :git => @git,
-    :environment => "test_env",
-    :application => "ExampleApp")
+      :cmdb => @cmdb,
+      :git => @git,
+      :environment => "test_env",
+      :application => "ExampleApp")
 
     @cmdb.stub(:retrieve_application).with({ :environment => "test_env", :application => "ExampleApp" }).and_return(cmdb_yaml)
 
