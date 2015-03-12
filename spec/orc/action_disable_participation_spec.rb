@@ -1,6 +1,7 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 $: << File.join(File.dirname(__FILE__), "..", "../test")
 
+require 'spec_helper'
 require 'rubygems'
 require 'rspec'
 require 'orc/actions'
@@ -21,7 +22,9 @@ describe Orc::Action::DisableParticipationAction do
 
     update_version_action = Orc::Action::DisableParticipationAction.new(@remote_client, instance_model, 0)
     @remote_client.should_receive(:disable_participation).with({ :group => "blue" }, ["host1"])
+    silence_output
     update_version_action.execute([])
+    restore_output
 
     update_version_action.to_s.should eql('DisableParticipationAction: on host1 blue')
   end

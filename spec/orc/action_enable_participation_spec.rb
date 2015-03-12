@@ -1,6 +1,7 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 $: << File.join(File.dirname(__FILE__), "..", "../test")
 
+require 'spec_helper'
 require 'rubygems'
 require 'rspec'
 require 'orc/actions'
@@ -21,6 +22,8 @@ describe Orc::Action::EnableParticipationAction do
 
     update_version_action = Orc::Action::EnableParticipationAction.new(@remote_client, instance_model, 0)
     @remote_client.should_receive(:enable_participation).with({ :group => "blue" }, ["host1"])
+    silence_output
     update_version_action.execute([])
+    restore_output
   end
 end

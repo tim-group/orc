@@ -1,6 +1,7 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 $: << File.join(File.dirname(__FILE__), "..", "../test")
 
+require 'spec_helper'
 require 'rubygems'
 require 'rspec'
 require 'orc/actions'
@@ -17,7 +18,9 @@ describe Orc::Action::WaitActionBase do
     instance.stub(:group).and_return(group)
     instance.stub(:host).and_return('localhost')
     i = Orc::Action::WaitActionBase.new('fo', instance)
+    silence_output
     i.do_execute([i])
+    restore_output
     sleep 1
     i.max_wait = 0
     expect { i.do_execute([i]) }.to raise_error(Orc::Exception::Timeout)

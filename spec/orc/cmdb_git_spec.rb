@@ -1,3 +1,7 @@
+$: << File.join(File.dirname(__FILE__), "..", "../lib")
+$: << File.join(File.dirname(__FILE__), "..", "../test")
+
+require 'spec_helper'
 require 'rubygems'
 require 'rspec'
 require 'orc/cmdb/git'
