@@ -8,7 +8,7 @@ class Orc::MismatchResolver
       :version_mismatch,
       :is_healthy,
       :is_drained
-    ].each { |k|
+    ].each do |k|
       if state[k].nil?
         t_state = state.clone
         f_state = state.clone
@@ -18,7 +18,7 @@ class Orc::MismatchResolver
         in_case(f_state, name)
         return
       end
-    }
+    end
     @cases[state] = lambda { |instance| Orc::Action.const_get(name).new(@remote_client, instance, @timeout) }
   end
 
@@ -90,7 +90,7 @@ class Orc::MismatchResolver
       :does_participate   => instance.participation,
       :version_mismatch   => instance.version_mismatch?,
       :is_healthy         => instance.healthy?,
-      :is_drained         => instance.stoppable? # FIXME - should come from model of LB connections instead?
+      :is_drained         => instance.stoppable? # FIXME: should come from model of LB connections instead?
     ).call(instance)
   end
 end

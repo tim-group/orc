@@ -34,7 +34,7 @@ class Orc::CMDB::Git
       end
     end
 
-    if self.get_branch() != @branch
+    if get_branch() != @branch
       timeout(@timeout) do
         @git.branch(@branch).checkout
       end

@@ -15,8 +15,8 @@ class Orc::Util::OptionParser
   class Base
     attr_reader :options
     def self.setup_command_options(options, opts, commands)
-      opts.on(*self.command_options) do
-        commands << self.new(options)
+      opts.on(*command_options) do
+        commands << new(options)
       end
     end
 
@@ -25,7 +25,7 @@ class Orc::Util::OptionParser
     end
 
     def long_command_name
-      self.class.command_options[1] # FIXME - Array index is horrible!
+      self.class.command_options[1] # FIXME: Array index is horrible!
     end
   end
 
@@ -146,14 +146,12 @@ class Orc::Util::OptionParser
 
     @option_parser = OptionParser.new do|opts|
       opts.banner =
-"Usage:
-  orc --environment=production --show-status
-  orc --environment=production --show-status --group=blue
-  orc --environment=production --application=MyApp --resolve
-  orc --environment=production --application=MyApp --version=2.21.0 --deploy
-  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy
-
-"
+        "Usage:\n" \
+        "  orc --environment=production --show-status\n" \
+        "  orc --environment=production --show-status --group=blue\n" \
+        "  orc --environment=production --application=MyApp --resolve\n" \
+        "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
+        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n\n"
 
       opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
         @options[:environment] = env
@@ -181,9 +179,7 @@ class Orc::Util::OptionParser
     required = command.required
     failed = []
     required.each do |option|
-      if @options[option].nil?
-        failed.push(option)
-      end
+      failed.push(option) if @options[option].nil?
     end
     if failed.size > 0
       print "Command #{command.long_command_name} required the following options (not supplied):\n"

@@ -42,7 +42,7 @@ describe Orc::Engine do
       @fail_to_deploy = opts[:fail_to_deploy]
     end
 
-    def update_to_version(spec, hosts, target_version)
+    def update_to_version(_spec, hosts, target_version)
       return @instances if @fail_to_deploy
 
       @instances = @instances.map do |instance|
@@ -55,7 +55,7 @@ describe Orc::Engine do
       end
     end
 
-    def disable_participation(spec, hosts)
+    def disable_participation(_spec, hosts)
       @instances = @instances.map do |instance|
         if (instance[:host] == hosts[0])
           instance[:participating] = false
@@ -66,7 +66,7 @@ describe Orc::Engine do
       end
     end
 
-    def enable_participation(spec, hosts)
+    def enable_participation(_spec, hosts)
       @instances = @instances.map do |instance|
         if (instance[:host] == hosts[0])
           instance[:participating] = true
@@ -77,7 +77,7 @@ describe Orc::Engine do
       end
     end
 
-    def status(spec)
+    def status(_spec)
       @instances
     end
   end
@@ -156,11 +156,11 @@ describe Orc::Engine do
     })
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       steps = engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::FailedToResolve)
+    end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   xit 'safely deploys across multiple clusters and app types' do
@@ -204,11 +204,11 @@ describe Orc::Engine do
     })
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       steps = engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::FailedToResolve)
+    end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'safely deploys across multiple clusters and app types' do
@@ -252,11 +252,11 @@ describe Orc::Engine do
     })
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       steps = engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::FailedToResolve)
+    end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'gives sensible error messages when cmdb info is missing' do
@@ -278,11 +278,11 @@ describe Orc::Engine do
 
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       engine.resolve()
       restore_output
-    }.to raise_error(Orc::CMDB::ApplicationMissing)
+    end.to raise_error(Orc::CMDB::ApplicationMissing)
   end
 
   it 'raises an error when there is no cmdb information for the given group' do
@@ -306,11 +306,11 @@ describe Orc::Engine do
 
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::GroupMissing)
+    end.to raise_error(Orc::Exception::GroupMissing)
   end
 
   it 'does nothing if all groups say they are resolved' do
@@ -363,11 +363,11 @@ describe Orc::Engine do
     })
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::FailedToResolve)
+    end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'aborts if the same action is attempted twice - ie fails to deploy' do
@@ -389,10 +389,10 @@ describe Orc::Engine do
     })
     engine = factory.engine()
 
-    expect {
+    expect do
       silence_output
       engine.resolve()
       restore_output
-    }.to raise_error(Orc::Exception::FailedToResolve)
+    end.to raise_error(Orc::Exception::FailedToResolve)
   end
 end

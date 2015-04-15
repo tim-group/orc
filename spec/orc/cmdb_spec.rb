@@ -43,7 +43,7 @@ describe Orc::CMDB::Yaml do
     Dir.mkdir("build/") unless File.directory? "build/"
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "build/")
     env = "cmdb_test_#{rand}"
-    Dir.mkdir("build/#{env}")
+    Dir.mkdir("build/#{env}") # XXX: got File exists, files are never removed, rand() above has small range
     cmdb.save_application({ :environment => env, :application => "testx" }, group_static_models)
     group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand}", :application => "testx")
 
@@ -91,9 +91,7 @@ describe Orc::CMDB::Yaml do
     ]
 
     testdir = "build/cmdb_test_#{rand}"
-    if !Pathname.new(testdir).exist?
-      Dir.mkdir testdir
-    end
+    Dir.mkdir testdir if !Pathname.new(testdir).exist?
     File.open("#{testdir}/testfred.yaml", "w") do |f|
       f.write(yaml_content["testfred"].to_yaml)
     end

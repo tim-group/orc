@@ -17,7 +17,7 @@ class Orc::Model::Instance
   end
 
   def version_mismatch?
-    self.version != group.target_version
+    version != group.target_version
   end
 
   def key
@@ -36,7 +36,7 @@ class Orc::Model::Instance
   end
 
   def is_in_pool?
-    (healthy? and participating?)
+    (healthy? && participating?)
   end
 
   def stoppable?

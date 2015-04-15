@@ -12,7 +12,7 @@ class Orc::Engine
 
   def execute_action(action, application_model)
     @resolution_steps.push action
-    action.check_valid(application_model) # FIXME - This throws if invalid, execute returns false if invalid?
+    action.check_valid(application_model) # FIXME: This throws if invalid, execute returns false if invalid?
     if !action.execute(@resolution_steps)
       raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
     end
@@ -38,14 +38,14 @@ class Orc::Engine
   def resolve
     @loop_count = 0
     finished = false
-    while !finished do
+    while !finished
       application_models = @model_generator.create_live_model()
       all_resolutions = application_models.map { |model| [model, model.get_resolutions] }
 
       finished = all_resolutions.map do |model, resolutions|
         @logger.log("resolving one step for #{model.name}")
         resolve_one_step(resolutions, model)
-      end.reduce(true) { |a, b| a && b }
+      end.reduce(true) { |a, e| a && e }
 
       @loop_count += 1
       if @loop_count > @max_loop
@@ -53,6 +53,6 @@ class Orc::Engine
       end
     end
 
-    @resolution_steps.map { |step| step.to_s }
+    @resolution_steps.map(&:to_s)
   end
 end

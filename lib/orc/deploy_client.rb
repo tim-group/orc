@@ -24,29 +24,17 @@ class MCollective::RPC::DeploytoolWrapper
   private
 
   def get_client(environment = nil, application = nil, group = nil)
-    begin # FIXME - Occasionally this dies with Marshal errors, just retry once..
+    begin # FIXME: Occasionally this dies with Marshal errors, just retry once..
       mc = rpcclient("deployapp", { :options => @options })
-      unless environment.nil?
-        mc.fact_filter "logicalenv", environment
-      end
-      unless application.nil?
-        mc.fact_filter "application", application
-      end
-      unless group.nil?
-        mc.fact_filter "group", group
-      end
+      mc.fact_filter "logicalenv", environment unless environment.nil?
+      mc.fact_filter "application", application unless application.nil?
+      mc.fact_filter "group", group unless group.nil?
       mc.discover :verbose => false
     rescue
       mc = rpcclient("deployapp", { :options => @options })
-      unless environment.nil?
-        mc.fact_filter "logicalenv", environment
-      end
-      unless application.nil?
-        mc.fact_filter "application", application
-      end
-      unless group.nil?
-        mc.fact_filter "group", group
-      end
+      mc.fact_filter "logicalenv", environment unless environment.nil?
+      mc.fact_filter "application", application unless application.nil?
+      mc.fact_filter "group", group unless group.nil?
       mc.discover :verbose => false
     end
     mc.progress = false
@@ -60,16 +48,13 @@ class Orc::DeployClient
 
   def initialize(args)
     @logger = args[:log] || ::Orc::Progress::Logger.new()
-    @options =  MCollective::Util.default_options
+    @options = MCollective::Util.default_options
     @options[:timeout] = 200
 
     @environment = args[:environment]
     @application = args[:application]
     @group = args[:group]
-    if args[:config] != nil
-      @options[:config] = args[:config]
-    end
-
+    @options[:config] = args[:config] if !args[:config].nil?
     @options[:verbose] = true
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
   end
@@ -83,15 +68,13 @@ class Orc::DeployClient
     @mcollective_client.status(spec).each do |resp|
       data  = resp[:data]
 
-      if data.kind_of?(Hash) and data.has_key?(:statuses)
+      if data.kind_of?(Hash) && data.has_key?(:statuses)
         raw_instances = data[:statuses]
       else
         raw_instances = data
       end
 
-      if !raw_instances.kind_of?(Array)
-        next
-      end
+      next if !raw_instances.kind_of?(Array)
 
       raw_instances.each do |instance|
         instance[:host] = resp[:sender]

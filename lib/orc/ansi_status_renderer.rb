@@ -10,9 +10,7 @@ class Orc::AnsiStatusRenderer
     statuses.each do |status|
       keys.each do |key|
         len = status[key].to_s.length
-        if lengths[key] < len
-          lengths[key] = len
-        end
+        lengths[key] = len if lengths[key] < len
       end
     end
 
@@ -20,7 +18,7 @@ class Orc::AnsiStatusRenderer
     keys.each do |key|
       header_buffer << "#{key}"
       rem = lengths[key] - key.to_s.length + 1
-      (1..rem).to_a.each { |x| header_buffer << " " }
+      status_buffer << " " * rem
     end
 
     buffer << Color.new(:text => header_buffer).header().display()
@@ -32,7 +30,7 @@ class Orc::AnsiStatusRenderer
       keys.each do |key|
         status_buffer << "#{status[key]}"
         rem = lengths[key] - status[key].to_s.length + 1
-        (1..rem).to_a.each { |x| status_buffer << " " }
+        status_buffer << " " * rem
       end
       buffer << Color.new(:text => status_buffer).color(color).highlight(present).display()
     end
@@ -52,9 +50,7 @@ class Orc::AnsiStatusRenderer
     end
 
     def highlight(highlight)
-      if highlight
-        @text = "\e[1;40m#{@text}\e[0m"
-      end
+      @text = "\e[1;40m#{@text}\e[0m" if highlight
       self
     end
 

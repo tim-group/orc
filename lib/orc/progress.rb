@@ -21,7 +21,7 @@ module Orc::Progress
     def log_resolution_complete(resolutions)
       print "[\e[1;32msuccess - resolution complete\e[0m]\n"
       resolutions.each do |r|
-        print "    #{r.to_s}\n"
+        print "    #{r}\n"
       end
     end
 

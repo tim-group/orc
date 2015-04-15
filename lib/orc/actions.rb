@@ -15,7 +15,7 @@ module Orc::Action
       nil
     end
 
-    def check_valid(application_model)
+    def check_valid(_application_model)
     end
 
     def timeout?
@@ -44,7 +44,7 @@ module Orc::Action
 
     def to_s
       self.class.name =~ /Orc::Action::(\w+)/
-      type = $1
+      type = Regexp.last_match(1)
       "#{type}: on #{host} #{group_name}"
     end
   end
@@ -52,7 +52,7 @@ module Orc::Action
   class UpdateVersionAction < Base
     def do_execute(all_actions)
       first_action = all_actions.pop
-      while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name && all_actions[-1].key == self.key do
+      while !all_actions[-1].nil? && all_actions[-1].class.name == self.class.name && all_actions[-1].key == key
         first_action = all_actions.pop
       end
       if self != first_action
@@ -82,7 +82,7 @@ module Orc::Action
       10
     end
 
-    def do_execute(all_actions)
+    def do_execute(_all_actions)
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.enable_participation({
         :group => @instance.group.name
@@ -108,7 +108,7 @@ module Orc::Action
       end
     end
 
-    def do_execute(all_actions)
+    def do_execute(_all_actions)
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
       successful = @remote_client.disable_participation({
         :group => @instance.group.name
@@ -132,12 +132,12 @@ module Orc::Action
 
     def do_execute(all_actions)
       first_action = all_actions.pop
-      while all_actions[-1] != nil and all_actions[-1].class.name == self.class.name do
+      while !all_actions[-1].nil? && all_actions[-1].class.name == self.class.name
         first_action = all_actions.pop
       end
       has_waited_for = Time.now.to_i - first_action.start_time
       if has_waited_for > @max_wait
-        # FIXME - Should we throw an exception here, or just return false to indicate the action failed?
+        # FIXME: Should we throw an exception here, or just return false to indicate the action failed?
         raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for #{@instance.group.name} on #{@instance.host}")
       end
       logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: #{has_waited_for}s of #{@max_wait} seconds"
@@ -156,7 +156,7 @@ module Orc::Action
   end
 
   class ResolvedCompleteAction < Base
-    def do_execute(all_actions)
+    def do_execute(_all_actions)
       true
     end
 

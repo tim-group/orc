@@ -49,25 +49,25 @@ class Orc::CMDB::HighLevelOrchestration
 
     from_app = @cmdb.retrieve_application(from_spec)
     groups_participating = from_app.reject { |group| !group[:target_participation] }
-    groups_participating.each {|group|
-      self.deploy(group[:target_version])
-    }
+    groups_participating.each do|group|
+      deploy(group[:target_version])
+    end
   end
 
   def _swap(groups, for_group = 'all')
     swappable_groups = groups.reject { |group| group[:never_swap] == true }
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
 
-    if matched_group or for_group == 'all'
-      swappable_groups.each { |group|
+    if matched_group || for_group == 'all'
+      swappable_groups.each do |group|
         group[:target_participation] = !group[:target_participation]
-      } if swappable_groups.size > 1
+      end if swappable_groups.size > 1
     end
   end
 
   def _install(groups, version, for_group = 'all')
     groups.each do |group|
-      if group[:name] == for_group or for_group == 'all'
+      if group[:name] == for_group || for_group == 'all'
         if group[:target_participation]
           group[:target_version] = version if group[:never_swap]
         else

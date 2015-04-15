@@ -18,9 +18,7 @@ class Orc::CMDB::Yaml
   def save_application(spec, groups)
     filename = convention(spec)
     dir = Pathname.new(filename).dirname
-    if !dir.exist?
-      Dir.mkdir dir
-    end
+    Dir.mkdir dir if !dir.exist?
     File.open(filename, "w") do |f|
       flattened = groups.map { |el| Hash[el.map { |(k, v)| [k.to_s, v] }] }
       f.write(flattened.to_yaml)

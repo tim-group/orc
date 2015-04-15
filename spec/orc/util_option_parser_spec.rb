@@ -52,9 +52,9 @@ describe Orc::Util::OptionParser do
     command.factory.class.name.should eql('Orc::Factory')
   end
 
-  # FIXME - We need tests for each set of command options
-  #         on the command line - how do you locally override @ARGV
-  #         inside a test to be able to test this?
+  # FIXME: We need tests for each set of command options
+  #        on the command line - how do you locally override @ARGV
+  #        inside a test to be able to test this?
   it 'parses options from argv and passes them to option class constructor' do
     parser = MockOptionParser.new(['--environment', 'foo', '--application', 'bar', '-r']).parse
 
