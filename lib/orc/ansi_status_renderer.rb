@@ -18,7 +18,7 @@ class Orc::AnsiStatusRenderer
     keys.each do |key|
       header_buffer << "#{key}"
       rem = lengths[key] - key.to_s.length + 1
-      status_buffer << " " * rem
+      header_buffer << " " * rem
     end
 
     buffer << Color.new(:text => header_buffer).header.display
