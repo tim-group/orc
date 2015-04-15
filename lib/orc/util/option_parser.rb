@@ -50,7 +50,7 @@ class Orc::Util::OptionParser
 
     def execute(factory)
       deploy_client = factory.remote_client
-      renderer = Orc::AnsiStatusRenderer.new()
+      renderer = Orc::AnsiStatusRenderer.new
       statuses = deploy_client.status
       rendered_status = renderer.render(statuses)
       print rendered_status
@@ -117,7 +117,7 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-      factory.high_level_orchestration.swap()
+      factory.high_level_orchestration.swap
     end
 
     def self.command_options
@@ -132,7 +132,7 @@ class Orc::Util::OptionParser
 
     def execute(factory)
       factory.cmdb_git.update
-      factory.engine.resolve()
+      factory.engine.resolve
     end
 
     def self.command_options
@@ -185,7 +185,7 @@ class Orc::Util::OptionParser
       print "Command #{command.long_command_name} required the following options (not supplied):\n"
       print failed.map { |n| "  --#{n}" }.join("\n")
       print "\n\n"
-      print @option_parser.help()
+      print @option_parser.help
       exit(1)
     end
   end
@@ -201,7 +201,7 @@ class Orc::Util::OptionParser
     end
 
     if @commands.size == 0
-      print @option_parser.help()
+      print @option_parser.help
       exit(1)
     end
     self

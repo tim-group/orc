@@ -3,7 +3,7 @@ require 'orc/deploy_client'
 
 describe Orc::DeployClient do
   def get_client(msg)
-    mcollective_client = double()
+    mcollective_client = double
     mcollective_client.stub(:status).and_return(msg)
     mcollective_client.stub(:custom_request).and_return(msg)
     Orc::DeployClient.new(
@@ -20,7 +20,7 @@ describe Orc::DeployClient do
       { :data => { :status => nil } }
     ])
 
-    expect { client.status() }.to raise_error(Orc::Exception::FailedToDiscover)
+    expect { client.status }.to raise_error(Orc::Exception::FailedToDiscover)
   end
 
   it 'process status messages from new agents' do
@@ -30,7 +30,7 @@ describe Orc::DeployClient do
       :sender => "mars" }
     ])
 
-    client.status().should eql([{
+    client.status.should eql([{
       :environment => "latest", :application => "fed", :host => "mars"
       }])
   end
@@ -42,7 +42,7 @@ describe Orc::DeployClient do
       :sender => "mars" }
     ])
 
-    client.status().should eql([{
+    client.status.should eql([{
       :environment => "latest", :application => "fed", :host => "mars"
       }])
   end

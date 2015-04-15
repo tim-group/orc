@@ -62,7 +62,7 @@ class Orc::Factory
 
   def engine
     mismatch_resolver = Orc::MismatchResolver.new(remote_client, @timeout)
-    logger = Orc::Progress.logger()
+    logger = Orc::Progress.logger
     model_generator = Orc::Model::Builder.new(
       :remote_client      => remote_client,
       :cmdb               => cmdb,

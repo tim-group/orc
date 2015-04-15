@@ -277,7 +277,7 @@ describe Orc::MismatchResolver do
     resolution = @mismatch_resolver.resolve(instances[0])
     resolution.class.should eql(Orc::Action::DisableParticipationAction)
 
-    mock_appmodel = double()
+    mock_appmodel = double
     mock_appmodel.stub(:instances).and_return(instances)
     mock_appmodel.stub(:participating_instances).and_return([instances[0]])
 

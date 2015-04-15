@@ -28,7 +28,7 @@ class Orc::Model::Builder
 
   def create_live_model
     @progress_logger.log("creating live model")
-    groups = get_cmdb_groups()
+    groups = get_cmdb_groups
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
     clusters = statuses.group_by { |instance| "#{instance[:cluster] || 'default'}:#{instance[:application]}" }

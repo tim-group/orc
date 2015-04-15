@@ -34,8 +34,8 @@ describe Orc::CMDB::Git do
 
   it 'pulls or clones the cmdb' do
     gitcmdb = Orc::CMDB::Git.new(:local_path => @local, :origin => @origin)
-    gitcmdb.update()
-    gitcmdb.get_branch().should eql("master")
+    gitcmdb.update
+    gitcmdb.get_branch.should eql("master")
   end
 
   it 'try to commit to a repo without updating it will fail' do
@@ -54,8 +54,8 @@ describe Orc::CMDB::Git do
       :origin => @origin,
       :branch => branch_name
     )
-    gitcmdb.update()
-    gitcmdb.get_branch().should eql(branch_name)
+    gitcmdb.update
+    gitcmdb.get_branch.should eql(branch_name)
   end
 
   it 'pushes changes back to the origin' do
@@ -63,7 +63,7 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
+    gitcmdb.update
 
     File.open(@local + '/file', "w") do |f|
       f.write("hello world")
@@ -75,7 +75,7 @@ describe Orc::CMDB::Git do
       :local_path => @second_copy_of_local,
       :origin => @origin
     )
-    gitcmdb2.update()
+    gitcmdb2.update
 
     IO.read(@second_copy_of_local + '/file').should eql("hello world")
   end
@@ -85,12 +85,12 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
+    gitcmdb.update
     gitcmdb2 = Orc::CMDB::Git.new(
       :local_path => @second_copy_of_local,
       :origin => @origin
     )
-    gitcmdb2.update()
+    gitcmdb2.update
     File.open(@local + '/file', "w") do |f|
       f.write("hello world")
     end
@@ -107,7 +107,7 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
+    gitcmdb.update
 
     File.open(@local + '/file', "w") do |f|
       f.write("hello world")
@@ -116,7 +116,7 @@ describe Orc::CMDB::Git do
 
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch().should eql("master")
+    gitcmdb.get_branch.should eql("master")
 
     g = local_git
     commits = g.log
@@ -130,7 +130,7 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
+    gitcmdb.update
 
     File.open(@local + '/file', "w") do |f|
       f.write("hello world")
@@ -142,7 +142,7 @@ describe Orc::CMDB::Git do
     end
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch().should eql("master")
+    gitcmdb.get_branch.should eql("master")
 
     g = local_git
     commits = g.log
@@ -157,7 +157,7 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
+    gitcmdb.update
 
     File.open(@local + '/file', "w") do |f|
       f.write("hello world")
@@ -169,7 +169,7 @@ describe Orc::CMDB::Git do
     end
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch().should eql("master")
+    gitcmdb.get_branch.should eql("master")
 
     g = local_git
     commits = g.log
@@ -184,9 +184,9 @@ describe Orc::CMDB::Git do
       :local_path => @local,
       :origin => @origin
     )
-    gitcmdb.update()
-    gitcmdb.get_branch().should eql("master")
-    gitcmdb.update()
-    gitcmdb.get_branch().should eql("master")
+    gitcmdb.update
+    gitcmdb.get_branch.should eql("master")
+    gitcmdb.update
+    gitcmdb.get_branch.should eql("master")
   end
 end

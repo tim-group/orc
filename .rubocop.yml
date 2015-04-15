@@ -121,11 +121,6 @@ Style/GuardClause:
 Style/IndentHash:
   Enabled: false
 
-# Offense count: 78
-# Cop supports --auto-correct.
-Style/MethodCallParentheses:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/NegatedWhile:
@@ -134,12 +129,6 @@ Style/NegatedWhile:
 # Offense count: 2
 # Configuration parameters: EnforcedStyle, MinBodyLength, SupportedStyles.
 Style/Next:
-  Enabled: false
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: IncludeSemanticChanges.
-Style/NonNilCheck:
   Enabled: false
 
 # Offense count: 1

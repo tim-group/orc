@@ -34,7 +34,7 @@ class Orc::CMDB::Git
       end
     end
 
-    if get_branch() != @branch
+    if get_branch != @branch
       timeout(@timeout) do
         @git.branch(@branch).checkout
       end
@@ -52,7 +52,7 @@ class Orc::CMDB::Git
           @git.commit_all(message)
           @git.fetch('origin')
           @git.merge('origin', 'merge concurrent modifications')
-          @git.push()
+          @git.push
         end
       end
     else

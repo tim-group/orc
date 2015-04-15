@@ -47,7 +47,7 @@ class Orc::DeployClient
   include MCollective::RPC
 
   def initialize(args)
-    @logger = args[:log] || ::Orc::Progress::Logger.new()
+    @logger = args[:log] || ::Orc::Progress::Logger.new
     @options = MCollective::Util.default_options
     @options[:timeout] = 200
 

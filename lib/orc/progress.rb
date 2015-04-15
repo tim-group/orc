@@ -2,11 +2,11 @@ require 'orc/namespace'
 
 module Orc::Progress
   def self.logger
-    Orc::Progress::Logger.new()
+    Orc::Progress::Logger.new
   end
 
   def logger
-    Orc::Progress::Logger.new()
+    Orc::Progress::Logger.new
   end
 
   class Logger

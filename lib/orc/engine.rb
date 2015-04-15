@@ -39,7 +39,7 @@ class Orc::Engine
     @loop_count = 0
     finished = false
     while !finished
-      application_models = @model_generator.create_live_model()
+      application_models = @model_generator.create_live_model
       all_resolutions = application_models.map { |model| [model, model.get_resolutions] }
 
       finished = all_resolutions.map do |model, resolutions|

@@ -109,9 +109,9 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
     silence_output
-    steps = engine.resolve()
+    steps = engine.resolve
     restore_output
 
     steps.should eq ["DisableParticipationAction: on h1 blue",
@@ -154,11 +154,11 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      steps = engine.resolve()
+      steps = engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -202,11 +202,11 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      steps = engine.resolve()
+      steps = engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -250,11 +250,11 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      steps = engine.resolve()
+      steps = engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -276,11 +276,11 @@ describe Orc::Engine do
         :health        => "healthy" }]),
      :cmdb => fake_cmdb(:groups => {}) })
 
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      engine.resolve()
+      engine.resolve
       restore_output
     end.to raise_error(Orc::CMDB::ApplicationMissing)
   end
@@ -304,11 +304,11 @@ describe Orc::Engine do
         "a-app" => []
     }) })
 
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      engine.resolve()
+      engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::GroupMissing)
   end
@@ -336,9 +336,9 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
     silence_output
-    steps = engine.resolve()
+    steps = engine.resolve
     restore_output
 
     steps.should eq []
@@ -361,11 +361,11 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      engine.resolve()
+      engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -387,11 +387,11 @@ describe Orc::Engine do
             }]
       })
     })
-    engine = factory.engine()
+    engine = factory.engine
 
     expect do
       silence_output
-      engine.resolve()
+      engine.resolve
       restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end

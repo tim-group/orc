@@ -21,7 +21,7 @@ class Orc::AnsiStatusRenderer
       status_buffer << " " * rem
     end
 
-    buffer << Color.new(:text => header_buffer).header().display()
+    buffer << Color.new(:text => header_buffer).header.display
 
     statuses.each do |status|
       color = status[:group]
@@ -32,7 +32,7 @@ class Orc::AnsiStatusRenderer
         rem = lengths[key] - status[key].to_s.length + 1
         status_buffer << " " * rem
       end
-      buffer << Color.new(:text => status_buffer).color(color).highlight(present).display()
+      buffer << Color.new(:text => status_buffer).color(color).highlight(present).display
     end
 
     buffer

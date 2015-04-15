@@ -12,9 +12,9 @@ end
 
 describe Orc::Action::WaitActionBase do
   it 'wait action can timeout on itself and others' do
-    group = double()
+    group = double
     group.stub(:name).and_return('blue')
-    instance = double()
+    instance = double
     instance.stub(:group).and_return(group)
     instance.stub(:host).and_return('localhost')
     i = Orc::Action::WaitActionBase.new('fo', instance)

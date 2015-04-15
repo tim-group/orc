@@ -4,8 +4,8 @@ require 'orc/cmdb/high_level_orchestration'
 
 describe Orc::CMDB::HighLevelOrchestration do
   before do
-    @cmdb = double()
-    @git = double()
+    @cmdb = double
+    @git = double
   end
 
   it 'install saves the requested version to the all group group if participation is true and all groups have never_swap' do
@@ -227,7 +227,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.swap()
+    high_level_orchestration.swap
   end
 
   it 'swap still does nothing regardless of the order of groups definitation with one swappable and one non-swapple group' do
@@ -263,7 +263,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.swap()
+    high_level_orchestration.swap
   end
 
   it 'swap does nothing when only 1 non-swappable group even if it is not participating' do
@@ -291,7 +291,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.swap()
+    high_level_orchestration.swap
   end
 
   it 'swap makes the currently offline group online and vice versa' do
@@ -336,7 +336,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
-    high_level_orchestration.swap()
+    high_level_orchestration.swap
   end
 
   it 'deploy does an install followed by a swap' do
