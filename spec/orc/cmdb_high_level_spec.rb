@@ -186,7 +186,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :target_version => '1',
                                                    :target_participation => true }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -223,7 +223,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :target_version => '1',
                                                    :target_participation => true }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -259,7 +259,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :target_participation => false,
                                                    :never_swap => true }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -287,7 +287,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :target_version => '1',
                                                    :target_participation => false }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -332,7 +332,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :never_swap => true
                                                    }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -366,7 +366,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :target_version => '1',
                                                    :target_participation => false }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -392,7 +392,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'blue',
                                                    :target_version => '2',
                                                    :target_participation => true }]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -470,7 +470,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :never_swap => true
                                                    }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -515,7 +515,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :never_swap => true
                                                    }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered
@@ -560,7 +560,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    :never_swap => true
                                                    }
                                                  ]
-    )
+                                                )
 
     @git.should_receive(:update).ordered
     @git.should_receive(:commit_and_push).ordered

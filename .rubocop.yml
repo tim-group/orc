@@ -24,6 +24,9 @@ Style/NegatedIf:
 Style/MultilineBlockChain:
   Enabled: false
 
+Lint/NonLocalExitFromIterator:
+  Enabled: false
+
 # This is just so we don't have to correct a zillion lines
 Style/StringLiterals:
   Enabled: false
