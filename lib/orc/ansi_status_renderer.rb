@@ -23,7 +23,7 @@ class Orc::AnsiStatusRenderer
 
     buffer << Color.new(:text => header_buffer).header.display
 
-    statuses.sort_by {|s| s[:host]}.each do |status|
+    statuses.sort_by { |s| s[:host] }.each do |status|
       color = status[:group]
       present = status[:present]
       status_buffer = ""
