@@ -1,8 +1,7 @@
 require 'mcollective'
+require 'orc/exceptions'
 require 'orc/namespace'
 require 'orc/progress'
-require 'pp'
-require 'orc/exceptions'
 
 class MCollective::RPC::DeploytoolWrapper
   include MCollective::RPC
@@ -95,7 +94,8 @@ class Orc::DeployClient
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts[0], { "identity" => hosts[0] }).each do |resp|
+    @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts[0],
+                                       { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
       return resp[:data][:successful]
     end
@@ -106,7 +106,8 @@ class Orc::DeployClient
   def enable_participation(spec, hosts)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts[0], { "identity" => hosts[0] }).each do |resp|
+    @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts[0],
+                                       { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
     end
   end
@@ -115,21 +116,16 @@ class Orc::DeployClient
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts[0], { "identity" => hosts[0] }).each do |resp|
+    @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts[0],
+                                       { "identity" => hosts[0] }).each do |resp|
       log_response(resp)
     end
   end
 
   def log_response(resp)
     data  = resp[:data]
-    data[:logs][:infos].each do |log|
-      @logger.log_client_response(resp[:sender], log)
-    end
-    data[:logs][:warns].each do |log|
-      @logger.log_client_response(resp[:sender], log)
-    end
-    data[:logs][:errors].each do |log|
-      @logger.log_client_response_error(resp[:sender], log)
-    end
+    data[:logs][:infos].each { |log| @logger.log_client_response(resp[:sender], log) }
+    data[:logs][:warns].each { |log| @logger.log_client_response(resp[:sender], log) }
+    data[:logs][:errors].each { |log| @logger.log_client_response_error(resp[:sender], log) }
   end
 end

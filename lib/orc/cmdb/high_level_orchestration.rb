@@ -54,6 +54,8 @@ class Orc::CMDB::HighLevelOrchestration
     end
   end
 
+  private
+
   def _swap(groups, for_group = 'all')
     swappable_groups = groups.reject { |group| group[:never_swap] == true }
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group

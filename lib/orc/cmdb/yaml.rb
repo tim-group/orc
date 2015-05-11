@@ -7,10 +7,6 @@ class Orc::CMDB::Yaml
     @data_dir = args[:data_dir]
   end
 
-  def convention(spec)
-    "#{@data_dir}#{spec[:environment]}/#{spec[:application]}.yaml"
-  end
-
   def retrieve_application(spec)
     YAML::load(File.open(convention(spec))).map { |el| Hash[el.map { |(k, v)| [k.to_sym, v] }] }
   end
@@ -23,5 +19,11 @@ class Orc::CMDB::Yaml
       flattened = groups.map { |el| Hash[el.map { |(k, v)| [k.to_s, v] }] }
       f.write(flattened.to_yaml)
     end
+  end
+
+  private
+
+  def convention(spec)
+    "#{@data_dir}#{spec[:environment]}/#{spec[:application]}.yaml"
   end
 end

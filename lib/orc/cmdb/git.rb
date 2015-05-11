@@ -1,6 +1,6 @@
-require 'orc/cmdb/namespace'
 require 'git'
 require 'logger'
+require 'orc/cmdb/namespace'
 require 'orc/util/timeout'
 
 class Orc::CMDB::Git

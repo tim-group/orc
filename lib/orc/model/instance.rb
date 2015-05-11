@@ -1,11 +1,11 @@
-require 'orc/model/namespace'
 require 'orc/model/group'
+require 'orc/model/namespace'
 
 class Orc::Model::Instance
   attr_accessor :group
+  attr_accessor :host
   attr_accessor :participation
   attr_accessor :version
-  attr_accessor :host
 
   def initialize(instance, group)
     @group = group || raise("must pass in a not null group")

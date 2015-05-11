@@ -11,16 +11,16 @@ class Orc::Config
     }
   end
 
-  def load_config
-    return if @tried_to_load_config
-    @tried_to_load_config = true
-    if File.exist?(@config_location)
-      @config = YAML::load(File.open(@config_location))
-    end
-  end
-
   def [](key)
     load_config
     @config[key]
+  end
+
+  private
+
+  def load_config
+    return if @tried_to_load_config
+    @tried_to_load_config = true
+    @config = YAML::load(File.open(@config_location)) if File.exist?(@config_location)
   end
 end
