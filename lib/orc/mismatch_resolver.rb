@@ -74,10 +74,6 @@ class Orc::MismatchResolver
       :should_participate => false,
       :does_participate   => true
     }, 'DisableParticipationAction')
-    in_case({
-      :should_participate => false,
-      :does_participate   => true
-    }, 'DisableParticipationAction')
   end
 
   def get_case(state)
