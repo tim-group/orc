@@ -1,7 +1,6 @@
 $: << File.join(File.dirname(__FILE__), "..", "../lib")
 $: << File.join(File.dirname(__FILE__), "..", "../test")
 
-require 'spec_helper'
 require 'rubygems'
 require 'rspec'
 require 'orc/factory'
@@ -110,9 +109,7 @@ describe Orc::Engine do
       })
     })
     engine = factory.engine
-    silence_output
     steps = engine.resolve
-    restore_output
 
     steps.should eq ["DisableParticipationAction: on h1 blue",
                      "UpdateVersionAction: on h1 blue",
@@ -157,9 +154,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       steps = engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
@@ -205,9 +200,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       steps = engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
@@ -253,9 +246,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       steps = engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
@@ -279,9 +270,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       engine.resolve
-      restore_output
     end.to raise_error(Orc::CMDB::ApplicationMissing)
   end
 
@@ -307,9 +296,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::GroupMissing)
   end
 
@@ -337,9 +324,7 @@ describe Orc::Engine do
       })
     })
     engine = factory.engine
-    silence_output
     steps = engine.resolve
-    restore_output
 
     steps.should eq []
   end
@@ -364,9 +349,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
 
@@ -390,9 +373,7 @@ describe Orc::Engine do
     engine = factory.engine
 
     expect do
-      silence_output
       engine.resolve
-      restore_output
     end.to raise_error(Orc::Exception::FailedToResolve)
   end
 end
