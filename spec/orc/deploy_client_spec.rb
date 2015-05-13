@@ -1,6 +1,3 @@
-
-require 'orc/deploy_client'
-
 describe Orc::DeployClient do
   def get_client(msg)
     mcollective_client = double

@@ -1,12 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/cmdb/git'
-require 'tmpdir'
-require 'git'
-
 describe Orc::CMDB::Git do
   def local_git
     # Git.open(@local, :log => Logger.new(STDOUT))

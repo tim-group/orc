@@ -82,7 +82,7 @@ end
 
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
-  t.rspec_opts = %w(--color --require=spec_helper)
+  t.rspec_opts = %w(--color --require=spec_requires --require=spec_helper)
 end
 
 desc "Generate code coverage"

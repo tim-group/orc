@@ -1,8 +1,3 @@
-require 'rubygems'
-require 'rspec'
-require 'orc/cmdb/yaml'
-require 'yaml'
-
 describe Orc::CMDB::Yaml do
   before do
     # write out cmdb

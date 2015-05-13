@@ -1,10 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/actions'
-
 class Orc::Action::WaitActionBase
   attr_accessor :max_wait
 end

@@ -1,10 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/factory'
-
 describe Orc::Engine do
   class InMemoryCmdb
     def initialize(opts)

@@ -1,13 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/actions'
-require 'orc/mismatch_resolver'
-require 'orc/model/group'
-require 'orc/model/instance'
-
 describe Orc::MismatchResolver do
   before do
     @mismatch_resolver = Orc::MismatchResolver.new(nil)

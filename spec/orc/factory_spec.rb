@@ -1,12 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'yaml'
-require 'orc/factory'
-require 'tmpdir'
-
 class Orc::Config
   attr_reader :config_location
 end

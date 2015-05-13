@@ -1,10 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/util/timeout'
-
 class TimeoutTestClass
   include Orc::Util::Timeout
   def test

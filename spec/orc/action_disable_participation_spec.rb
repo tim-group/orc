@@ -1,13 +1,3 @@
-$: << File.join(File.dirname(__FILE__), "..", "../lib")
-$: << File.join(File.dirname(__FILE__), "..", "../test")
-
-require 'rubygems'
-require 'rspec'
-require 'orc/actions'
-require 'orc/model/instance'
-require 'orc/model/group'
-require 'orc/deploy_client'
-
 describe Orc::Action::DisableParticipationAction do
   before do
     @remote_client = double(Orc::DeployClient)
