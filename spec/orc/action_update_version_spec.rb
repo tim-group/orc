@@ -5,9 +5,7 @@ describe Orc::Action::UpdateVersionAction do
 
   it 'sends an update message to the given host' do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
-    instance_model = Orc::Model::Instance.new({
-      :host => "host1"
-    }, group)
+    instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
     @remote_client.should_receive(:update_to_version).with({ :group => "blue" }, ["host1"], "16").and_return(true)
@@ -16,9 +14,7 @@ describe Orc::Action::UpdateVersionAction do
 
   it 'throws an exception if the agent timed out' do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
-    instance_model = Orc::Model::Instance.new({
-      :host => "host1"
-    }, group)
+    instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
     update_version_action = Orc::Action::UpdateVersionAction.new(@remote_client, instance_model)
     @remote_client.stub(:update_to_version).and_return(false)

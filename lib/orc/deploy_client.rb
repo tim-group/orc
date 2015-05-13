@@ -24,13 +24,13 @@ class MCollective::RPC::DeploytoolWrapper
 
   def get_client(environment = nil, application = nil, group = nil)
     begin # FIXME: Occasionally this dies with Marshal errors, just retry once..
-      mc = rpcclient("deployapp", { :options => @options })
+      mc = rpcclient("deployapp", :options => @options)
       mc.fact_filter "logicalenv", environment unless environment.nil?
       mc.fact_filter "application", application unless application.nil?
       mc.fact_filter "group", group unless group.nil?
       mc.discover :verbose => false
     rescue
-      mc = rpcclient("deployapp", { :options => @options })
+      mc = rpcclient("deployapp", :options => @options)
       mc.fact_filter "logicalenv", environment unless environment.nil?
       mc.fact_filter "application", application unless application.nil?
       mc.fact_filter "group", group unless group.nil?
@@ -95,7 +95,7 @@ class Orc::DeployClient
     spec[:application] = @application if spec[:application].nil?
 
     @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts[0],
-                                       { "identity" => hosts[0] }).each do |resp|
+                                       "identity" => hosts[0]).each do |resp|
       log_response(resp)
       return resp[:data][:successful]
     end
@@ -107,7 +107,7 @@ class Orc::DeployClient
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
     @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts[0],
-                                       { "identity" => hosts[0] }).each do |resp|
+                                       "identity" => hosts[0]).each do |resp|
       log_response(resp)
     end
   end
@@ -117,7 +117,7 @@ class Orc::DeployClient
     spec[:application] = @application if spec[:application].nil?
 
     @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts[0],
-                                       { "identity" => hosts[0] }).each do |resp|
+                                       "identity" => hosts[0]).each do |resp|
       log_response(resp)
     end
   end

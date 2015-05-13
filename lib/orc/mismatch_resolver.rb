@@ -6,53 +6,53 @@ class Orc::MismatchResolver
     @timeout = timeout
     @cases = {}
     in_case({
-      :should_participate => true,
-      :does_participate   => true,
-      :version_mismatch   => false,
-      :is_healthy         => true
-    }, 'ResolvedCompleteAction')
+              :should_participate => true,
+              :does_participate   => true,
+              :version_mismatch   => false,
+              :is_healthy         => true
+            }, 'ResolvedCompleteAction')
     in_case({
-      :should_participate => true,
-      :does_participate   => true,
-      :version_mismatch   => false,
-      :is_healthy         => false
-    }, 'WaitForHealthyAction')
+              :should_participate => true,
+              :does_participate   => true,
+              :version_mismatch   => false,
+              :is_healthy         => false
+            }, 'WaitForHealthyAction')
     in_case({
-      :should_participate => false,
-      :does_participate   => false,
-      :version_mismatch   => false
-    }, 'ResolvedCompleteAction')
+              :should_participate => false,
+              :does_participate   => false,
+              :version_mismatch   => false
+            }, 'ResolvedCompleteAction')
     in_case({
-      :should_participate => true,
-      :does_participate   => true,
-      :version_mismatch   => true
-    }, 'DisableParticipationAction')
+              :should_participate => true,
+              :does_participate   => true,
+              :version_mismatch   => true
+            }, 'DisableParticipationAction')
     in_case({
-      :does_participate   => false,
-      :version_mismatch   => true,
-      :is_drained         => true
-    }, 'UpdateVersionAction')
+              :does_participate   => false,
+              :version_mismatch   => true,
+              :is_drained         => true
+            }, 'UpdateVersionAction')
     in_case({
-      :does_participate   => false,
-      :version_mismatch   => true,
-      :is_drained         => false
-    }, 'WaitForDrainedAction')
+              :does_participate   => false,
+              :version_mismatch   => true,
+              :is_drained         => false
+            }, 'WaitForDrainedAction')
     in_case({
-      :should_participate => true,
-      :does_participate   => false,
-      :version_mismatch   => false,
-      :is_healthy         => true
-    }, 'EnableParticipationAction')
+              :should_participate => true,
+              :does_participate   => false,
+              :version_mismatch   => false,
+              :is_healthy         => true
+            }, 'EnableParticipationAction')
     in_case({
-       :should_participate => true,
-       :does_participate   => false,
-       :version_mismatch   => false,
-       :is_healthy         => false
-     }, 'WaitForHealthyAction')
+              :should_participate => true,
+              :does_participate   => false,
+              :version_mismatch   => false,
+              :is_healthy         => false
+            }, 'WaitForHealthyAction')
     in_case({
-      :should_participate => false,
-      :does_participate   => true
-    }, 'DisableParticipationAction')
+              :should_participate => false,
+              :does_participate   => true
+            }, 'DisableParticipationAction')
   end
 
   def resolve(instance)

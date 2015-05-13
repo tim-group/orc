@@ -40,12 +40,10 @@ class Orc::Model::Builder
         Orc::Model::Instance.new(instance, group)
       end
 
-      Orc::Model::Application.new({
-        :name => name,
-        :instances => instance_models.sort_by(&:group_name),
-        :mismatch_resolver => @mismatch_resolver,
-        :progress_logger => @progress_logger
-      })
+      Orc::Model::Application.new(:name => name,
+                                  :instances => instance_models.sort_by(&:group_name),
+                                  :mismatch_resolver => @mismatch_resolver,
+                                  :progress_logger => @progress_logger)
     end
   end
 end

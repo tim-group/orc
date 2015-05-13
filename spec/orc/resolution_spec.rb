@@ -18,11 +18,11 @@ describe Orc::Engine do
       @instances = opts[:instances]
       @instances = [
         { :group => "blue",
-        :host => "h1",
-        :version => "2.2",
-        :application => "app",
-        :participating => true,
-        :health        => "healthy" },
+          :host => "h1",
+          :version => "2.2",
+          :application => "app",
+          :participating => true,
+          :health        => "healthy" },
         { :group => "blue",
           :host => "h2",
           :version => "2.2",
@@ -79,28 +79,27 @@ describe Orc::Engine do
   end
 
   it 'vanilla pass through' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :host => "h2",
-         :version => "2.2",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
     steps = engine.resolve
 
@@ -113,37 +112,36 @@ describe Orc::Engine do
   end
 
   it 'safely deploys across multiple clusters' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h2",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :cluster => "app-2",
-         :host => "h3",
-         :version => "2.2",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-2",
+                                   :host => "h3",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
 
     expect do
@@ -152,44 +150,43 @@ describe Orc::Engine do
   end
 
   xit 'safely deploys across multiple clusters and app types' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h2",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :cluster => "app-2",
-         :host => "h3",
-         :version => "2.2",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" },
-        { :group => "blue",
-          :cluster => "app-2",
-          :host => "h4",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-2",
+                                   :host => "h3",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-2",
+                                   :host => "h4",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
 
     expect do
@@ -198,44 +195,43 @@ describe Orc::Engine do
   end
 
   it 'safely deploys across multiple clusters and app types' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-          :cluster => "app-1",
-          :host => "h2",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :cluster => "app-2",
-         :host => "h3",
-         :version => "2.2",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" },
-        { :group => "blue",
-          :cluster => "app-2",
-          :host => "h4",
-          :version => "2.2",
-          :application => "app-2",
-          :participating => true,
-          :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-1",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-2",
+                                   :host => "h3",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :cluster => "app-2",
+                                   :host => "h4",
+                                   :version => "2.2",
+                                   :application => "app-2",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
 
     expect do
@@ -244,21 +240,21 @@ describe Orc::Engine do
   end
 
   it 'gives sensible error messages when cmdb info is missing' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "non-existent-app" }, {
-     :remote_client => remote_client(:instances => [
-       { :group => "blue",
-         :host => "h1",
-         :version => "2.2",
-         :application => "non-existent-app",
-         :participating => true,
-         :health        => "healthy" },
-       { :group => "blue",
-        :host => "h2",
-        :version => "2.2",
-        :application => "non-existent-app",
-        :participating => true,
-        :health        => "healthy" }]),
-     :cmdb => fake_cmdb(:groups => {}) })
+    factory = Orc::Factory.new({ :environment => "a", :application => "non-existent-app" },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "non-existent-app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "non-existent-app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {}))
 
     engine = factory.engine
 
@@ -268,23 +264,23 @@ describe Orc::Engine do
   end
 
   it 'raises an error when there is no cmdb information for the given group' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app" }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :host => "h2",
-         :version => "2.2",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-        "a-app" => []
-    }) })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app" },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => []
+                                                  }))
 
     engine = factory.engine
 
@@ -294,28 +290,27 @@ describe Orc::Engine do
   end
 
   it 'does nothing if all groups say they are resolved' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :host => "h1",
-          :version => "5",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" },
-        { :group => "blue",
-         :host => "h2",
-         :version => "5",
-         :application => "app",
-         :participating => true,
-         :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "5",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" },
+                                 { :group => "blue",
+                                   :host => "h2",
+                                   :version => "5",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
     steps = engine.resolve
 
@@ -323,22 +318,21 @@ describe Orc::Engine do
   end
 
   it 'will fail - if there is one instance and the next action is to remove it' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:instances => [
-        { :group => "blue",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => true,
-          :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => true,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => true,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
 
     expect do
@@ -347,22 +341,21 @@ describe Orc::Engine do
   end
 
   it 'aborts if the same action is attempted twice - ie fails to deploy' do
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 }, {
-      :remote_client => remote_client(:fail_to_deploy => true, :instances => [
-        { :group => "blue",
-          :host => "h1",
-          :version => "2.2",
-          :application => "app",
-          :participating => false,
-          :health        => "healthy" }]),
-      :cmdb => fake_cmdb(:groups => {
-            "a-app" => [{
-              :name => "blue",
-              :target_participation => false,
-              :target_version => "5"
-            }]
-      })
-    })
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+                               :remote_client => remote_client(:fail_to_deploy => true, :instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => false,
+                                   :health        => "healthy" }]),
+                               :cmdb => fake_cmdb(:groups => {
+                                                    "a-app" => [{
+                                                      :name => "blue",
+                                                      :target_participation => false,
+                                                      :target_version => "5"
+                                                    }]
+                                                  }))
     engine = factory.engine
 
     expect do

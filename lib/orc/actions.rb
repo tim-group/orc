@@ -60,10 +60,8 @@ module Orc::Action
       end
       logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version #{@instance.group.target_version}"
 
-      response_received = @remote_client.update_to_version({
-          :group => @instance.group_name
-        }, [@instance.host], @instance.group.target_version
-                                                          )
+      response_received = @remote_client.update_to_version({ :group => @instance.group_name }, [@instance.host],
+                                                           @instance.group.target_version)
 
       if !response_received
         raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from #{@instance.host} within the timeout")
@@ -84,9 +82,7 @@ module Orc::Action
 
     def do_execute(_all_actions)
       logger.log_action "enabling #{@instance.host} #{@instance.group.name}"
-      successful = @remote_client.enable_participation({
-        :group => @instance.group.name
-      }, [@instance.host])
+      successful = @remote_client.enable_participation({ :group => @instance.group.name }, [@instance.host])
       sleep(@timeout)
       successful
     end
@@ -110,9 +106,7 @@ module Orc::Action
 
     def do_execute(_all_actions)
       logger.log_action "disabling #{@instance.host} #{@instance.group.name}"
-      successful = @remote_client.disable_participation({
-        :group => @instance.group.name
-      }, [@instance.host])
+      successful = @remote_client.disable_participation({ :group => @instance.group.name }, [@instance.host])
       sleep(@timeout)
       successful
     end

@@ -5,10 +5,8 @@ end
 describe Orc::Config do
   it 'can construct and read defaults' do
     c = Orc::Config.new('/tmp/does_not_exist.yaml')
-    c.config.should eql({
-      'cmdb_repo_url' => 'git@git:cmdb',
-      'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/"
-    })
+    c.config.should eql('cmdb_repo_url' => 'git@git:cmdb',
+                        'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/")
   end
 
   it 'can read a YAML file' do

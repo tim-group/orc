@@ -52,23 +52,23 @@ describe Orc::CMDB::Yaml do
     yaml_content = {
       'testfred' => [
         {
-        :target_version => "1",
-        :name => 'blue',
-        :target_participation => false },
+          :target_version => "1",
+          :name => 'blue',
+          :target_participation => false },
         {
-        :target_version => "2",
-        :name => "green",
-        :target_participation => false }
+          :target_version => "2",
+          :name => "green",
+          :target_participation => false }
       ],
       'testbob' => [
         {
-        :target_version => "3",
-        :name => 'blue',
-        :target_participation => false },
+          :target_version => "3",
+          :name => 'blue',
+          :target_participation => false },
         {
-        :target_version => "4",
-        :name => "green",
-        :target_participation => false }
+          :target_version => "4",
+          :name => "green",
+          :target_participation => false }
       ]
 
     }
