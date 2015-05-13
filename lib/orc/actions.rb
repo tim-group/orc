@@ -51,7 +51,10 @@ module Orc::Action
 
   class UpdateVersionAction < Base
     def do_execute(all_actions)
+      # rubocop bug
+      # rubocop:disable Lint/UselessAssignment
       first_action = all_actions.pop
+      # rubocop:enable Lint/UselessAssignment
       while !all_actions[-1].nil? && all_actions[-1].class.name == self.class.name && all_actions[-1].key == key
         first_action = all_actions.pop
       end
@@ -130,7 +133,10 @@ module Orc::Action
     end
 
     def do_execute(all_actions)
+      # rubocop bug
+      # rubocop:disable Lint/UselessAssignment
       first_action = all_actions.pop
+      # rubocop:enable Lint/UselessAssignment
       while !all_actions[-1].nil? && all_actions[-1].class.name == self.class.name
         first_action = all_actions.pop
       end

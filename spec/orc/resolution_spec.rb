@@ -100,15 +100,13 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
-    steps = engine.resolve
 
-    steps.should eq ["DisableParticipationAction: on h1 blue",
-                     "UpdateVersionAction: on h1 blue",
-                     "EnableParticipationAction: on h1 blue",
-                     "DisableParticipationAction: on h2 blue",
-                     "UpdateVersionAction: on h2 blue",
-                     "EnableParticipationAction: on h2 blue"]
+    factory.engine.resolve.should eq ["DisableParticipationAction: on h1 blue",
+                                      "UpdateVersionAction: on h1 blue",
+                                      "EnableParticipationAction: on h1 blue",
+                                      "DisableParticipationAction: on h2 blue",
+                                      "UpdateVersionAction: on h2 blue",
+                                      "EnableParticipationAction: on h2 blue"]
   end
 
   it 'safely deploys across multiple clusters' do
@@ -142,11 +140,8 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
 
-    expect do
-      steps = engine.resolve
-    end.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   xit 'safely deploys across multiple clusters and app types' do
@@ -187,11 +182,8 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
 
-    expect do
-      steps = engine.resolve
-    end.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'safely deploys across multiple clusters and app types' do
@@ -232,11 +224,8 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
 
-    expect do
-      steps = engine.resolve
-    end.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'gives sensible error messages when cmdb info is missing' do
@@ -256,11 +245,7 @@ describe Orc::Engine do
                                    :health        => "healthy" }]),
                                :cmdb => fake_cmdb(:groups => {}))
 
-    engine = factory.engine
-
-    expect do
-      engine.resolve
-    end.to raise_error(Orc::CMDB::ApplicationMissing)
+    expect { factory.engine.resolve }.to raise_error(Orc::CMDB::ApplicationMissing)
   end
 
   it 'raises an error when there is no cmdb information for the given group' do
@@ -282,11 +267,7 @@ describe Orc::Engine do
                                                     "a-app" => []
                                                   }))
 
-    engine = factory.engine
-
-    expect do
-      engine.resolve
-    end.to raise_error(Orc::Exception::GroupMissing)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::GroupMissing)
   end
 
   it 'does nothing if all groups say they are resolved' do
@@ -311,10 +292,8 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
-    steps = engine.resolve
 
-    steps.should eq []
+    factory.engine.resolve.should eq []
   end
 
   it 'will fail - if there is one instance and the next action is to remove it' do
@@ -333,11 +312,8 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
 
-    expect do
-      engine.resolve
-    end.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
 
   it 'aborts if the same action is attempted twice - ie fails to deploy' do
@@ -356,10 +332,7 @@ describe Orc::Engine do
                                                       :target_version => "5"
                                                     }]
                                                   }))
-    engine = factory.engine
 
-    expect do
-      engine.resolve
-    end.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
 end

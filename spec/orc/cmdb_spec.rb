@@ -1,19 +1,4 @@
 describe Orc::CMDB::Yaml do
-  before do
-    # write out cmdb
-    #    File.open('README')
-    readme = YAML::load("
--
-  name: blue
-  target_version: 2.2
-  targer_participation: false
--
-  name: green
-  target_version: 2.3
-  targer_participation: true
-")
-  end
-
   it 'retrieves list of groups, with target versions and target_participation' do
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "spec/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment => "cmdb_test", :application => "testx")

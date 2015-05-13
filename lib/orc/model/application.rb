@@ -88,8 +88,7 @@ class Orc::Model::Application
       begin
         resolution.check_valid(self)
         reject = false
-      rescue Exception => e
-        # puts "Exception from #{resolution.to_s} was #{e}"
+      rescue Exception
       end
       reject
     end

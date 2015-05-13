@@ -41,12 +41,6 @@ class Orc::CMDB::HighLevelOrchestration
       :application => @spec[:application]
     }
 
-    upstream_highlevel_orc = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => from_spec[:environment],
-      :application => from_spec[:application])
-
     from_app = @cmdb.retrieve_application(from_spec)
     groups_participating = from_app.reject { |group| !group[:target_participation] }
     groups_participating.each do|group|

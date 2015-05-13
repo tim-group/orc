@@ -28,7 +28,7 @@ end
 
 describe Orc::Util::OptionParser do
   it 'can be constructed' do
-    foo = Orc::Util::OptionParser.new
+    Orc::Util::OptionParser.new
   end
 
   it 'Can parse and execute fake option' do

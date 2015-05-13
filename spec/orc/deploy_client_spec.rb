@@ -9,7 +9,7 @@ describe Orc::DeployClient do
   end
 
   it 'Can be constructed without an application' do
-    client = get_client([])
+    get_client([])
   end
 
   it 'handles messages correctly when the agent throws an exception' do
