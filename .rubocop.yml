@@ -112,12 +112,6 @@ Lint/RescueException:
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/ClassCheck:
-  Enabled: false
-
 # Offense count: 3
 # Cop supports --auto-correct.
 Style/ColonMethodCall:
@@ -136,11 +130,6 @@ Style/GuardClause:
 # Offense count: 2
 # Configuration parameters: EnforcedStyle, MinBodyLength, SupportedStyles.
 Style/Next:
-  Enabled: false
-
-# Offense count: 1
-# Configuration parameters: NamePrefix, NamePrefixBlacklist.
-Style/PredicateName:
   Enabled: false
 
 # Offense count: 11

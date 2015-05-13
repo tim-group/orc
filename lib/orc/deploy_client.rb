@@ -67,13 +67,13 @@ class Orc::DeployClient
     @mcollective_client.status(spec).each do |resp|
       data  = resp[:data]
 
-      if data.kind_of?(Hash) && data.has_key?(:statuses)
+      if data.is_a?(Hash) && data.has_key?(:statuses)
         raw_instances = data[:statuses]
       else
         raw_instances = data
       end
 
-      next if !raw_instances.kind_of?(Array)
+      next if !raw_instances.is_a?(Array)
 
       raw_instances.each do |instance|
         instance[:host] = resp[:sender]

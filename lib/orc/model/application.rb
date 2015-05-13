@@ -62,7 +62,7 @@ class Orc::Model::Application
   end
 
   def participating_instances
-    instances.select(&:is_in_pool?)
+    instances.select(&:in_pool?)
   end
 
   def get_proposed_resolutions_for(live_instances)

@@ -35,7 +35,7 @@ class Orc::Model::Instance
     participation
   end
 
-  def is_in_pool?
+  def in_pool?
     (healthy? && participating?)
   end
 
