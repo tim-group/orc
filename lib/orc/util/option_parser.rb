@@ -79,7 +79,7 @@ class Orc::Util::OptionParser
     end
   end
 
-  class  PromotionRequest < Base
+  class PromotionRequest < Base
     def required
       [:environment, :application, :promote_from_environment]
     end
@@ -93,7 +93,7 @@ class Orc::Util::OptionParser
     end
   end
 
-  class  InstallRequest < Base
+  class InstallRequest < Base
     def required
       [:environment, :application, :version]
     end
@@ -111,7 +111,7 @@ class Orc::Util::OptionParser
     end
   end
 
-  class  SwapRequest < Base
+  class SwapRequest < Base
     def required
       [:environment, :application]
     end
@@ -162,7 +162,7 @@ class Orc::Util::OptionParser
       opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
         @options[:application] = app
       end
-      opts.on("-v", "--version VERSION", "") do    |version|
+      opts.on("-v", "--version VERSION", "") do |version|
         @options[:version] = version
       end
       opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
