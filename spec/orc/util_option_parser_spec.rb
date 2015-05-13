@@ -73,28 +73,32 @@ describe Orc::Util::OptionParser do
   end
 
   it 'Works for DeployRequest' do
-    parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
+    parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).
+             parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::DeployRequest')
   end
 
   it 'Works for PromotionRequest' do
-    parser = MockOptionParser.new(['-u', '--promote-from', 'baz', '--environment', 'bar', '--application', 'MyApp']).parse
+    parser = MockOptionParser.new(['-u', '--promote-from', 'baz', '--environment', 'bar', '--application', 'MyApp']).
+             parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::PromotionRequest')
   end
 
   it 'Works for InstallRequest' do
-    parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
+    parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).
+             parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::InstallRequest')
   end
 
   it 'Works for InstallRequest with groups' do
-    parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1', '--group', 'blue']).parse
+    parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1',
+                                   '--group', 'blue']).parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.options[:group].should eql 'blue'
@@ -109,7 +113,8 @@ describe Orc::Util::OptionParser do
   end
 
   it 'Works for DeployRequest' do
-    parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).parse
+    parser = MockOptionParser.new(['--deploy', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).
+             parse
     parser.commands.size.should eql(1)
     command = parser.commands[0]
     command.class.name.should eql('Orc::Util::OptionParser::DeployRequest')

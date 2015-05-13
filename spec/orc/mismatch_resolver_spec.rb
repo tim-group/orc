@@ -174,7 +174,8 @@ describe Orc::MismatchResolver do
     resolution.class.should eql(Orc::Action::WaitForDrainedAction)
   end
 
-  it 'is waiting for healthy when is unhealthy but should be participating, is not yet participating and has correct version' do
+  it 'is waiting for healthy when is unhealthy but should be participating, is not yet participating and has correct ' \
+     'version' do
     instance = Orc::Model::Instance.new(
       {
         :participating => false,

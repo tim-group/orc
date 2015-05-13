@@ -40,7 +40,8 @@ describe Orc::CMDB::Yaml do
     env = "cmdb_test_#{rand_num}"
     Dir.mkdir("build/#{env}") # XXX: got File exists, files are never removed, rand() above has small range
     cmdb.save_application({ :environment => env, :application => "testx" }, group_static_models)
-    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}", :application => "testx")
+    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
+                                                          :application => "testx")
 
     group_static_models_again[1][:target_version].should eql("77")
     group_static_models_again[1][:target_participation].should eql(false)
@@ -97,11 +98,13 @@ describe Orc::CMDB::Yaml do
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "build/")
     cmdb.save_application({ :environment => "cmdb_test_#{rand_num}", :application => "testx" }, group_static_models)
 
-    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}", :application => "testx")
+    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
+                                                          :application => "testx")
     group_static_models_again[1][:target_version].should eql("77")
     group_static_models_again[1][:target_participation].should eql(false)
 
-    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}", :application => "testbob")
+    group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
+                                                          :application => "testbob")
     group_static_models_again[1][:target_version].should eql("4")
     group_static_models_again[1][:target_participation].should eql(false)
   end

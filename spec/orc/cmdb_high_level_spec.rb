@@ -4,7 +4,8 @@ describe Orc::CMDB::HighLevelOrchestration do
     @git = double
   end
 
-  it 'install saves the requested version to the all group group if participation is true and all groups have never_swap' do
+  it 'install saves the requested version to the all group group if participation is true and all groups have ' \
+     'never_swap' do
     cmdb_yaml = [
       { :name                => 'grey',
         :target_version       => '1',
@@ -22,7 +23,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -40,7 +42,8 @@ describe Orc::CMDB::HighLevelOrchestration do
     @git.should_receive(:commit_and_push).ordered
     high_level_orchestration.install('2', 'all')
   end
-  it 'install saves the requested version to the specified group if participation is true and all groups have never_swap' do
+  it 'install saves the requested version to the specified group if participation is true and all groups have ' \
+     'never_swap' do
     cmdb_yaml = [
       { :name                => 'grey',
         :target_version       => '1',
@@ -58,7 +61,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -92,7 +96,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -128,7 +133,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -166,7 +172,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -206,7 +213,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -226,7 +234,8 @@ describe Orc::CMDB::HighLevelOrchestration do
     high_level_orchestration.swap
   end
 
-  it 'swap still does nothing regardless of the order of groups definitation with one swappable and one non-swapple group' do
+  it 'swap still does nothing regardless of the order of groups definitation with one swappable and one non-swapple ' \
+     'group' do
     cmdb_yaml = [
       { :name => 'blue',
         :target_version => '1',
@@ -243,7 +252,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -275,7 +285,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -310,7 +321,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -351,7 +363,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -381,7 +394,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -413,9 +427,11 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => true }
     ]
     @git.should_receive(:update).ordered
-    @cmdb.stub(:retrieve_application).with(:environment => "env2", :application => "ExampleApp").and_return(cmdb_env2_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "env2", :application => "ExampleApp").
+      and_return(cmdb_env2_yaml)
 
-    @cmdb.stub(:retrieve_application).with(:environment => "env1", :application => "ExampleApp").and_return(cmdb_env1_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "env1", :application => "ExampleApp").
+      and_return(cmdb_env1_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "env2", :application => "ExampleApp" },
                                                  [{
@@ -448,7 +464,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -493,7 +510,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [
@@ -538,7 +556,8 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").and_return(cmdb_yaml)
+    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+      and_return(cmdb_yaml)
 
     @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
                                                  [

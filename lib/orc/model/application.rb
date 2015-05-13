@@ -18,7 +18,8 @@ class Orc::Model::Builder
 
   def get_cmdb_groups
     cmdb_model_for_app = @cmdb.retrieve_application(:environment => @environment, :application => @application)
-    raise Orc::CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") if cmdb_model_for_app.nil?
+    raise Orc::CMDB::ApplicationMissing.new("#{@application} not found in CMDB for environment:#{@environment}") \
+      if cmdb_model_for_app.nil?
     groups = {}
     cmdb_model_for_app.each do |group|
       groups[group[:name]] = Orc::Model::Group.new(group)
@@ -94,7 +95,8 @@ class Orc::Model::Application
     end
 
     if useable_resolutions.size == 0 && incomplete_resolutions.size > 0
-      raise Orc::Exception::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all result in invalid state) - manual intervention required")
+      raise Orc::Exception::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all " \
+      "result in invalid state) - manual intervention required")
     end
 
     useable_resolutions

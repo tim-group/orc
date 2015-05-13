@@ -169,7 +169,8 @@ class Orc::Util::OptionParser
         @options[:group] = env
       end
 
-      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest].each do |req|
+      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest].
+      each do |req|
         req.setup_command_options(@options, opts, @commands)
       end
     end

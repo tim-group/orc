@@ -56,15 +56,18 @@ module Orc::Action
         first_action = all_actions.pop
       end
       if self != first_action
-        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction re-run on same instance multiple times - instance failing to start.")
+        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction re-run on same instance multiple times " \
+                                                  "- instance failing to start.")
       end
-      logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version #{@instance.group.target_version}"
+      logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version " \
+                        "#{@instance.group.target_version}"
 
       response_received = @remote_client.update_to_version({ :group => @instance.group_name }, [@instance.host],
                                                            @instance.group.target_version)
 
       if !response_received
-        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from #{@instance.host} within the timeout")
+        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from " \
+                                                  "#{@instance.host} within the timeout")
       end
 
       true
@@ -100,7 +103,9 @@ module Orc::Action
     def check_valid(application_model)
       participating_instances = application_model.participating_instances.reject { |instance| instance == @instance }
       if (participating_instances.size == 0)
-        raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} #{@instance.group.name} would result in zero participating instances - please resolve manually")
+        raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} " \
+                                                  "#{@instance.group.name} would result in zero participating " \
+                                                  "instances - please resolve manually")
       end
     end
 
@@ -132,9 +137,11 @@ module Orc::Action
       has_waited_for = Time.now.to_i - first_action.start_time
       if has_waited_for > @max_wait
         # FIXME: Should we throw an exception here, or just return false to indicate the action failed?
-        raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for #{@instance.group.name} on #{@instance.host}")
+        raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for " \
+                                          "#{@instance.group.name} on #{@instance.host}")
       end
-      logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: #{has_waited_for}s of #{@max_wait} seconds"
+      logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: " \
+        "#{has_waited_for}s of #{@max_wait} seconds"
       true
     end
 
