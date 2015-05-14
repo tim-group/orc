@@ -26,10 +26,12 @@ module Orc::Progress
     end
 
     def log_client_response(host, log)
+      log = log.map { |k, v| "#{k}=#{v}" }.join('; ') if log.is_a? Hash
       print "  [\e[1;50m#{host}\e[0m] #{log}\n"
     end
 
     def log_client_response_error(host, log)
+      log = log.map { |k, v| "#{k}=#{v}" }.join('; ') if log.is_a? Hash
       print "  [\e[1;31m#{host}\e[0m] #{log}\n"
     end
   end
