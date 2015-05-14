@@ -122,6 +122,8 @@ class Orc::DeployClient
     end
   end
 
+  private
+
   def log_response(resp)
     data  = resp[:data]
     data[:logs][:infos].each { |log| @logger.log_client_response(resp[:sender], log) }
