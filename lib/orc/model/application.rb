@@ -65,14 +65,6 @@ class Orc::Model::Application
     instances.select(&:in_pool?)
   end
 
-  def get_proposed_resolutions_for(live_instances)
-    proposed_resolutions = []
-    live_instances.each do |instance|
-      proposed_resolutions << @mismatch_resolver.resolve(instance)
-    end
-    proposed_resolutions.sort_by(&:precedence)
-  end
-
   def get_resolutions
     proposed_resolutions = get_proposed_resolutions_for @instances
 
@@ -99,5 +91,15 @@ class Orc::Model::Application
     end
 
     useable_resolutions
+  end
+
+  private
+
+  def get_proposed_resolutions_for(live_instances)
+    proposed_resolutions = []
+    live_instances.each do |instance|
+      proposed_resolutions << @mismatch_resolver.resolve(instance)
+    end
+    proposed_resolutions.sort_by(&:precedence)
   end
 end
