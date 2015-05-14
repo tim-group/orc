@@ -50,19 +50,14 @@ task :clean do
   end
 end
 
-desc "Make build directories"
-task :setup do
-  FileUtils.makedirs("build")
-end
-
 desc "Create Debian package"
 task :package do
   require 'fpm'
   require 'fpm/program'
 
-  FileUtils.mkdir_p("build/package/opt/orctool/")
-  FileUtils.cp_r("lib", "build/package/opt/orctool/")
-  FileUtils.cp_r("bin", "build/package/opt/orctool/")
+  sh "mkdir -p build/package/opt/orctool/"
+  sh "cp -r lib build/package/opt/orctool/"
+  sh "cp -r bin build/package/opt/orctool/"
 
   arguments = [
     "-p", "build/#{@project.name}_#{@project.version}.deb",
@@ -92,8 +87,13 @@ RSpec::Core::RakeTask.new(:coverage) do |t|
   t.rcov_opts = ['--exclude', 'spec']
 end
 
-desc "Setup, package, test, and upload"
-task :build  => [:setup, :spec, :package]
+desc "Test and package"
+task :build => [:spec, :package]
+
+desc "Build and install"
+task :install => [:package] do
+  sh "sudo dpkg -i build/orctool*.deb"
+end
 
 task :pre_doc do
   sh "rm -rf html"
