@@ -1,5 +1,5 @@
 require 'rake'
-hash = `git rev-parse HEAD | head -c 7`
+hash = `git rev-parse --short HEAD`.chomp
 v_part = ENV['BUILD_NUMBER'] || "0.pre.#{hash}" # 0.pre to make debian consider any pre-release cut from git
 # version of the package to be _older_ than the last CI build.
 version = "0.0.#{v_part}"
