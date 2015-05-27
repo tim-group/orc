@@ -50,6 +50,11 @@ task :clean do
   end
 end
 
+desc "Make build directories"
+task :setup do
+  FileUtils.makedirs("build")
+end
+
 desc "Create Debian package"
 task :package do
   require 'fpm'
