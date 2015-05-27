@@ -68,7 +68,7 @@ task :package do
     "-C", 'build/package'
   ]
 
-  argv = arguments.map{ |x| "'#{x}'"}.join(' ')
+  argv = arguments.map { |x| "'#{x}'" }.join(' ')
   sh "rm build/orctool_*.deb"
   sh "fpm #{argv}"
 end
