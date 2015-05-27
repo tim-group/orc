@@ -1,10 +1,9 @@
-require 'rubygems'
+require 'ci/reporter/rake/rspec'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
-require 'fileutils'
 require 'rspec/core/rake_task'
-require 'ci/reporter/rake/rspec'
+require 'rubygems'
 
 class Project
   attr_reader :name
@@ -19,49 +18,34 @@ class Project
 end
 
 @project = Project.new(
-  :name => "orctool",
+  :name        => "orctool",
   :description => "orchestration tool",
-  :version => "1.0.#{ENV['BUILD_NUMBER']}"
+  :version     => "1.0.#{ENV['BUILD_NUMBER']}"
 )
 
 task :default do
   sh "rake -s -T"
 end
 
-desc "Create gem"
-task :gem do
-  sh "rm -f *.gem"
-  sh "gem build orc.gemspec"
-end
-
-desc "Create debian package from gem"
-task :gemdeb do
-  sh "rm -f *.deb"
-  sh "/var/lib/gems/1.8/bin/fpm -s gem -t deb orc-*.gem"
-end
-task :gemdeb => [:gem]
-
-desc "Remove build directory, etc."
+desc "Clean up build directories"
 task :clean do
-  FileUtils.rmtree("build")
-  FileUtils.rmtree("config")
-  if File.exist?("app_under_test.properties")
-    FileUtils.rm("app_under_test.properties")
-  end
+  sh "rm -rf build"
 end
 
 desc "Make build directories"
 task :setup do
-  FileUtils.makedirs("build")
+  sh "mkdir build"
 end
 
-desc "Create a directory tree for omnibus"
+desc "Prepare a directory tree for omnibus"
 task :omnibus do
   sh "rm -rf build/omnibus"
+
   sh "mkdir -p build/omnibus"
-  sh "tar xmOf orc-*.gem data.tar.gz | tar xmzC build/omnibus"
+  sh "mkdir -p build/omnibus/embedded"
+  sh "cp -r bin build/omnibus/"
+  sh "cp -r lib build/omnibus/embedded/lib/"
 end
-task :omnibus => [:gem]
 
 desc "Create Debian package"
 task :package do
@@ -88,6 +72,11 @@ task :package do
   raise "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
 end
 
+desc "Build and install"
+task :install => [:package] do
+  sh "sudo dpkg -i build/orctool*.deb"
+end
+
 desc "Run specs"
 RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
   t.rspec_opts = %w(--color --require=spec_requires --require=spec_helper)
@@ -99,40 +88,6 @@ RSpec::Core::RakeTask.new(:coverage) do |t|
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec']
 end
-
-desc "Test and package"
-task :build => [:spec, :package]
-
-desc "Build and install"
-task :install => [:package] do
-  sh "sudo dpkg -i build/orctool*.deb"
-end
-
-task :pre_doc do
-  sh "rm -rf html"
-end
-
-Rake::RDocTask.new do |rd|
-  rd.rdoc_files.include("lib/**/*.rb")
-end
-
-desc "Build docs"
-task :docs do
-  sh "stat=$(git status 2> /dev/null | tail -n1); " \
-     "if [ \"nothing to commit (working directory clean)\" != \"$stat\" ]; then " \
-     "echo \"Unclean - please commit before docs\"; exit 2; fi"
-  sh "git read-tree --prefix=gh-pages/ -u gh-pages"
-  sh "mv html/* gh-pages/rdoc"
-  sh "rm -r html"
-  sh "cat gh-pages/index.md.head README.md > gh-pages/index.md"
-  sh "git add -f gh-pages"
-  sh "tree=$(git write-tree --prefix=gh-pages/) && " \
-     "commit=$(echo \"Generated docs\" | git commit-tree $tree -p gh-pages) && " \
-     "git update-ref refs/heads/gh-pages $commit && git reset HEAD"
-  sh "rm -rf html"
-  sh "rm -rf gh-pages"
-end
-task :docs => [:pre_doc, :rdoc]
 
 desc "Run lint (Rubocop)"
 task :lint do
