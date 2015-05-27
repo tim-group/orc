@@ -55,6 +55,14 @@ task :setup do
   FileUtils.makedirs("build")
 end
 
+desc "Create a directory tree for omnibus"
+task :omnibus do
+  sh "rm -rf build/omnibus"
+  sh "mkdir -p build/omnibus"
+  sh "tar xmOf orc-*.gem data.tar.gz | tar xmzC build/omnibus"
+end
+task :omnibus => [:gem]
+
 desc "Create Debian package"
 task :package do
   require 'fpm'

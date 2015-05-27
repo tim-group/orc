@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = "Orc is a model driven deployment tool, written in ruby, for deploying applications"
   s.authors     = ["David Ellis", "Tomas Doran"]
   s.email       = 'infra@timgroup.com'
+  s.homepage    = 'https://github.com/tim-group'
   s.files       = FileList['lib/**/*.rb', 'bin/*'].to_a
   s.add_dependency('git', '>= 1.2.5')
   s.add_development_dependency('rspec')
