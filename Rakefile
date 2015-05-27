@@ -49,12 +49,11 @@ end
 
 desc "Create Debian package"
 task :package do
-  require 'fpm'
-  require 'fpm/program'
-
   sh "mkdir -p build/package/opt/orctool/"
   sh "cp -r lib build/package/opt/orctool/"
   sh "cp -r bin build/package/opt/orctool/"
+  sh "mkdir -p build/package/usr/bin/"
+  sh "ln -sf /opt/orctool/bin/orc build/package/usr/bin/orc"
 
   arguments = [
     "-p", "build/#{@project.name}_#{@project.version}.deb",
@@ -69,7 +68,9 @@ task :package do
     "-C", 'build/package'
   ]
 
-  raise "problem creating debian package " unless FPM::Program.new.run(arguments) == 0
+  argv = arguments.map{ |x| "'#{x}'"}.join(' ')
+  sh "rm build/orctool_*.deb"
+  sh "fpm #{argv}"
 end
 
 desc "Build and install"
