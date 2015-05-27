@@ -1,7 +1,8 @@
 #!/usr/bin/ruby
-$: << File.join(File.dirname(__FILE__), "..", "lib")
-$: << '/opt/orctool/lib' # 0x12345678 do not modify this line without understanding; used in omnibus; for compatibility
-# $: << 'OMNIBUS_LIBDIR'
+#
+# XXX path to ruby above, and path to lib/ below get overwriten in omnibus
+
+$: << '/opt/orctool/lib'
 require 'orc/util/option_parser'
 
 Orc::Util::OptionParser.new.parse.execute
