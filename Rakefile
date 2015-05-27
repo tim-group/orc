@@ -1,9 +1,9 @@
+require 'rubygems' # must be before everything else
 require 'ci/reporter/rake/rspec'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
-require 'rubygems'
 
 class Project
   attr_reader :name
