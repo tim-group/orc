@@ -42,9 +42,14 @@ task :omnibus do
   sh "rm -rf build/omnibus"
 
   sh "mkdir -p build/omnibus"
-  sh "mkdir -p build/omnibus/embedded"
-  sh "cp -r bin build/omnibus/"
-  sh "cp -r lib build/omnibus/embedded/lib/"
+  sh "mkdir -p build/omnibus/bin"
+  sh "mkdir -p build/omnibus/lib"
+  sh "mkdir -p build/omnibus/embedded/lib"
+
+  sh "cp -r bin/* build/omnibus/bin/"
+  sh "cp -r lib/* build/omnibus/embedded/lib/"
+  # expose orcs libs; stackbuilder depends on orc/util/option_parser.rb
+  sh "ln -s ../embedded/lib/orc build/omnibus/lib/orc"
 end
 
 desc "Create Debian package"
