@@ -73,6 +73,7 @@ describe Orc::CMDB::Yaml do
       }
     ]
 
+    Dir.mkdir("build/") unless File.directory? "build/"
     testdir = "build/cmdb_test_#{rand_num}"
     Dir.mkdir testdir if !Pathname.new(testdir).exist?
     File.open("#{testdir}/testfred.yaml", "w") do |f|
