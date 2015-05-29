@@ -1,3 +1,5 @@
+require 'orc/factory'
+
 describe Orc::MismatchResolver do
   before do
     @mismatch_resolver = Orc::MismatchResolver.new(nil)

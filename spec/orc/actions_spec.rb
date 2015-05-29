@@ -1,3 +1,5 @@
+require 'orc/actions'
+
 class Orc::Action::WaitActionBase
   attr_accessor :max_wait
 end

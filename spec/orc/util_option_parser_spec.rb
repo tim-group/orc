@@ -1,3 +1,5 @@
+require 'orc/util/option_parser'
+
 class MockOptionParser < Orc::Util::OptionParser
   attr_reader :argv
   def initialize(argv)

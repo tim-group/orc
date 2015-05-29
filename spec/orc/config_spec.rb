@@ -1,3 +1,6 @@
+require 'orc/config'
+require 'tmpdir'
+
 class Orc::Config
   attr_reader :config
 end

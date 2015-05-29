@@ -1,3 +1,5 @@
+require 'orc/cmdb/yaml'
+
 describe Orc::CMDB::Yaml do
   it 'retrieves list of groups, with target versions and target_participation' do
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "spec/fixtures/cmdb/")

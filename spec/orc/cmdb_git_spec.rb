@@ -1,3 +1,5 @@
+require 'orc/cmdb/git'
+
 describe Orc::CMDB::Git do
   def local_git
     # Git.open(@local, :log => Logger.new(STDOUT))

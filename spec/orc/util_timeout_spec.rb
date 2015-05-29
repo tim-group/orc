@@ -1,3 +1,5 @@
+require 'orc/util/timeout'
+
 class TimeoutTestClass
   include Orc::Util::Timeout
   def test

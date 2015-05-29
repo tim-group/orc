@@ -1,3 +1,6 @@
+require 'orc/actions'
+require 'orc/factory'
+
 describe Orc::Action::UpdateVersionAction do
   before do
     @remote_client = double(Orc::DeployClient)

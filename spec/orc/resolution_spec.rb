@@ -1,3 +1,5 @@
+require 'orc/factory'
+
 describe Orc::Engine do
   class InMemoryCmdb
     def initialize(opts)

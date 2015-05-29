@@ -1,3 +1,5 @@
+require 'orc/cmdb/high_level_orchestration'
+
 describe Orc::CMDB::HighLevelOrchestration do
   before do
     @cmdb = double

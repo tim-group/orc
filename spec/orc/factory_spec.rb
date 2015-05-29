@@ -1,3 +1,6 @@
+require 'orc/config'
+require 'orc/factory'
+
 class Orc::Config
   attr_reader :config_location
 end
