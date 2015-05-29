@@ -1,0 +1,6 @@
+--color
+--require=spec_helper
+--require=spec_requires
+--order=rand
+--fail-fast
+--profile=5

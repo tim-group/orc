@@ -84,9 +84,7 @@ task :install => [:package] do
 end
 
 desc "Run specs"
-RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"]) do |t|
-  t.rspec_opts = %w(--color --require=spec_requires --require=spec_helper)
-end
+RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"])
 
 desc "Generate code coverage"
 RSpec::Core::RakeTask.new(:coverage) do |t|
