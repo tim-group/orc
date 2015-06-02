@@ -65,10 +65,7 @@ task :omnibus_deb do
 
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && bundle install"
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && ./bin/omnibus build orc"
-
-  #sh "rm -rf /tmp/omnibus_orc"
 end
-
 
 desc "Create Debian package"
 task :package do
