@@ -52,6 +52,21 @@ task :omnibus do
   sh "ln -s ../../../embedded/lib/ruby/site_ruby/orc build/omnibus/lib/ruby/site_ruby/orc"
 end
 
+desc "Create an omnibus .deb package"
+task :omnibus_deb do
+  sh "rm -rf /tmp/omnibus_orc"
+
+  sh "mkdir -p /tmp/omnibus_orc"
+
+  sh "git clone http://git/git/github/chef/omnibus-software.git /tmp/omnibus_orc/omnibus-software"
+  sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
+
+  sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && ./bin/omnibus build orc"
+
+  #sh "rm -rf /tmp/omnibus_orc"
+end
+
+
 desc "Create Debian package"
 task :package do
   sh "mkdir -p build/package/opt/orctool/"
