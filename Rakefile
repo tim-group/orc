@@ -54,7 +54,7 @@ end
 
 # needs to be run with sudo
 desc "Prepare for an omnibus run "
-task :omnibus_deb do
+task :omnibus_prep do
   sh "mkdir /opt/orc"
   sh "chown \$SUDO_USER /opt/orc"
 end
