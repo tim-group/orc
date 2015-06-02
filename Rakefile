@@ -52,6 +52,13 @@ task :omnibus do
   sh "ln -s ../../../embedded/lib/ruby/site_ruby/orc build/omnibus/lib/ruby/site_ruby/orc"
 end
 
+# needs to be run with sudo
+desc "Prepare for an omnibus run "
+task :omnibus_deb do
+  sh "mkdir /opt/orc"
+  sh "chown \$SUDO_USER /opt/orc"
+end
+
 # depends on ruby-bundler
 desc "Create an omnibus .deb package"
 task :omnibus_deb do
@@ -63,7 +70,6 @@ task :omnibus_deb do
   sh "git clone http://git/git/github/chef/omnibus-software.git /tmp/omnibus_orc/omnibus-software"
   sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
 
-  sh "sudo sh -c 'mkdir /opt/orc; chown \$SUDO_USER /opt/orc'"
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && /opt/omnibus/bin/omnibus build orc"
 end
 
