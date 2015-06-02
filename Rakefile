@@ -52,15 +52,18 @@ task :omnibus do
   sh "ln -s ../../../embedded/lib/ruby/site_ruby/orc build/omnibus/lib/ruby/site_ruby/orc"
 end
 
+# depends on ruby-bundler
 desc "Create an omnibus .deb package"
 task :omnibus_deb do
   sh "rm -rf /tmp/omnibus_orc"
 
   sh "mkdir -p /tmp/omnibus_orc"
 
+  sh "sudo apt-get install ruby-bundler"
   sh "git clone http://git/git/github/chef/omnibus-software.git /tmp/omnibus_orc/omnibus-software"
   sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
 
+  sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && bundle install"
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && ./bin/omnibus build orc"
 
   #sh "rm -rf /tmp/omnibus_orc"
