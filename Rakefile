@@ -56,7 +56,7 @@ end
 desc "Prepare for an omnibus run "
 task :omnibus_prep do
   sh "mkdir -p /opt/orc"
-  sh "chown \$SUDO_USER /opt/orc"
+  sh "chown \$SUDO_UID:\$SUDO_GID /opt/orc"
 end
 
 # depends on ruby-bundler
