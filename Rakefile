@@ -37,6 +37,7 @@ task :setup do
   sh "mkdir build"
 end
 
+# used by omnibus
 desc "Prepare a directory tree for omnibus"
 task :omnibus do
   sh "rm -rf build/omnibus"
@@ -53,19 +54,11 @@ task :omnibus do
 end
 
 # needs to be run with sudo
+# XXX used by jenkins. ci has sudo access but only for the 'rake' command
 desc "Prepare for an omnibus run "
 task :omnibus_prep do
   sh "mkdir -p /opt/orc"
   sh "chown \$SUDO_UID:\$SUDO_GID /opt/orc"
-end
-
-# depends on the omnibus package
-desc "Create an omnibus .deb package"
-task :omnibus_deb do
-  sh "rm -rf /tmp/omnibus_orc"
-  sh "mkdir -p /tmp/omnibus_orc"
-  sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
-  sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && /opt/omnibus/bin/omnibus build orc"
 end
 
 desc "Create Debian package"

@@ -2,6 +2,7 @@
 AllCops:
   Exclude:
     - 'build/**/*'
+    - 'omnibus-timgroup/**/*'
 
 Metrics/AbcSize:
   Max: 65

@@ -1,0 +1,3 @@
+[submodule "omnibus-timgroup"]
+	path = omnibus-timgroup
+	url = git@git:github/tim-group/omnibus-timgroup.git
