@@ -67,7 +67,6 @@ task :omnibus_deb do
   sh "mkdir -p /tmp/omnibus_orc"
 
   sh "sudo apt-get install omnibus" # XXX
-  sh "git clone http://git/git/github/chef/omnibus-software.git /tmp/omnibus_orc/omnibus-software"
   sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
 
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && /opt/omnibus/bin/omnibus build orc"
