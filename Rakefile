@@ -65,7 +65,6 @@ task :omnibus_deb do
   sh "rm -rf /tmp/omnibus_orc"
   sh "mkdir -p /tmp/omnibus_orc"
   sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
-  sh "rm -f /tmp/omnibus_orc/omnibus-timgroup/pkg/*" # XXX
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && /opt/omnibus/bin/omnibus build orc"
 end
 
