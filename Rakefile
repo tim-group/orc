@@ -59,16 +59,12 @@ task :omnibus_prep do
   sh "chown \$SUDO_UID:\$SUDO_GID /opt/orc"
 end
 
-# depends on ruby-bundler
+# depends on the omnibus package
 desc "Create an omnibus .deb package"
 task :omnibus_deb do
   sh "rm -rf /tmp/omnibus_orc"
-
   sh "mkdir -p /tmp/omnibus_orc"
-
-  sh "sudo apt-get install omnibus" # XXX
   sh "git clone http://git/git/github/tim-group/omnibus-timgroup.git /tmp/omnibus_orc/omnibus-timgroup"
-
   sh "cd /tmp/omnibus_orc/omnibus-timgroup/ && /opt/omnibus/bin/omnibus build orc"
 end
 
