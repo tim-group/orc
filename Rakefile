@@ -57,6 +57,7 @@ end
 # XXX used by jenkins. ci has sudo access but only for the 'rake' command
 desc "Prepare for an omnibus run "
 task :omnibus_prep do
+  sh "rm -rf /opt/orc" # XXX very bad
   sh "mkdir -p /opt/orc"
   sh "chown \$SUDO_UID:\$SUDO_GID /opt/orc"
 end
