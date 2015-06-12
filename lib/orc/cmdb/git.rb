@@ -1,10 +1,9 @@
 require 'git'
 require 'logger'
+require 'timeout'
 require 'orc/cmdb/namespace'
-require 'orc/util/timeout'
 
 class Orc::CMDB::Git
-  include Orc::Util::Timeout
   def initialize(options = {})
     @repo_url = options[:origin] || raise("Need origin option")
     @local_path = options[:local_path] || raise("Need local_path option")
@@ -16,26 +15,26 @@ class Orc::CMDB::Git
   def update
     logger = @debug ? Logger.new(STDOUT) : nil
     if File.directory?(@local_path)
-      timeout(@timeout) do
+      Timeout::timeout(@timeout) do
         @git = Git.open(@local_path, :log => logger)
         @git.remotes.first.fetch
         @git.fetch('origin')
         @git.merge('origin', 'merge concurrent modifications')
         @git.pull
       end
-      timeout(@timeout) do
+      Timeout::timeout(@timeout) do
         Dir.chdir(@local_path) do
           system('git gc')
         end
       end
     else
-      timeout(@timeout) do
+      Timeout::timeout(@timeout) do
         @git = Git.clone(@repo_url, @local_path, :log => logger)
       end
     end
 
     if get_branch != @branch
-      timeout(@timeout) do
+      Timeout::timeout(@timeout) do
         @git.branch(@branch).checkout
       end
     end
@@ -48,7 +47,7 @@ class Orc::CMDB::Git
   def commit_and_push(message = 'orc auto-updating cmdb')
     if File.directory?(@local_path)
       if @git.status.changed.size > 0
-        timeout(@timeout) do
+        Timeout::timeout(@timeout) do
           @git.commit_all(message)
           @git.fetch('origin')
           @git.merge('origin', 'merge concurrent modifications')
