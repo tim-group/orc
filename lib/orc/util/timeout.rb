@@ -1,5 +1,5 @@
 require 'orc/exceptions'
-require 'dl/import'
+require 'dl/import' # XXX deprecated in 2.1.6
 
 module Orc::Util::Timeout
   module Alarm
