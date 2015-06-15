@@ -46,6 +46,8 @@ class Orc::CMDB::Git
 
   def commit_and_push(message = 'orc auto-updating cmdb')
     if File.directory?(@local_path)
+      # XXX line below works around a ruby bug, see https://github.com/schacon/ruby-git/issues/23
+      @git.status.changed.each { @git.diff.entries }
       if @git.status.changed.size > 0
         Timeout::timeout(@timeout) do
           @git.commit_all(message)
