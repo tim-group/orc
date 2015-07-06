@@ -1,4 +1,5 @@
 require 'rubygems' # must be before everything else
+require 'ci/reporter/rake/rspec'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
@@ -96,9 +97,9 @@ end
 desc "Run specs"
 if ENV['ORC_RSPEC_SEPARATE'] # run each rspec in a separate ruby instance
   require './spec/rake_override'
-  SingleTestFilePerInterpreterSpec::RakeTask.new
+  SingleTestFilePerInterpreterSpec::RakeTask.new(:spec => ["ci:setup:rspec"])
 else # fast run (common ruby process for all tests)
-  RSpec::Core::RakeTask.new
+  RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"])
 end
 
 desc "Generate code coverage"
