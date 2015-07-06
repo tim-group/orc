@@ -1,5 +1,4 @@
 require 'rubygems' # must be before everything else
-require 'ci/reporter/rake/rspec'
 require 'rake'
 require 'rake/testtask'
 require 'rdoc/task'
@@ -18,7 +17,7 @@ class Project
 end
 
 @project = Project.new(
-  :name        => "orctool",
+  :name        => "orc",
   :description => "orchestration tool",
   :version     => "1.0.#{ENV['BUILD_NUMBER']}"
 )
@@ -64,15 +63,16 @@ end
 
 desc "Create Debian package"
 task :package do
-  sh "mkdir -p build/package/opt/orctool/"
-  sh "cp -r lib build/package/opt/orctool/"
-  sh "cp -r bin build/package/opt/orctool/"
-  sh "mkdir -p build/package/usr/bin/"
-  sh "ln -sf /opt/orctool/bin/orc build/package/usr/bin/orc"
+  sh "rm -rf build/package"
+  sh "mkdir -p build/package/usr/local/lib/site_ruby/timgroup/"
+  sh "cp -r lib/* build/package/usr/local/lib/site_ruby/timgroup/"
+
+  sh "mkdir -p build/package/usr/local/bin/"
+  sh "cp -r bin/* build/package/usr/local/bin/"
 
   arguments = [
-    "-p", "build/#{@project.name}_#{@project.version}.deb",
-    "-n", "#{@project.name}",
+    "-p", "build/#{@project.name}-transition_#{@project.version}.deb",
+    "-n", "#{@project.name}-transition",
     "-v", "#{@project.version}",
     "-m", "Infrastructure <infra@timgroup.com>",
     "-a", 'all',
@@ -84,21 +84,21 @@ task :package do
   ]
 
   argv = arguments.map { |x| "'#{x}'" }.join(' ')
-  sh "rm -f build/orctool_*.deb"
+  sh "rm -f build/*.deb"
   sh "fpm #{argv}"
 end
 
 desc "Build and install"
 task :install => [:package] do
-  sh "sudo dpkg -i build/orctool*.deb"
+  sh "sudo dpkg -i build/orc*.deb"
 end
 
 desc "Run specs"
 if ENV['ORC_RSPEC_SEPARATE'] # run each rspec in a separate ruby instance
   require './spec/rake_override'
-  SingleTestFilePerInterpreterSpec::RakeTask.new(:spec => ["ci:setup:rspec"])
+  SingleTestFilePerInterpreterSpec::RakeTask.new
 else # fast run (common ruby process for all tests)
-  RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"])
+  RSpec::Core::RakeTask.new
 end
 
 desc "Generate code coverage"

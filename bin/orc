@@ -1,8 +1,7 @@
-#!/usr/bin/ruby
-#
-# XXX path to ruby above, and path to lib/ below get overwriten in omnibus
+#!/opt/ruby-bundle/bin/ruby
 
-$: << '/opt/orctool/lib'
+$: << '/usr/local/lib/site_ruby/timgroup'
+
 require 'orc/util/option_parser'
 
 Orc::Util::OptionParser.new.parse.execute
