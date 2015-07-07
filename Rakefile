@@ -20,7 +20,7 @@ end
 @project = Project.new(
   :name        => "orc",
   :description => "orchestration tool",
-  :version     => "1.0.#{ENV['BUILD_NUMBER']}"
+  :version     => "1.0.#{ENV['BUILD_NUMBER']}",
 )
 
 task :default do
