@@ -16,7 +16,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name                => 'blue',
         :target_version       => '1',
         :target_participation => true,
-        :never_swap           => true },
+        :never_swap           => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -37,7 +37,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name                => 'blue',
                                                      :target_version       => '2',
                                                      :target_participation => true,
-                                                     :never_swap           => true },
+                                                     :never_swap           => true }
                                                  ])
 
     @git.should_receive(:update).ordered
@@ -54,7 +54,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name                => 'blue',
         :target_version       => '1',
         :target_participation => true,
-        :never_swap           => true },
+        :never_swap           => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -75,7 +75,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name                => 'blue',
                                                      :target_version       => '1',
                                                      :target_participation => true,
-                                                     :never_swap           => true },
+                                                     :never_swap           => true }
                                                  ])
 
     @git.should_receive(:update).ordered
@@ -89,7 +89,7 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => false },
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -109,7 +109,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
                                                    { :name => 'blue',
                                                      :target_version => '1',
-                                                     :target_participation => true },
+                                                     :target_participation => true }
                                                  ])
 
     @git.should_receive(:update).ordered
@@ -126,7 +126,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -147,7 +147,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
                                                    { :name => 'blue',
                                                      :target_version => '2',
-                                                     :target_participation => true },
+                                                     :target_participation => true }
                                                  ])
 
     @git.should_receive(:update).ordered
@@ -165,7 +165,7 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => false },
       { :name => 'green',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -189,7 +189,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
                                                    { :name => 'green',
                                                      :target_version => '1',
-                                                     :target_participation => true },
+                                                     :target_participation => true }
                                                  ]
                                                 )
 
@@ -206,7 +206,7 @@ describe Orc::CMDB::HighLevelOrchestration do
         :never_swap => true },
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -223,11 +223,11 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '1',
                                                      :target_participation => false,
-                                                     :never_swap => true,
+                                                     :never_swap => true
                                                    },
                                                    { :name => 'blue',
                                                      :target_version => '1',
-                                                     :target_participation => true },
+                                                     :target_participation => true }
                                                  ]
                                                 )
 
@@ -245,7 +245,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name => 'grey',
         :target_version => '1',
         :target_participation => false,
-        :never_swap => true },
+        :never_swap => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -265,7 +265,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '1',
                                                      :target_participation => false,
-                                                     :never_swap => true },
+                                                     :never_swap => true }
                                                  ]
                                                 )
 
@@ -278,7 +278,7 @@ describe Orc::CMDB::HighLevelOrchestration do
     cmdb_yaml = [
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => false },
+        :target_participation => false }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -294,7 +294,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                  [
                                                    { :name => 'blue',
                                                      :target_version => '1',
-                                                     :target_participation => false },
+                                                     :target_participation => false }
                                                  ]
                                                 )
 
@@ -314,7 +314,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name => 'grey',
         :target_version => '1',
         :target_participation => false,
-        :never_swap => true },
+        :never_swap => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -339,8 +339,8 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '1',
                                                      :target_participation => false,
-                                                     :never_swap => true,
-                                                   },
+                                                     :never_swap => true
+                                                   }
                                                  ]
                                                 )
 
@@ -356,7 +356,7 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => false },
       { :name => 'green',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -375,7 +375,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                      :target_participation => true },
                                                    { :name => 'green',
                                                      :target_version => '1',
-                                                     :target_participation => false },
+                                                     :target_participation => false }
                                                  ]
                                                 )
 
@@ -387,7 +387,7 @@ describe Orc::CMDB::HighLevelOrchestration do
     cmdb_yaml = [
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -421,12 +421,12 @@ describe Orc::CMDB::HighLevelOrchestration do
     cmdb_env1_yaml = [
       { :name => 'blue',
         :target_version => '2',
-        :target_participation => true },
+        :target_participation => true }
     ]
     cmdb_env2_yaml = [
       { :name => 'blue',
         :target_version => '1',
-        :target_participation => true },
+        :target_participation => true }
     ]
     @git.should_receive(:update).ordered
     @cmdb.stub(:retrieve_application).with(:environment => "env2", :application => "ExampleApp").
@@ -457,7 +457,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name => 'grey',
         :target_version => '1',
         :target_participation => false,
-        :never_swap => true },
+        :never_swap => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -482,8 +482,8 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '3',
                                                      :target_participation => false,
-                                                     :never_swap => true,
-                                                   },
+                                                     :never_swap => true
+                                                   }
                                                  ]
                                                 )
 
@@ -503,7 +503,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name => 'grey',
         :target_version => '1',
         :target_participation => false,
-        :never_swap => true },
+        :never_swap => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -528,8 +528,8 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '1',
                                                      :target_participation => false,
-                                                     :never_swap => true,
-                                                   },
+                                                     :never_swap => true
+                                                   }
                                                  ]
                                                 )
 
@@ -549,7 +549,7 @@ describe Orc::CMDB::HighLevelOrchestration do
       { :name => 'grey',
         :target_version => '1',
         :target_participation => false,
-        :never_swap => true },
+        :never_swap => true }
     ]
 
     high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
@@ -574,8 +574,8 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                    { :name => 'grey',
                                                      :target_version => '3',
                                                      :target_participation => false,
-                                                     :never_swap => true,
-                                                   },
+                                                     :never_swap => true
+                                                   }
                                                  ]
                                                 )
 

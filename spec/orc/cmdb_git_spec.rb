@@ -33,7 +33,7 @@ describe Orc::CMDB::Git do
   it 'try to commit to a repo without updating it will fail' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
 
     expect { gitcmdb.commit_and_push }.to raise_error
@@ -44,7 +44,7 @@ describe Orc::CMDB::Git do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
       :origin => @origin,
-      :branch => branch_name,
+      :branch => branch_name
     )
     gitcmdb.update
     gitcmdb.get_branch.should eql(branch_name)
@@ -53,7 +53,7 @@ describe Orc::CMDB::Git do
   it 'pushes changes back to the origin' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
 
@@ -65,7 +65,7 @@ describe Orc::CMDB::Git do
 
     gitcmdb2 = Orc::CMDB::Git.new(
       :local_path => @second_copy_of_local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb2.update
 
@@ -75,12 +75,12 @@ describe Orc::CMDB::Git do
   it 'correctly merges changes when the current repo has fast-forward commits' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
     gitcmdb2 = Orc::CMDB::Git.new(
       :local_path => @second_copy_of_local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb2.update
     File.open(@local + '/file', "w") do |f|
@@ -97,7 +97,7 @@ describe Orc::CMDB::Git do
   it 'doesnt break if we commit the same tree twice' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
 
@@ -120,7 +120,7 @@ describe Orc::CMDB::Git do
   it 'doesnt merge if history is linear' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
 
@@ -147,7 +147,7 @@ describe Orc::CMDB::Git do
   it 'doesnt break if we commit the same tree twice' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
 
@@ -174,7 +174,7 @@ describe Orc::CMDB::Git do
   it 'can clone and then update' do
     gitcmdb = Orc::CMDB::Git.new(
       :local_path => @local,
-      :origin => @origin,
+      :origin => @origin
     )
     gitcmdb.update
     gitcmdb.get_branch.should eql("master")

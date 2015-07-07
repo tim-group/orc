@@ -64,9 +64,6 @@ Style/RescueModifier:
 Style/StringLiterals: # This is just so we don't have to correct a zillion lines
   Enabled: false
 
-Style/TrailingComma:
-  EnforcedStyleForMultiline: comma
-
 ### XXX ruby 1.8 compatibility
 # Ruby 1.8 does't have each_with_object()
 Style/EachWithObject:

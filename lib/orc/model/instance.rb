@@ -23,7 +23,7 @@ class Orc::Model::Instance
   def key
     {
       :group => group.name,
-      :host  => host,
+      :host  => host
     }
   end
 

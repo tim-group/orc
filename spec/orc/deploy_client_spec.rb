@@ -6,7 +6,7 @@ describe Orc::DeployClient do
     mcollective_client.stub(:status).and_return(msg)
     mcollective_client.stub(:custom_request).and_return(msg)
     Orc::DeployClient.new(
-      :mcollective_client => mcollective_client,
+      :mcollective_client => mcollective_client
     )
   end
 
@@ -24,7 +24,7 @@ describe Orc::DeployClient do
     client = get_client([
       {
         :data => { :statuses => [{ :environment => "latest", :application => "fed" }] },
-        :sender => "mars" },
+        :sender => "mars" }
     ])
 
     client.status.should eql([{ :environment => "latest", :application => "fed", :host => "mars" }])
@@ -34,7 +34,7 @@ describe Orc::DeployClient do
     client = get_client([
       {
         :data => [{ :environment => "latest", :application => "fed" }],
-        :sender => "mars" },
+        :sender => "mars" }
     ])
 
     client.status.should eql([{ :environment => "latest", :application => "fed", :host => "mars" }])
@@ -46,11 +46,11 @@ describe Orc::DeployClient do
         :logs => {
           :infos => [],
           :warns => [],
-          :errors => [],
+          :errors => []
         },
-        :successful => false,
+        :successful => false
       },
-        :sender => "mars" },
+        :sender => "mars" }
     ])
     client.update_to_version({ :environment => "test", :application => "xyz" }, ["mars"], 5).should eql(false)
   end

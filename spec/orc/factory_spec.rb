@@ -12,7 +12,7 @@ describe Orc::Factory do
       ENV['HOME'] = dir
       data = {
         'cmdb_repo_url' => 'git@github.com:footest.git',
-        'cmdb_local_path' => '/tmp/test-cmdb',
+        'cmdb_local_path' => '/tmp/test-cmdb'
       }
       fn = "#{dir}/.orc.yaml"
       File.open(fn, 'w') do |f|
@@ -21,7 +21,7 @@ describe Orc::Factory do
 
       f = Orc::Factory.new(
         :environment => 'latest',
-        :application => 'testapp',
+        :application => 'testapp'
       )
       data.keys.each { |k| f.config[k].should eql(data[k]) }
       ENV['HOME'] = home
