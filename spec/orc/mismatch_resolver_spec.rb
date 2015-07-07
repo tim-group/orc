@@ -6,12 +6,12 @@ describe Orc::MismatchResolver do
     @should_be_participating_group = Orc::Model::Group.new(
       :name                 => "spg",
       :target_participation => true,
-      :target_version       => "correct"
+      :target_version       => "correct",
     )
     @should_not_be_participating_group = Orc::Model::Group.new(
       :name                 => "snpg",
       :target_participation => false,
-      :target_version       => "correct"
+      :target_version       => "correct",
     )
   end
 
@@ -21,9 +21,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
-        :stoppable     => "safe"
+        :stoppable     => "safe",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -36,9 +36,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
-        :stoppable     => "unwise"
+        :stoppable     => "unwise",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -50,9 +50,9 @@ describe Orc::MismatchResolver do
       {
         :participating => true,
         :version       => "incorrect_version",
-        :health        => "healthy"
+        :health        => "healthy",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -65,9 +65,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
-        :stoppable     => "safe"
+        :stoppable     => "safe",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -80,9 +80,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect_version",
         :health        => "healthy",
-        :stoppable     => "unwise"
+        :stoppable     => "unwise",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -95,9 +95,9 @@ describe Orc::MismatchResolver do
         :participating => true,
         :version       => "incorrect_version",
         :health        => "healthy",
-        :stoppable     => "safe"
+        :stoppable     => "safe",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -109,9 +109,9 @@ describe Orc::MismatchResolver do
       {
         :participating => false,
         :version       => "correct",
-        :health        => "healthy"
+        :health        => "healthy",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -123,7 +123,7 @@ describe Orc::MismatchResolver do
       {
         :participating => true,
         :version       => "correct",
-        :health        => "healthy"
+        :health        => "healthy",
       },
       @should_not_be_participating_group)
 
@@ -137,9 +137,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect",
         :health        => "healthy",
-        :stoppable     => "safe"
+        :stoppable     => "safe",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -152,9 +152,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect",
         :health        => "healthy",
-        :stoppable     => "safe"
+        :stoppable     => "safe",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -167,9 +167,9 @@ describe Orc::MismatchResolver do
         :participating => false,
         :version       => "incorrect",
         :health        => "healthy",
-        :stoppable     => "unwise"
+        :stoppable     => "unwise",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -182,9 +182,9 @@ describe Orc::MismatchResolver do
       {
         :participating => false,
         :version       => "correct",
-        :health        => "ill"
+        :health        => "ill",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -196,9 +196,9 @@ describe Orc::MismatchResolver do
       {
         :participating => true,
         :version       => "correct",
-        :health        => "ill"
+        :health        => "ill",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -210,9 +210,9 @@ describe Orc::MismatchResolver do
       {
         :participating => true,
         :version       => "correct",
-        :health        => "healthy"
+        :health        => "healthy",
       },
-      @should_be_participating_group
+      @should_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -224,9 +224,9 @@ describe Orc::MismatchResolver do
       {
         :participating => false,
         :version       => "correct",
-        :health        => "healthy"
+        :health        => "healthy",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -238,9 +238,9 @@ describe Orc::MismatchResolver do
       {
         :participating => false,
         :version       => "correct",
-        :health        => "ill"
+        :health        => "ill",
       },
-      @should_not_be_participating_group
+      @should_not_be_participating_group,
     )
 
     resolution = @mismatch_resolver.resolve(instance)
@@ -253,18 +253,18 @@ describe Orc::MismatchResolver do
         {
           :participating => true,
           :version       => "correct",
-          :health        => "healthy"
+          :health        => "healthy",
         },
-        @should_not_be_participating_group
+        @should_not_be_participating_group,
       ),
       Orc::Model::Instance.new(
         {
           :participating => false,
           :version       => "correct",
-          :health        => "healthy"
+          :health        => "healthy",
         },
-        @should_not_be_participating_group
-      )
+        @should_not_be_participating_group,
+      ),
     ]
 
     resolution = @mismatch_resolver.resolve(instances[0])

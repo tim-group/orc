@@ -38,7 +38,7 @@ class Orc::CMDB::HighLevelOrchestration
     @git.update
     from_spec = {
       :environment => upstream_environment,
-      :application => @spec[:application]
+      :application => @spec[:application],
     }
 
     from_app = @cmdb.retrieve_application(from_spec)

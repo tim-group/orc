@@ -40,14 +40,14 @@ class Orc::Factory
     @remote_client ||= Orc::DeployClient.new(
       :environment => environment,
       :application => application,
-      :group       => group
+      :group       => group,
     )
   end
 
   def cmdb_git
     @cmdb_git ||= Orc::CMDB::Git.new(
       :origin     => config['cmdb_repo_url'],
-      :local_path => config['cmdb_local_path']
+      :local_path => config['cmdb_local_path'],
     )
   end
 
@@ -56,7 +56,7 @@ class Orc::Factory
       :cmdb => cmdb,
       :git => cmdb_git,
       :environment => environment,
-      :application => application
+      :application => application,
     )
   end
 
@@ -69,12 +69,12 @@ class Orc::Factory
       :environment        => environment,
       :application        => application,
       :progress_logger    => logger,
-      :mismatch_resolver  => mismatch_resolver
+      :mismatch_resolver  => mismatch_resolver,
     )
 
     Orc::Engine.new(
       :model_generator   => model_generator,
-      :log               => logger
+      :log               => logger,
     )
   end
 end

@@ -30,7 +30,7 @@ describe Orc::Engine do
           :version => "2.2",
           :application => "app",
           :participating => true,
-          :health        => "healthy" }
+          :health        => "healthy" },
       ] if @instances.nil?
 
       @fail_to_deploy = opts[:fail_to_deploy]
@@ -99,8 +99,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     factory.engine.resolve.should eq ["DisableParticipationAction: on h1 blue",
@@ -139,8 +139,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
@@ -181,8 +181,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
@@ -223,8 +223,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
@@ -266,7 +266,7 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => fake_cmdb(:groups => {
-                                                    "a-app" => []
+                                                    "a-app" => [],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::GroupMissing)
@@ -291,8 +291,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     factory.engine.resolve.should eq []
@@ -311,8 +311,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
@@ -331,8 +331,8 @@ describe Orc::Engine do
                                                     "a-app" => [{
                                                       :name => "blue",
                                                       :target_participation => false,
-                                                      :target_version => "5"
-                                                    }]
+                                                      :target_version => "5",
+                                                    }],
                                                   }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)

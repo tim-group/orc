@@ -46,7 +46,7 @@ describe Orc::CMDB::Yaml do
         {
           :target_version => "2",
           :name => "green",
-          :target_participation => false }
+          :target_participation => false },
       ],
       'testbob' => [
         {
@@ -56,21 +56,21 @@ describe Orc::CMDB::Yaml do
         {
           :target_version => "4",
           :name => "green",
-          :target_participation => false }
-      ]
+          :target_participation => false },
+      ],
 
     }
     group_static_models = [
       {
         :target_version => "1",
         :name => "blue",
-        :target_participation => false
+        :target_participation => false,
       },
       {
         :target_version => "77",
         :name => "green",
-        :target_participation => false
-      }
+        :target_participation => false,
+      },
     ]
 
     Dir.mkdir("build/") unless File.directory? "build/"

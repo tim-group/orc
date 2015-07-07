@@ -9,49 +9,49 @@ class Orc::MismatchResolver
               :should_participate => true,
               :does_participate   => true,
               :version_mismatch   => false,
-              :is_healthy         => true
+              :is_healthy         => true,
             }, 'ResolvedCompleteAction')
     in_case({
               :should_participate => true,
               :does_participate   => true,
               :version_mismatch   => false,
-              :is_healthy         => false
+              :is_healthy         => false,
             }, 'WaitForHealthyAction')
     in_case({
               :should_participate => false,
               :does_participate   => false,
-              :version_mismatch   => false
+              :version_mismatch   => false,
             }, 'ResolvedCompleteAction')
     in_case({
               :should_participate => true,
               :does_participate   => true,
-              :version_mismatch   => true
+              :version_mismatch   => true,
             }, 'DisableParticipationAction')
     in_case({
               :does_participate   => false,
               :version_mismatch   => true,
-              :is_drained         => true
+              :is_drained         => true,
             }, 'UpdateVersionAction')
     in_case({
               :does_participate   => false,
               :version_mismatch   => true,
-              :is_drained         => false
+              :is_drained         => false,
             }, 'WaitForDrainedAction')
     in_case({
               :should_participate => true,
               :does_participate   => false,
               :version_mismatch   => false,
-              :is_healthy         => true
+              :is_healthy         => true,
             }, 'EnableParticipationAction')
     in_case({
               :should_participate => true,
               :does_participate   => false,
               :version_mismatch   => false,
-              :is_healthy         => false
+              :is_healthy         => false,
             }, 'WaitForHealthyAction')
     in_case({
               :should_participate => false,
-              :does_participate   => true
+              :does_participate   => true,
             }, 'DisableParticipationAction')
   end
 
@@ -73,7 +73,7 @@ class Orc::MismatchResolver
       :does_participate,
       :version_mismatch,
       :is_healthy,
-      :is_drained
+      :is_drained,
     ].each do |k|
       if state[k].nil?
         t_state = state.clone
