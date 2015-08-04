@@ -66,7 +66,7 @@ task :package do
     '-a', 'all',
     '-t', 'deb',
     '-s', 'dir',
-    '-C', 'build/package',
+    '-C', 'build/package'
   ]
 
   argv = arguments.map { |x| "'#{x}'" }.join(' ')
