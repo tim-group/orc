@@ -1,0 +1,7 @@
+entry paths into this codebase:
+ - bin/orc
+ - stackbuilder-config via stackbuilder via rake
+
+DEPENDENCIES:
+ - gems: rake, rspec, git
+ - ruby-bundle
