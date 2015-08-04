@@ -5,24 +5,6 @@ require 'rake/testtask'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
 
-class Project
-  attr_reader :name
-  attr_reader :description
-  attr_reader :version
-
-  def initialize(args)
-    @name = args[:name]
-    @description = args[:description]
-    @version = args[:version]
-  end
-end
-
-@project = Project.new(
-  :name        => "orc",
-  :description => "orchestration tool",
-  :version     => "1.0.#{ENV['BUILD_NUMBER']}"
-)
-
 task :default do
   sh "rake -s -T"
 end
@@ -64,28 +46,31 @@ end
 
 desc "Create Debian package"
 task :package do
-  sh "rm -rf build/package"
-  sh "mkdir -p build/package/usr/local/lib/site_ruby/timgroup/"
-  sh "cp -r lib/* build/package/usr/local/lib/site_ruby/timgroup/"
+  version = "1.0.#{ENV['BUILD_NUMBER']}"
 
-  sh "mkdir -p build/package/usr/local/bin/"
-  sh "cp -r bin/* build/package/usr/local/bin/"
+  sh 'rm -rf build/package'
+  sh 'mkdir -p build/package/usr/local/lib/site_ruby/timgroup/'
+  sh 'cp -r lib/* build/package/usr/local/lib/site_ruby/timgroup/'
+
+  sh 'mkdir -p build/package/usr/local/bin/'
+  sh 'cp -r bin/* build/package/usr/local/bin/'
 
   arguments = [
-    "-p", "build/#{@project.name}-transition_#{@project.version}.deb",
-    "-n", "#{@project.name}-transition",
-    "-v", "#{@project.version}",
-    "-m", "Infrastructure <infra@timgroup.com>",
-    "-a", 'all',
-    "-t", 'deb',
-    "-s", 'dir',
-    "--description", "#{@project.description}",
-    "--url", 'https://github.com/tim-group/orc',
-    "-C", 'build/package'
+    '--description', 'orchestration tool',
+    '--url', 'https://github.com/tim-group/orc',
+    '-p', "build/orc-transition_#{version}.deb",
+    '-n', 'orc-transition',
+    '-v', "#{version}",
+    '-m', 'Infrastructure <infra@timgroup.com>',
+    '-d', 'ruby-bundle',
+    '-a', 'all',
+    '-t', 'deb',
+    '-s', 'dir',
+    '-C', 'build/package',
   ]
 
   argv = arguments.map { |x| "'#{x}'" }.join(' ')
-  sh "rm -f build/*.deb"
+  sh 'rm -f build/*.deb'
   sh "fpm #{argv}"
 end
 

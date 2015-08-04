@@ -1,6 +1,6 @@
 #!/opt/ruby-bundle/bin/ruby
 
-$: << '/usr/local/lib/site_ruby/timgroup'
+$: << '/usr/local/lib/site_ruby/timgroup/'
 
 require 'orc/util/option_parser'
 
