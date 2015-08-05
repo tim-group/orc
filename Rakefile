@@ -19,31 +19,6 @@ task :setup do
   sh "mkdir build"
 end
 
-# used by omnibus
-desc "Prepare a directory tree for omnibus"
-task :omnibus do
-  sh "rm -rf build/omnibus"
-
-  sh "mkdir -p build/omnibus"
-  sh "mkdir -p build/omnibus/bin"
-  sh "mkdir -p build/omnibus/lib/ruby/site_ruby"
-  sh "mkdir -p build/omnibus/embedded/lib/ruby/site_ruby"
-
-  sh "cp -r bin/* build/omnibus/bin/"
-  sh "cp -r lib/* build/omnibus/embedded/lib/ruby/site_ruby"
-  # expose orcs libs; stackbuilder depends on orc/util/option_parser.rb
-  sh "ln -s ../../../embedded/lib/ruby/site_ruby/orc build/omnibus/lib/ruby/site_ruby/orc"
-end
-
-# needs to be run with sudo
-# XXX used by jenkins. ci has sudo access but only for the 'rake' command
-desc "Prepare for an omnibus run"
-task :omnibus_prep do
-  sh "rm -rf /opt/orc" # XXX very bad
-  sh "mkdir -p /opt/orc"
-  sh "chown \$SUDO_UID:\$SUDO_GID /opt/orc"
-end
-
 desc "Create Debian package"
 task :package do
   version = "1.0.#{ENV['BUILD_NUMBER']}"
