@@ -23,7 +23,7 @@ describe Orc::Factory do
         :environment => 'latest',
         :application => 'testapp'
       )
-      data.keys.each { |k| f.config[k].should eql(data[k]) }
+      data.keys.each { |k| expect(f.config[k]).to eql(data[k]) }
       ENV['HOME'] = home
 
       # Test factory methods work and don't throw exceptions

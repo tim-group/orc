@@ -103,12 +103,12 @@ describe Orc::Engine do
                                                     }]
                                                   }))
 
-    factory.engine.resolve.should eq ["DisableParticipationAction: on h1 blue",
-                                      "UpdateVersionAction: on h1 blue",
-                                      "EnableParticipationAction: on h1 blue",
-                                      "DisableParticipationAction: on h2 blue",
-                                      "UpdateVersionAction: on h2 blue",
-                                      "EnableParticipationAction: on h2 blue"]
+    expect(factory.engine.resolve).to eq ['DisableParticipationAction: on h1 blue',
+                                          'UpdateVersionAction: on h1 blue',
+                                          'EnableParticipationAction: on h1 blue',
+                                          'DisableParticipationAction: on h2 blue',
+                                          'UpdateVersionAction: on h2 blue',
+                                          'EnableParticipationAction: on h2 blue']
   end
 
   it 'safely deploys across multiple clusters' do
@@ -295,7 +295,7 @@ describe Orc::Engine do
                                                     }]
                                                   }))
 
-    factory.engine.resolve.should eq []
+    expect(factory.engine.resolve).to eq []
   end
 
   it 'will fail - if there is one instance and the next action is to remove it' do

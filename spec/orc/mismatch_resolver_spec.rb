@@ -27,7 +27,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::UpdateVersionAction)
+    expect(resolution.class).to eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends wait when should not be participating, is not participating and has a version mismatch but not stoppable' do
@@ -42,7 +42,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
+    expect(resolution.class).to eql(Orc::Action::WaitForDrainedAction)
   end
 
   it 'sends disable when should be participating, is participating and has a version mismatch' do
@@ -56,7 +56,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::DisableParticipationAction)
+    expect(resolution.class).to eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends update when is not participating and there is a version mismatch only' do
@@ -71,7 +71,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::UpdateVersionAction)
+    expect(resolution.class).to eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends wait when is not participating and there is a version mismatch only but not stoppable' do
@@ -86,7 +86,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
+    expect(resolution.class).to eql(Orc::Action::WaitForDrainedAction)
   end
 
   it 'sends disable when is participating and there is a version mismatch only' do
@@ -101,7 +101,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::DisableParticipationAction)
+    expect(resolution.class).to eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends enable when should be participating but is not and there is no version mismatch' do
@@ -115,7 +115,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::EnableParticipationAction)
+    expect(resolution.class).to eql(Orc::Action::EnableParticipationAction)
   end
 
   it 'sends disable when should not be participating but is and there is no version mismatch' do
@@ -128,7 +128,7 @@ describe Orc::MismatchResolver do
       @should_not_be_participating_group)
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::DisableParticipationAction)
+    expect(resolution.class).to eql(Orc::Action::DisableParticipationAction)
   end
 
   it 'sends update when should be participating, is not participating and has a version mismatch' do
@@ -143,7 +143,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::UpdateVersionAction)
+    expect(resolution.class).to eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends update when should be participating, is not participating and has a version mismatch' do
@@ -158,7 +158,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::UpdateVersionAction)
+    expect(resolution.class).to eql(Orc::Action::UpdateVersionAction)
   end
 
   it 'sends wait when should be participating, is not participating and has a version mismatch' do
@@ -173,7 +173,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForDrainedAction)
+    expect(resolution.class).to eql(Orc::Action::WaitForDrainedAction)
   end
 
   it 'is waiting for healthy when is unhealthy but should be participating, is not yet participating and has correct ' \
@@ -188,7 +188,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForHealthyAction)
+    expect(resolution.class).to eql(Orc::Action::WaitForHealthyAction)
   end
 
   it 'also waits for healthy when a participating instance is ill' do
@@ -202,7 +202,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::WaitForHealthyAction)
+    expect(resolution.class).to eql(Orc::Action::WaitForHealthyAction)
   end
 
   it 'is resolved when should be participating, is participating and has correct version' do
@@ -216,7 +216,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
+    expect(resolution.class).to eql(Orc::Action::ResolvedCompleteAction)
   end
 
   it 'is resolved when should not be participating, is not participating and has correct version' do
@@ -230,7 +230,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
+    expect(resolution.class).to eql(Orc::Action::ResolvedCompleteAction)
   end
 
   it 'is resolved when should not be participating, is not participating and has correct version even if unhealthy' do
@@ -244,7 +244,7 @@ describe Orc::MismatchResolver do
     )
 
     resolution = @mismatch_resolver.resolve(instance)
-    resolution.class.should eql(Orc::Action::ResolvedCompleteAction)
+    expect(resolution.class).to eql(Orc::Action::ResolvedCompleteAction)
   end
 
   it 'will not send a disable when there would be no groups left in the lb pool' do
@@ -268,11 +268,11 @@ describe Orc::MismatchResolver do
     ]
 
     resolution = @mismatch_resolver.resolve(instances[0])
-    resolution.class.should eql(Orc::Action::DisableParticipationAction)
+    expect(resolution.class).to eql(Orc::Action::DisableParticipationAction)
 
     mock_appmodel = double
-    mock_appmodel.stub(:instances).and_return(instances)
-    mock_appmodel.stub(:participating_instances).and_return([instances[0]])
+    allow(mock_appmodel).to receive(:instances).and_return(instances)
+    allow(mock_appmodel).to receive(:participating_instances).and_return([instances[0]])
 
     expect { resolution.check_valid(mock_appmodel) }.to raise_error(Orc::Exception::FailedToResolve)
   end

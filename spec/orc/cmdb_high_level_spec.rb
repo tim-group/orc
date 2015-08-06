@@ -25,23 +25,23 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name                => 'grey',
-                                                     :target_version       => '2',
-                                                     :target_participation => true,
-                                                     :never_swap           => true },
-                                                   { :name                => 'blue',
-                                                     :target_version       => '2',
-                                                     :target_participation => true,
-                                                     :never_swap           => true }
-                                                 ])
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name                => 'grey',
+                                                         :target_version       => '2',
+                                                         :target_participation => true,
+                                                         :never_swap           => true },
+                                                       { :name                => 'blue',
+                                                         :target_version       => '2',
+                                                         :target_participation => true,
+                                                         :never_swap           => true }
+                                                     ])
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.install('2', 'all')
   end
   it 'install saves the requested version to the specified group if participation is true and all groups have ' \
@@ -63,23 +63,23 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name                => 'grey',
-                                                     :target_version       => '2',
-                                                     :target_participation => true,
-                                                     :never_swap           => true },
-                                                   { :name                => 'blue',
-                                                     :target_version       => '1',
-                                                     :target_participation => true,
-                                                     :never_swap           => true }
-                                                 ])
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name                => 'grey',
+                                                         :target_version       => '2',
+                                                         :target_participation => true,
+                                                         :never_swap           => true },
+                                                       { :name                => 'blue',
+                                                         :target_version       => '1',
+                                                         :target_participation => true,
+                                                         :never_swap           => true }
+                                                     ])
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.install('2', 'grey')
   end
   it 'install saves the requested version to the specified group if participation is false' do
@@ -98,22 +98,22 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'grey',
-                                                     :target_version => '2',
-                                                     :target_participation => false },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'grey',
+                                                         :target_version => '2',
+                                                         :target_participation => false },
 
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => true }
-                                                 ])
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => true }
+                                                     ])
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.install('2', 'grey')
   end
 
@@ -135,23 +135,23 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'grey',
-                                                     :target_version => '2',
-                                                     :target_participation => false,
-                                                     :never_swap => true },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'grey',
+                                                         :target_version => '2',
+                                                         :target_participation => false,
+                                                         :never_swap => true },
 
-                                                   { :name => 'blue',
-                                                     :target_version => '2',
-                                                     :target_participation => true }
-                                                 ])
+                                                       { :name => 'blue',
+                                                         :target_version => '2',
+                                                         :target_participation => true }
+                                                     ])
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.install('2')
   end
 
@@ -174,27 +174,27 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '2',
-                                                     :target_participation => false },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '2',
+                                                         :target_participation => false },
 
-                                                   { :name => 'grey',
-                                                     :target_version => '2',
-                                                     :target_participation => false },
+                                                       { :name => 'grey',
+                                                         :target_version => '2',
+                                                         :target_participation => false },
 
-                                                   { :name => 'green',
-                                                     :target_version => '1',
-                                                     :target_participation => true }
-                                                 ]
-                                                )
+                                                       { :name => 'green',
+                                                         :target_version => '1',
+                                                         :target_participation => true }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.install('2')
   end
 
@@ -215,24 +215,24 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'grey',
-                                                     :target_version => '1',
-                                                     :target_participation => false,
-                                                     :never_swap => true
-                                                   },
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => true }
-                                                 ]
-                                                )
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'grey',
+                                                         :target_version => '1',
+                                                         :target_participation => false,
+                                                         :never_swap => true
+                                                       },
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => true }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.swap
   end
 
@@ -254,23 +254,23 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => true },
-                                                   { :name => 'grey',
-                                                     :target_version => '1',
-                                                     :target_participation => false,
-                                                     :never_swap => true }
-                                                 ]
-                                                )
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => true },
+                                                       { :name => 'grey',
+                                                         :target_version => '1',
+                                                         :target_participation => false,
+                                                         :never_swap => true }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.swap
   end
 
@@ -287,19 +287,19 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => false }
-                                                 ]
-                                                )
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => false }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.swap
   end
 
@@ -323,29 +323,29 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => true },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => true },
 
-                                                   { :name => 'green',
-                                                     :target_version => '1',
-                                                     :target_participation => false },
+                                                       { :name => 'green',
+                                                         :target_version => '1',
+                                                         :target_participation => false },
 
-                                                   { :name => 'grey',
-                                                     :target_version => '1',
-                                                     :target_participation => false,
-                                                     :never_swap => true
-                                                   }
-                                                 ]
-                                                )
+                                                       { :name => 'grey',
+                                                         :target_version => '1',
+                                                         :target_participation => false,
+                                                         :never_swap => true
+                                                       }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.swap
   end
 
@@ -365,22 +365,22 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '2',
-                                                     :target_participation => true },
-                                                   { :name => 'green',
-                                                     :target_version => '1',
-                                                     :target_participation => false }
-                                                 ]
-                                                )
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '2',
+                                                         :target_participation => true },
+                                                       { :name => 'green',
+                                                         :target_version => '1',
+                                                         :target_participation => false }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.deploy('2')
   end
   it 'deploy when only one group just upgrades the version' do
@@ -396,18 +396,18 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '2',
-                                                     :target_participation => true }]
-                                                )
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '2',
+                                                         :target_participation => true }]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.deploy('2')
   end
 
@@ -428,20 +428,20 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-    @git.should_receive(:update).ordered
-    @cmdb.stub(:retrieve_application).with(:environment => "env2", :application => "ExampleApp").
+    expect(@git).to receive(:update).ordered
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "env2", :application => "ExampleApp").
       and_return(cmdb_env2_yaml)
 
-    @cmdb.stub(:retrieve_application).with(:environment => "env1", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "env1", :application => "ExampleApp").
       and_return(cmdb_env1_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "env2", :application => "ExampleApp" },
-                                                 [{
-                                                   :target_participation => true,
-                                                   :target_version => "2",
-                                                   :name => "blue" }])
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@cmdb).to receive(:save_application).with({ :environment => "env2", :application => "ExampleApp" },
+                                                     [{
+                                                       :target_participation => true,
+                                                       :target_version => "2",
+                                                       :name => "blue" }])
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
 
     high_level_orchestration.promote_from_environment('env1')
   end
@@ -466,29 +466,29 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '3',
-                                                     :target_participation => true },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '3',
+                                                         :target_participation => true },
 
-                                                   { :name => 'green',
-                                                     :target_version => '2',
-                                                     :target_participation => false },
+                                                       { :name => 'green',
+                                                         :target_version => '2',
+                                                         :target_participation => false },
 
-                                                   { :name => 'grey',
-                                                     :target_version => '3',
-                                                     :target_participation => false,
-                                                     :never_swap => true
-                                                   }
-                                                 ]
-                                                )
+                                                       { :name => 'grey',
+                                                         :target_version => '3',
+                                                         :target_participation => false,
+                                                         :never_swap => true
+                                                       }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.deploy('3')
   end
 
@@ -512,29 +512,29 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '3',
-                                                     :target_participation => true },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '3',
+                                                         :target_participation => true },
 
-                                                   { :name => 'green',
-                                                     :target_version => '2',
-                                                     :target_participation => false },
+                                                       { :name => 'green',
+                                                         :target_version => '2',
+                                                         :target_participation => false },
 
-                                                   { :name => 'grey',
-                                                     :target_version => '1',
-                                                     :target_participation => false,
-                                                     :never_swap => true
-                                                   }
-                                                 ]
-                                                )
+                                                       { :name => 'grey',
+                                                         :target_version => '1',
+                                                         :target_participation => false,
+                                                         :never_swap => true
+                                                       }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.deploy('3', 'blue')
   end
 
@@ -558,29 +558,29 @@ describe Orc::CMDB::HighLevelOrchestration do
       :environment => "test_env",
       :application => "ExampleApp")
 
-    @cmdb.stub(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => "test_env", :application => "ExampleApp").
       and_return(cmdb_yaml)
 
-    @cmdb.should_receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
-                                                 [
-                                                   { :name => 'blue',
-                                                     :target_version => '1',
-                                                     :target_participation => false },
+    expect(@cmdb).to receive(:save_application).with({ :environment => "test_env", :application => "ExampleApp" },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => false },
 
-                                                   { :name => 'green',
-                                                     :target_version => '2',
-                                                     :target_participation => true },
+                                                       { :name => 'green',
+                                                         :target_version => '2',
+                                                         :target_participation => true },
 
-                                                   { :name => 'grey',
-                                                     :target_version => '3',
-                                                     :target_participation => false,
-                                                     :never_swap => true
-                                                   }
-                                                 ]
-                                                )
+                                                       { :name => 'grey',
+                                                         :target_version => '3',
+                                                         :target_participation => false,
+                                                         :never_swap => true
+                                                       }
+                                                     ]
+                                                    )
 
-    @git.should_receive(:update).ordered
-    @git.should_receive(:commit_and_push).ordered
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
     high_level_orchestration.deploy('3', 'grey')
   end
 end

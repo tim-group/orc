@@ -4,15 +4,15 @@ describe Orc::CMDB::Yaml do
   it 'retrieves list of groups, with target versions and target_participation' do
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "spec/fixtures/cmdb/")
     group_static_models = cmdb.retrieve_application(:environment => "cmdb_test", :application => "testx")
-    group_static_models.size.should eql(2)
+    expect(group_static_models.size).to eql(2)
 
-    group_static_models[0][:name].should eql("blue")
-    group_static_models[0][:target_version].should eql("2.2")
-    group_static_models[0][:target_participation].should eql(false)
+    expect(group_static_models[0][:name]).to eql("blue")
+    expect(group_static_models[0][:target_version]).to eql("2.2")
+    expect(group_static_models[0][:target_participation]).to eql(false)
 
-    group_static_models[1][:name].should eql("green")
-    group_static_models[1][:target_version].should eql("2.3")
-    group_static_models[1][:target_participation].should eql(true)
+    expect(group_static_models[1][:name]).to eql("green")
+    expect(group_static_models[1][:target_version]).to eql("2.3")
+    expect(group_static_models[1][:target_participation]).to eql(true)
   end
 
   it 'saves list of groups, with target_version and participation to a new yaml file' do
@@ -30,8 +30,8 @@ describe Orc::CMDB::Yaml do
     group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
                                                           :application => "testx")
 
-    group_static_models_again[1][:target_version].should eql("77")
-    group_static_models_again[1][:target_participation].should eql(false)
+    expect(group_static_models_again[1][:target_version]).to eql("77")
+    expect(group_static_models_again[1][:target_participation]).to eql(false)
   end
 
   it 'saves list of groups, with target_version and participation to an existing yaml file' do
@@ -88,12 +88,12 @@ describe Orc::CMDB::Yaml do
 
     group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
                                                           :application => "testx")
-    group_static_models_again[1][:target_version].should eql("77")
-    group_static_models_again[1][:target_participation].should eql(false)
+    expect(group_static_models_again[1][:target_version]).to eql("77")
+    expect(group_static_models_again[1][:target_participation]).to eql(false)
 
     group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
                                                           :application => "testbob")
-    group_static_models_again[1][:target_version].should eql("4")
-    group_static_models_again[1][:target_participation].should eql(false)
+    expect(group_static_models_again[1][:target_version]).to eql("4")
+    expect(group_static_models_again[1][:target_participation]).to eql(false)
   end
 end

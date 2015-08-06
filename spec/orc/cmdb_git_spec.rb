@@ -27,7 +27,7 @@ describe Orc::CMDB::Git do
   it 'pulls or clones the cmdb' do
     gitcmdb = Orc::CMDB::Git.new(:local_path => @local, :origin => @origin)
     gitcmdb.update
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
   end
 
   it 'try to commit to a repo without updating it will fail' do
@@ -47,7 +47,7 @@ describe Orc::CMDB::Git do
       :branch => branch_name
     )
     gitcmdb.update
-    gitcmdb.get_branch.should eql(branch_name)
+    expect(gitcmdb.get_branch).to eql(branch_name)
   end
 
   it 'pushes changes back to the origin' do
@@ -69,7 +69,7 @@ describe Orc::CMDB::Git do
     )
     gitcmdb2.update
 
-    IO.read(@second_copy_of_local + '/file').should eql("hello world")
+    expect(IO.read(@second_copy_of_local + '/file')).to eql("hello world")
   end
 
   it 'correctly merges changes when the current repo has fast-forward commits' do
@@ -91,7 +91,7 @@ describe Orc::CMDB::Git do
       f.write("hello world")
     end
     gitcmdb2.commit_and_push
-    IO.read(@second_copy_of_local + '/file').should eql("hello world")
+    expect(IO.read(@second_copy_of_local + '/file')).to eql("hello world")
   end
 
   it 'doesnt break if we commit the same tree twice' do
@@ -108,13 +108,13 @@ describe Orc::CMDB::Git do
 
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
 
     g = local_git
     commits = g.log
-    commits.size.should eql(2)
-    commits.to_a[0].parents.size.should eql(1)
-    commits.to_a[1].parents.size.should eql(0)
+    expect(commits.size).to eql(2)
+    expect(commits.to_a[0].parents.size).to eql(1)
+    expect(commits.to_a[1].parents.size).to eql(0)
   end
 
   it 'doesnt merge if history is linear' do
@@ -134,14 +134,14 @@ describe Orc::CMDB::Git do
     end
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
 
     g = local_git
     commits = g.log
-    commits.size.should eql(3)
-    commits.to_a[0].parents.size.should eql(1)
-    commits.to_a[1].parents.size.should eql(1)
-    commits.to_a[2].parents.size.should eql(0)
+    expect(commits.size).to eql(3)
+    expect(commits.to_a[0].parents.size).to eql(1)
+    expect(commits.to_a[1].parents.size).to eql(1)
+    expect(commits.to_a[2].parents.size).to eql(0)
   end
 
   it 'doesnt break if we commit the same tree twice' do
@@ -161,14 +161,14 @@ describe Orc::CMDB::Git do
     end
     gitcmdb.commit_and_push
 
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
 
     g = local_git
     commits = g.log
-    commits.size.should eql(3)
-    commits.to_a[0].parents.size.should eql(1)
-    commits.to_a[1].parents.size.should eql(1)
-    commits.to_a[2].parents.size.should eql(0)
+    expect(commits.size).to eql(3)
+    expect(commits.to_a[0].parents.size).to eql(1)
+    expect(commits.to_a[1].parents.size).to eql(1)
+    expect(commits.to_a[2].parents.size).to eql(0)
   end
 
   it 'can clone and then update' do
@@ -177,8 +177,8 @@ describe Orc::CMDB::Git do
       :origin => @origin
     )
     gitcmdb.update
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
     gitcmdb.update
-    gitcmdb.get_branch.should eql("master")
+    expect(gitcmdb.get_branch).to eql("master")
   end
 end
