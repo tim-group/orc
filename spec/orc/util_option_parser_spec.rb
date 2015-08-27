@@ -121,4 +121,13 @@ describe Orc::Util::OptionParser do
     command = parser.commands[0]
     expect(command.class.name).to eql('Orc::Util::OptionParser::DeployRequest')
   end
+
+  it 'Works for RollingRestartRequest' do
+    parser = MockOptionParser.new(['--rolling-restart', '--environment', 'bar', '--application', 'MyApp',
+                                   '--group', 'blue']).parse
+
+    parser.commands.size.should eql(1)
+    command = parser.commands[0]
+    command.class.name.should eql('Orc::Util::OptionParser::RollingRestartRequest')
+  end
 end

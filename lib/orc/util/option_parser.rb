@@ -140,6 +140,20 @@ class Orc::Util::OptionParser
     end
   end
 
+  class RollingRestartRequest < Base
+    def required
+      []
+    end
+
+    def execute(_factory)
+      print "--rolling-restart command not yet available. Under development.\n"
+    end
+
+    def self.command_options
+      ['-R', '--rolling-restart', 'Safely restarts a group of applications']
+    end
+  end
+
   def initialize
     @options = {}
     @commands = []
@@ -151,7 +165,8 @@ class Orc::Util::OptionParser
         "  orc --environment=production --show-status --group=blue\n" \
         "  orc --environment=production --application=MyApp --resolve\n" \
         "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
-        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n\n"
+        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n" \
+        "  orc --environment=production --application=MyApp --group=blue --rolling-restart\n"
 
       opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
         @options[:environment] = env
@@ -169,7 +184,9 @@ class Orc::Util::OptionParser
         @options[:group] = env
       end
 
-      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest].
+      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
+       RollingRestartRequest
+      ].
       each do |req|
         req.setup_command_options(@options, opts, @commands)
       end
