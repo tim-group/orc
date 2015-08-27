@@ -8,3 +8,4 @@ spec/reports/*.xml
 .*.sw[a-z]
 *~
 .project
+.idea/
