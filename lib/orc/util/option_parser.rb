@@ -142,11 +142,11 @@ class Orc::Util::OptionParser
 
   class RollingRestartRequest < Base
     def required
-      []
+      [:environment, :application, :group]
     end
 
-    def execute(_factory)
-      print "--rolling-restart command not yet available. Under development.\n"
+    def execute(factory)
+      factory.engine.rolling_restart
     end
 
     def self.command_options

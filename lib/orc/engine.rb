@@ -55,4 +55,8 @@ class Orc::Engine
 
     @resolution_steps.map(&:to_s)
   end
+
+  def rolling_restart
+    print "--rolling-restart command not yet available. Under development.\n"
+  end
 end
