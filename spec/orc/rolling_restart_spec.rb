@@ -21,28 +21,28 @@ describe Orc::Engine do
 
   it 'fails with an error message if the application group is not in the expected state' do
     app_in_unresolved_state = {
-      :group => "blue",
-      :host => "h2",
-      :version => "4",
-      :application => "app",
+      :group => 'blue',
+      :host => 'h2',
+      :version => '4',
+      :application => 'app',
       :participating => true,
-      :health        => "healthy"
+      :health        => 'healthy'
     }
-    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
+    factory = Orc::Factory.new({ :environment => 'a', :application => 'app', :timeout => 0 },
                                :remote_client => FakeRemoteClient.new(:instances => [
-                                 { :group => "blue",
-                                   :host => "h1",
-                                   :version => "5",
-                                   :application => "app",
+                                 { :group => 'blue',
+                                   :host => 'h1',
+                                   :version => '5',
+                                   :application => 'app',
                                    :participating => true,
-                                   :health        => "healthy" },
+                                   :health        => 'healthy' },
                                  app_in_unresolved_state]),
                                :cmdb => InMemoryCmdb.new(
                                  :groups => {
-                                   "a-app" => [{
-                                     :name => "blue",
+                                   'a-app' => [{
+                                     :name => 'blue',
                                      :target_participation => true,
-                                     :target_version => "5"
+                                     :target_version => '5'
                                    }]
                                  }))
 
