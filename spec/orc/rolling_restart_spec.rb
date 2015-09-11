@@ -1,5 +1,7 @@
 require 'orc/engine'
 require 'orc/factory'
+require 'orc/testutil/in_memory_cmdb'
+require 'orc/testutil/fake_remote_client'
 
 describe Orc::Engine do
   it 'sends a restart message to each given host sequentially' do
@@ -17,7 +19,7 @@ describe Orc::Engine do
     # invoke restart on non-participating instances first
   end
 
-  xit 'fails with an error message if the application group is not in the expected state' do
+  it 'fails with an error message if the application group is not in the expected state' do
     app_in_unresolved_state = {
       :group => "blue",
       :host => "h2",
@@ -27,7 +29,7 @@ describe Orc::Engine do
       :health        => "healthy"
     }
     factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
-                               :remote_client => remote_client(:instances => [
+                               :remote_client => FakeRemoteClient.new(:instances => [
                                  { :group => "blue",
                                    :host => "h1",
                                    :version => "5",
@@ -35,13 +37,14 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" },
                                  app_in_unresolved_state]),
-                               :cmdb => fake_cmdb(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                               :cmdb => InMemoryCmdb.new(
+                                 :groups => {
+                                   "a-app" => [{
+                                     :name => "blue",
+                                     :target_participation => true,
+                                     :target_version => "5"
+                                   }]
+                                 }))
 
     expect { factory.engine.rolling_restart }.to raise_error(Orc::Exception::CannotRestartUnresolvedGroup)
   end
