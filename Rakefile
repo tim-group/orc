@@ -69,6 +69,11 @@ RSpec::Core::RakeTask.new(:coverage) do |t|
   t.rcov_opts = ['--exclude', 'spec']
 end
 
+desc 'Generate CTags'
+task :ctags do
+  sh 'ctags -R --exclude=.git --exclude=build .'
+end
+
 desc "Run lint (Rubocop)"
 task :lint do
   sh "rubocop"
