@@ -58,7 +58,7 @@ class Orc::Engine
 
   def rolling_restart
     application_models = @model_generator.create_live_model
-    all_resolutions = application_models.flat_map { |model| model.get_resolutions }
+    all_resolutions = application_models.flat_map(&:get_resolutions)
 
     if all_resolutions.empty?
       print "--rolling-restart command would execute, nothing to resolve\n"

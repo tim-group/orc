@@ -2,8 +2,6 @@ require 'orc/engine'
 require 'orc/factory'
 
 describe Orc::Engine do
-
-
   class InMemoryCmdb
     def initialize(opts)
       @groups = opts[:groups]
@@ -67,7 +65,6 @@ describe Orc::Engine do
     FakeRemoteClient.new(opts)
   end
 
-
   before do
     @remote_client = double(Orc::DeployClient)
   end
@@ -104,7 +101,7 @@ describe Orc::Engine do
                                    :application => "app",
                                    :participating => true,
                                    :health        => "healthy" },
-                                 app_in_unresolved_state ]),
+                                 app_in_unresolved_state]),
                                :cmdb => fake_cmdb(:groups => {
                                                     "a-app" => [{
                                                       :name => "blue",
@@ -113,14 +110,10 @@ describe Orc::Engine do
                                                     }]
                                                   }))
 
-
     expect { factory.engine.rolling_restart }.to raise_error(Orc::Exception::CannotRestartUnresolvedGroup)
-
   end
-
 
   it 'halts rolling restart if any individual restart fails' do
     # allow an error to propagate to end the orc process
   end
-
 end
