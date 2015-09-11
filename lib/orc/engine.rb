@@ -57,6 +57,14 @@ class Orc::Engine
   end
 
   def rolling_restart
-    print "--rolling-restart command not yet available. Under development.\n"
+    application_models = @model_generator.create_live_model
+    all_resolutions = application_models.flat_map { |model| model.get_resolutions }
+
+    if all_resolutions.empty?
+      print "--rolling-restart command would execute, nothing to resolve\n"
+      print "--rolling-restart command not yet available. Under development.\n"
+    else
+      raise Orc::Exception::CannotRestartUnresolvedGroup.new("hah!")
+    end
   end
 end
