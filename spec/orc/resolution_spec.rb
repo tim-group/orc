@@ -60,12 +60,12 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => true,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -102,12 +102,12 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => true,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -144,12 +144,12 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => true,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -190,8 +190,8 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => []
-                                                  }))
+                                                           "a-app" => []
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::GroupMissing)
   end
@@ -212,12 +212,12 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => true,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect(factory.engine.resolve).to eq []
   end
@@ -232,12 +232,12 @@ describe Orc::Engine do
                                    :participating => true,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => true,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => true,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
@@ -252,12 +252,12 @@ describe Orc::Engine do
                                    :participating => false,
                                    :health        => "healthy" }]),
                                :cmdb => InMemoryCmdb.new(:groups => {
-                                                    "a-app" => [{
-                                                      :name => "blue",
-                                                      :target_participation => false,
-                                                      :target_version => "5"
-                                                    }]
-                                                  }))
+                                                           "a-app" => [{
+                                                             :name => "blue",
+                                                             :target_participation => false,
+                                                             :target_version => "5"
+                                                           }]
+                                                         }))
 
     expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
   end
