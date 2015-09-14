@@ -158,7 +158,7 @@ class Orc::Util::OptionParser
     @options = {}
     @commands = []
 
-    @option_parser = OptionParser.new do|opts|
+    @option_parser = OptionParser.new do |opts|
       opts.banner =
         "Usage:\n" \
         "  orc --environment=production --show-status\n" \
