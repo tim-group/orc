@@ -8,7 +8,7 @@ class MCollective::RPC::DeploytoolWrapper
 
   def initialize(environment, options)
     @environment = environment
-    @options = options
+    @mco_options = options
   end
 
   def status(spec)
@@ -24,13 +24,13 @@ class MCollective::RPC::DeploytoolWrapper
 
   def get_client(environment = nil, application = nil, group = nil)
     begin # FIXME: Occasionally this dies with Marshal errors, just retry once..
-      mc = rpcclient("deployapp", :options => @options)
+      mc = rpcclient("deployapp", :options => @mco_options)
       mc.fact_filter "logicalenv", environment unless environment.nil?
       mc.fact_filter "application", application unless application.nil?
       mc.fact_filter "group", group unless group.nil?
       mc.discover :verbose => false
     rescue
-      mc = rpcclient("deployapp", :options => @options)
+      mc = rpcclient("deployapp", :options => @mco_options)
       mc.fact_filter "logicalenv", environment unless environment.nil?
       mc.fact_filter "application", application unless application.nil?
       mc.fact_filter "group", group unless group.nil?
@@ -47,15 +47,15 @@ class Orc::DeployClient
 
   def initialize(args)
     @logger = args[:log] || ::Orc::Progress::Logger.new
-    @options = MCollective::Util.default_options
-    @options[:timeout] = 200
+    @mco_options = MCollective::Util.default_options
+    @mco_options[:timeout] = 200
 
     @environment = args[:environment]
     @application = args[:application]
     @group = args[:group]
-    @options[:config] = args[:config] if !args[:config].nil?
-    @options[:verbose] = true
-    @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @options)
+    @mco_options[:config] = args[:config] if !args[:config].nil?
+    @mco_options[:verbose] = true
+    @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @mco_options)
   end
 
   def status(spec = {})
