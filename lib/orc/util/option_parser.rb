@@ -12,6 +12,89 @@ ENV['MCOLLECTIVE_SSL_PRIVATE'] = "/home/#{user}/.mc/#{user}-private.pem" unless 
 ENV['MCOLLECTIVE_SSL_PUBLIC'] = "/etc/mcollective/ssl/clients/#{user}.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PUBLIC')
 
 class Orc::Util::OptionParser
+  def initialize
+    $options = {}
+    @commands = []
+
+    @option_parser = OptionParser.new do |opts|
+      opts.banner =
+        "Usage:\n" \
+        "  orc --environment=production --show-status\n" \
+        "  orc --environment=production --show-status --group=blue\n" \
+        "  orc --environment=production --application=MyApp --resolve\n" \
+        "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
+        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n" \
+        "  orc --environment=production --application=MyApp --group=blue --rolling-restart\n"
+
+      opts.on('-D', '--debug', 'enable debug mode') do
+        $options[:debug] = true
+      end
+      opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
+        $options[:environment] = env
+      end
+      opts.on("-f", "--promote-from ENVIRONMENT", "specify the environment to promote from") do |env|
+        $options[:promote_from_environment] = env
+      end
+      opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
+        $options[:application] = app
+      end
+      opts.on("-v", "--version VERSION", "") do |version|
+        $options[:version] = version
+      end
+      opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
+        $options[:group] = env
+      end
+
+      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
+       RollingRestartRequest
+      ].
+      each do |req|
+        req.setup_command_options($options, opts, @commands)
+      end
+    end
+  end
+
+  def parse
+    @option_parser.parse! argv
+    @commands.each do |command|
+      check_required(command)
+    end
+
+    if @commands.size == 0
+      print @option_parser.help
+      exit(1)
+    end
+    self
+  end
+
+  def execute
+    @commands.each do |command|
+      command.execute(Orc::Factory.new($options))
+    end
+  end
+
+  private
+
+  # XXX
+  def argv
+    ARGV
+  end
+
+  def check_required(command)
+    required = command.required
+    failed = []
+    required.each do |option|
+      failed.push(option) if $options[option].nil?
+    end
+    if failed.size > 0
+      print "Command #{command.long_command_name} required the following options (not supplied):\n"
+      print failed.map { |n| "  --#{n}" }.join("\n")
+      print "\n\n"
+      print @option_parser.help
+      exit(1)
+    end
+  end
+
   class Base
     attr_reader :options
     def self.setup_command_options(options, opts, commands)
@@ -151,83 +234,6 @@ class Orc::Util::OptionParser
 
     def self.command_options
       ['-R', '--rolling-restart', 'Safely restarts a group of applications']
-    end
-  end
-
-  def initialize
-    @options = {}
-    @commands = []
-
-    @option_parser = OptionParser.new do |opts|
-      opts.banner =
-        "Usage:\n" \
-        "  orc --environment=production --show-status\n" \
-        "  orc --environment=production --show-status --group=blue\n" \
-        "  orc --environment=production --application=MyApp --resolve\n" \
-        "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
-        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n" \
-        "  orc --environment=production --application=MyApp --group=blue --rolling-restart\n"
-
-      opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
-        @options[:environment] = env
-      end
-      opts.on("-f", "--promote-from ENVIRONMENT", "specify the environment to promote from") do |env|
-        @options[:promote_from_environment] = env
-      end
-      opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
-        @options[:application] = app
-      end
-      opts.on("-v", "--version VERSION", "") do |version|
-        @options[:version] = version
-      end
-      opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
-        @options[:group] = env
-      end
-
-      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
-       RollingRestartRequest
-      ].
-      each do |req|
-        req.setup_command_options(@options, opts, @commands)
-      end
-    end
-  end
-
-  def check_required(command)
-    required = command.required
-    failed = []
-    required.each do |option|
-      failed.push(option) if @options[option].nil?
-    end
-    if failed.size > 0
-      print "Command #{command.long_command_name} required the following options (not supplied):\n"
-      print failed.map { |n| "  --#{n}" }.join("\n")
-      print "\n\n"
-      print @option_parser.help
-      exit(1)
-    end
-  end
-
-  def argv
-    ARGV
-  end
-
-  def parse
-    @option_parser.parse! argv
-    @commands.each do |command|
-      check_required(command)
-    end
-
-    if @commands.size == 0
-      print @option_parser.help
-      exit(1)
-    end
-    self
-  end
-
-  def execute
-    @commands.each do |command|
-      command.execute(Orc::Factory.new(@options))
     end
   end
 end

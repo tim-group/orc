@@ -13,7 +13,6 @@ class Orc::Model::Builder
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
-    @debug = false
   end
 
   def get_cmdb_groups
@@ -57,7 +56,6 @@ class Orc::Model::Application
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
-    @debug = false
     @builder = Orc::Model::Builder.new(args)
   end
 
@@ -68,7 +66,7 @@ class Orc::Model::Application
   def get_resolutions
     proposed_resolutions = get_proposed_resolutions_for @instances
 
-    if @debug
+    if $options[:debug]
       @progress_logger.log("Proposed resolutions:")
       proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
     end

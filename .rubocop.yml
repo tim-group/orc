@@ -36,6 +36,9 @@ Style/Documentation:
 Style/FormatString:
   EnforcedStyle: sprintf
 
+Style/GlobalVars: # for $options
+  Enabled: false
+
 Style/MultilineBlockChain:
   Enabled: false
 

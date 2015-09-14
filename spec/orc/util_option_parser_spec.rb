@@ -37,7 +37,7 @@ describe Orc::Util::OptionParser do
     p = MockOptionParser.new(['-z', '--environment', 'foo', '--application', 'bar', '--version', '2.5'])
     Orc::Util::OptionParser::TestOption.setup_command_options(p.options, p.option_parser, p.commands)
     p.parse
-    expect(p.options).to eql(:environment => 'foo', :application => 'bar', :version => '2.5')
+    expect($options).to eql(:environment => 'foo', :application => 'bar', :version => '2.5')
     expect(p.commands.size).to eql(1)
     command = p.commands[0]
     expect(command.class.name).to eql('Orc::Util::OptionParser::TestOption')
@@ -53,7 +53,7 @@ describe Orc::Util::OptionParser do
   it 'parses options from argv and passes them to option class constructor' do
     parser = MockOptionParser.new(['--environment', 'foo', '--application', 'bar', '-r']).parse
 
-    expect(parser.options).to eql(:environment => 'foo', :application => 'bar')
+    expect($options).to eql(:environment => 'foo', :application => 'bar')
     expect(parser.commands.size).to eql(1)
     command = parser.commands[0]
     expect(command.class.name).to eql('Orc::Util::OptionParser::ResolveRequest')
