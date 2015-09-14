@@ -9,3 +9,4 @@ spec/reports/*.xml
 *~
 .project
 .idea/
+tags
