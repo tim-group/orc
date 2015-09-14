@@ -10,31 +10,6 @@ class Orc::Engine
     @debug = false
   end
 
-  def execute_action(action, application_model)
-    @resolution_steps.push action
-    action.check_valid(application_model) # FIXME: This throws if invalid, execute returns false if invalid?
-    if !action.execute(@resolution_steps)
-      raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
-    end
-  end
-
-  def resolve_one_step(resolutions, application_model)
-    if resolutions.size > 0
-
-      if debug
-        @logger.log("Useable resolutions:")
-        resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
-      end
-
-      execute_action resolutions[0], application_model
-    else
-      @logger.log_resolution_complete(@resolution_steps)
-      return true
-    end
-
-    false
-  end
-
   def resolve
     @loop_count = 0
     finished = false
@@ -65,6 +40,33 @@ class Orc::Engine
       print "--rolling-restart command not yet available. Under development.\n"
     else
       raise Orc::Exception::CannotRestartUnresolvedGroup.new("hah!")
+    end
+  end
+
+  private
+
+  def resolve_one_step(resolutions, application_model)
+    if resolutions.size > 0
+
+      if debug
+        @logger.log("Useable resolutions:")
+        resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+      end
+
+      execute_action resolutions[0], application_model
+    else
+      @logger.log_resolution_complete(@resolution_steps)
+      return true
+    end
+
+    false
+  end
+
+  def execute_action(action, application_model)
+    @resolution_steps.push action
+    action.check_valid(application_model) # FIXME: This throws if invalid, execute returns false if invalid?
+    if !action.execute(@resolution_steps)
+      raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
     end
   end
 end
