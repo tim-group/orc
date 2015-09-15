@@ -4,9 +4,36 @@ require 'orc/testutil/in_memory_cmdb'
 require 'orc/testutil/fake_remote_client'
 
 describe Orc::Engine do
-  it 'sends a restart message to each given host sequentially' do
-    # has to retrieve each host in env/app/group
-    # expect remote_client to receive restart call for every host
+  xit 'sends a restart message to each given host sequentially' do
+    factory = Orc::Factory.new({ :environment => 'a', :application => 'app', :timeout => 0 },
+                               :remote_client => FakeRemoteClient.new(:instances => [
+                                 { :group => 'blue',
+                                   :host => 'h1',
+                                   :version => '5',
+                                   :application => 'app',
+                                   :participating => true,
+                                   :health        => 'healthy' },
+                                 { :group => 'blue',
+                                   :host => 'h2',
+                                   :version => '5',
+                                   :application => 'app',
+                                   :participating => true,
+                                   :health        => 'healthy' }]),
+                               :cmdb => InMemoryCmdb.new(
+                                 :groups => {
+                                   'a-app' => [{
+                                     :name => 'blue',
+                                     :target_participation => true,
+                                     :target_version => '5'
+                                   }]
+                                 }))
+
+    expect(factory.engine.rolling_restart).to eql ['DisableParticipationAction: on h1 blue',
+                                                   'RestartAction: on h1 blue',
+                                                   'EnableParticipationAction: on h1 blue',
+                                                   'DisableParticipationAction: on h2 blue',
+                                                   'RestartAction: on h2 blue',
+                                                   'EnableParticipationAction: on h2 blue']
   end
 
   it 'does not allow too few instances to participate' do
