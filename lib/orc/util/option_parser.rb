@@ -45,7 +45,7 @@ class Orc::Util::OptionParser
         $options[:group] = env
       end
 
-      [PullCmdbRequest, StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
+      [StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
        RollingRestartRequest
       ].
       each do |req|
@@ -109,20 +109,6 @@ class Orc::Util::OptionParser
 
     def long_command_name
       self.class.command_options[1] # FIXME: Array index is horrible!
-    end
-  end
-
-  class PullCmdbRequest < Base
-    def required
-      []
-    end
-
-    def execute(factory)
-      factory.cmdb_git.update
-    end
-
-    def self.command_options
-      ['-p', '--pull-cmdb', 'Pulls changes to the CMDB']
     end
   end
 
