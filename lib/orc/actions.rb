@@ -18,10 +18,6 @@ module Orc::Action
     def check_valid(_application_model)
     end
 
-    def timeout?
-      ! @timeout.nil?
-    end
-
     def complete?
       false
     end
