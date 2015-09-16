@@ -126,7 +126,7 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-s', '--show-status', 'Shows status']
+      ['-s', '--show-status', 'shows status']
     end
   end
 
@@ -158,7 +158,7 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-u', '--promote', 'Promotes versions to other environments CMDB']
+      ['-u', '--promote', 'promotes versions to other environments CMDB']
     end
   end
 
@@ -205,7 +205,7 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-r', '--resolve', 'Resolves the differences from the CMDB']
+      ['-r', '--resolve', 'resolves the differences from the CMDB']
     end
   end
 
@@ -219,7 +219,7 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-R', '--rolling-restart', 'Safely restarts a group of applications']
+      ['-R', '--rolling-restart', 'safely restarts a group of applications']
     end
   end
 end
