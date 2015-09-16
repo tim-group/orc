@@ -1,7 +1,57 @@
-entry paths into this codebase:
- - bin/orc
- - stackbuilder-config via stackbuilder via rake
+orc - orchestration tool
 
-DEPENDENCIES:
- - gems: rake, rspec, git
- - ruby-bundle
+Description:
+  orc is a management tool implementing the "Contract for Deployable Apps" protocol, see
+  https://wiki.timgroup.com/infra/application_infrastructure_contract.
+
+  orc performs actions specified on the command line, based on the cmdb (desired application states) and the
+  "live model" (actual application states).
+
+  In order to fetch state and make changes to the live model orc will communicate with deployapp using mcollective.
+  Some commands will also make changes to the cmdb.
+
+Usage: orc [OPTIONS] [COMMANDS]
+
+Options:
+  Options and commands are parsed using Ruby's optparse library. These options should be considered as parameters to
+  the commands outlined below. These options will be either considered mandatory or ignored, depending on the command.
+
+    -e, --environment ENVIRONMENT               used as a filter in mcollective
+    -a, --application APPLICATION               used as a filter in mcollective
+    -g, --group GROUP                           used as a filter in mcollective
+    -f, --promote-from ENVIRONMENT              used by the PromotionRequest command
+    -v, --version VERSION                       application version, e.g. "1.0.190"
+
+Commands:
+  Commands (can be specified multiple times) along with required parameters:
+    name             required parameters  usage                 description
+    StatusRequest    -e                   -s, --show-status     shows status
+    DeployRequest    -e -a -v             -d, --deploy          changes the cmdb - does an install followed by a swap
+    PromotionRequest -e -a -f             -u, --promote         promotes versions to other environments CMDB
+    InstallRequest   -e -a -v             -i, --install         changes the cmdb - states a new version for the inactive group
+    SwapRequest      -e -a                -c, --swap            changes the cmdb, swaps the online group to offline and vice-versa
+    ResolveRequest   -e -a                -r, --resolve         resolves the differences from the CMDB
+
+Config file:
+  The config file is located in ~/.orc.yaml. This is a yaml file, and it can contain two settings:
+
+    cmdb_repo_url         git url of the cmdb. "git@git:cmdb" by default.
+    cmdb_local_path       filesystem path to the cmdb. "#{ENV['HOME']}/.cmdb/" by default.
+
+Files:
+  ~/.cmdb                 the cmdb
+  ~/.orc.yaml             config file
+  /home/#{user}/.mc/#{user}-private.pem
+                          default value for MCOLLECTIVE_SSL_PRIVATE, if it is not set
+  /etc/mcollective/ssl/clients/#{user}.pem
+                          default value for MCOLLECTIVE_SSL_PUBLIC, if it is not set
+  /usr/local/bin/orc      the executable
+  /usr/local/lib/site_ruby/timgroup/
+                          library files
+
+Environment:
+  BUILD_NUMBER            used to set the .deb package version. Used in Jenkins builds
+  HOME                    path to the cmdb and the config file
+  USER                    used to look up mcollective keys
+  MCOLLECTIVE_SSL_PRIVATE used by mcollective
+  MCOLLECTIVE_SSL_PUBLIC  used by mcollective
