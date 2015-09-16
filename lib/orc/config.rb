@@ -2,7 +2,7 @@ require 'orc/namespace'
 require 'yaml'
 
 class Orc::Config
-  def initialize(config_location)
+  def initialize(config_location = "#{ENV['HOME']}/.orc.yaml")
     @config_location = config_location
     @tried_to_load_config = false
     @config = {

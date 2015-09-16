@@ -24,12 +24,8 @@ class Orc::Factory
     @remote_client = dependencies[:remote_client]
   end
 
-  def config_location
-    "#{ENV['HOME']}/.orc.yaml"
-  end
-
   def config
-    @config ||= Orc::Config.new(config_location)
+    @config ||= Orc::Config.new
   end
 
   def cmdb
