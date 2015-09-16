@@ -25,13 +25,15 @@ describe Orc::CMDB::Yaml do
     Dir.mkdir("build/") unless File.directory? "build/"
     cmdb =  Orc::CMDB::Yaml.new(:data_dir => "build/")
     env = "cmdb_test_#{rand_num}"
-    Dir.mkdir("build/#{env}") # XXX: got File exists, files are never removed, rand() above has small range
+    Dir.mkdir("build/#{env}")
     cmdb.save_application({ :environment => env, :application => "testx" }, group_static_models)
     group_static_models_again = cmdb.retrieve_application(:environment => "cmdb_test_#{rand_num}",
                                                           :application => "testx")
 
     expect(group_static_models_again[1][:target_version]).to eql("77")
     expect(group_static_models_again[1][:target_participation]).to eql(false)
+
+    FileUtils.rm_rf "build/#{env}"
   end
 
   it 'saves list of groups, with target_version and participation to an existing yaml file' do
@@ -95,5 +97,7 @@ describe Orc::CMDB::Yaml do
                                                           :application => "testbob")
     expect(group_static_models_again[1][:target_version]).to eql("4")
     expect(group_static_models_again[1][:target_participation]).to eql(false)
+
+    FileUtils.rm_rf testdir
   end
 end
