@@ -41,8 +41,7 @@ task :package do
     '-a', 'all',
     '-t', 'deb',
     '-s', 'dir',
-    '-C', 'build/package',
-    '--deb-no-default-config-files'
+    '-C', 'build/package'
   ]
 
   argv = arguments.map { |x| "'#{x}'" }.join(' ')
