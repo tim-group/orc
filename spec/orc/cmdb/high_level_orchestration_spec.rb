@@ -1,9 +1,18 @@
 require 'orc/cmdb/high_level_orchestration'
 
+def create_high_level_orchestration(cmdb, git)
+  Orc::CMDB::HighLevelOrchestration.new(
+    :cmdb => cmdb,
+    :git => git,
+    :environment => 'test_env',
+    :application => 'ExampleApp')
+end
+
 describe Orc::CMDB::HighLevelOrchestration do
   before do
     @cmdb = double
     @git = double
+    @high_level_orchestration = create_high_level_orchestration(@cmdb, @git)
   end
 
   it 'install saves the requested version to the all group group if participation is true and all groups have ' \
@@ -18,12 +27,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => true,
         :never_swap           => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -42,8 +45,9 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.install('2', 'all')
+    @high_level_orchestration.install('2', 'all')
   end
+
   it 'install saves the requested version to the specified group if participation is true and all groups have ' \
      'never_swap' do
     cmdb_yaml = [
@@ -56,12 +60,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => true,
         :never_swap           => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -80,7 +78,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.install('2', 'grey')
+    @high_level_orchestration.install('2', 'grey')
   end
 
   it 'install saves the requested version to the specified group if participation is false' do
@@ -92,12 +90,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -115,7 +107,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.install('2', 'grey')
+    @high_level_orchestration.install('2', 'grey')
   end
 
   it 'install saves the requested version in all groups if there is only one swappable one' do
@@ -129,12 +121,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -153,7 +139,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.install('2')
+    @high_level_orchestration.install('2')
   end
 
   it 'install saves the requested version in the currently offline group' do
@@ -168,12 +154,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -196,7 +176,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.install('2')
+    @high_level_orchestration.install('2')
   end
 
   it 'wont do anything if there is only one swappable group' do
@@ -209,12 +189,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -234,7 +208,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.swap
+    @high_level_orchestration.swap
   end
 
   it 'swap still does nothing regardless of the order of groups definition with one swappable and one non-swappable ' \
@@ -248,12 +222,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => false,
         :never_swap => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -272,7 +240,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.swap
+    @high_level_orchestration.swap
   end
 
   it 'swap does nothing when only 1 non-swappable group even if it is not participating' do
@@ -281,12 +249,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => false }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -301,7 +263,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.swap
+    @high_level_orchestration.swap
   end
 
   it 'swap makes the currently offline group online and vice versa' do
@@ -317,12 +279,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_participation => false,
         :never_swap => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -347,7 +303,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.swap
+    @high_level_orchestration.swap
   end
 
   it 'deploy does an install followed by a swap' do
@@ -359,12 +315,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -382,7 +332,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.deploy('2')
+    @high_level_orchestration.deploy('2')
   end
 
   it 'deploy when only one group just upgrades the version' do
@@ -391,12 +341,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :target_version => '1',
         :target_participation => true }
     ]
-
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
 
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
@@ -410,7 +354,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.deploy('2')
+    @high_level_orchestration.deploy('2')
   end
 
   it 'promotes an application from one environment to another' do
@@ -462,12 +406,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :never_swap => true }
     ]
 
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
-
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
 
@@ -491,7 +429,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.deploy('3')
+    @high_level_orchestration.deploy('3')
   end
 
   it 'deploys to to the machines in the specified groups' do
@@ -508,12 +446,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :never_swap => true }
     ]
 
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
-
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
 
@@ -537,7 +469,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.deploy('3', 'blue')
+    @high_level_orchestration.deploy('3', 'blue')
   end
 
   it 'does no swapping if told to deploy to a group that is not swappable' do
@@ -554,12 +486,6 @@ describe Orc::CMDB::HighLevelOrchestration do
         :never_swap => true }
     ]
 
-    high_level_orchestration = Orc::CMDB::HighLevelOrchestration.new(
-      :cmdb => @cmdb,
-      :git => @git,
-      :environment => 'test_env',
-      :application => 'ExampleApp')
-
     allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
       and_return(cmdb_yaml)
 
@@ -583,6 +509,6 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
-    high_level_orchestration.deploy('3', 'grey')
+    @high_level_orchestration.deploy('3', 'grey')
   end
 end
