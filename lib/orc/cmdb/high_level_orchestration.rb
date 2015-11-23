@@ -1,26 +1,31 @@
 require 'orc/cmdb/namespace'
 
 class Orc::CMDB::GroupActions
+  def initialize(logger)
+    @logger = logger
+  end
+
   def install(groups, version, for_group = 'all')
     groups.each do |group|
       if group[:name] == for_group || for_group == 'all'
-        if group[:target_participation]
-          if group[:never_swap]
-            group[:target_version] = version
-          else
-            puts "Not changing version of group as it is participating and swappable: Group = #{group}"
-          end
-
+        if group[:target_participation] && group[:never_swap]
+          group[:target_version] = version
+        elsif group[:target_participation] && !group[:never_swap]
+          # Do nothing
         else
           group[:target_version] = version
         end
       end
     end
 
-    if for_group == 'all'
-      swappable_groups = groups.reject { |group| group[:never_swap] }
-      if swappable_groups.size == 1
+    swappable_groups = swappable(groups)
+
+    if swappable_groups.size == 1
+      if for_group == 'all'
         swappable_groups[0][:target_version] = version
+      else
+        @logger.log("Refusing to install version '#{version}' to group '#{for_group}' as it should swap "\
+        "(never_swap == false) but has no group to swap with.")
       end
     end
 
@@ -28,7 +33,7 @@ class Orc::CMDB::GroupActions
   end
 
   def swap(groups, for_group = 'all')
-    swappable_groups = groups.reject { |group| group[:never_swap] }
+    swappable_groups = swappable(groups)
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
 
     if matched_group || for_group == 'all'
@@ -37,6 +42,12 @@ class Orc::CMDB::GroupActions
       end if swappable_groups.size > 1
     end
     groups
+  end
+
+  private
+
+  def swappable(groups)
+    groups.reject { |group| group[:never_swap] }
   end
 end
 
@@ -47,7 +58,8 @@ class Orc::CMDB::HighLevelOrchestration
     @environment = args[:environment] || raise('Need :environment')
     @application = args[:application] || raise('Need :application')
     @spec = { :environment => @environment, :application => @application }
-    @group_actions = Orc::CMDB::GroupActions.new
+    @logger = args[:logger] || Orc::Progress.logger
+    @group_actions = Orc::CMDB::GroupActions.new(@logger)
   end
 
   def install(version, group = 'all')

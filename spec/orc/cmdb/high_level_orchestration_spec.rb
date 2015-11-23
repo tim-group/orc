@@ -1,18 +1,20 @@
 require 'orc/cmdb/high_level_orchestration'
 
-def create_high_level_orchestration(cmdb, git)
+def create_high_level_orchestration(cmdb, git, logger)
   Orc::CMDB::HighLevelOrchestration.new(
     :cmdb => cmdb,
     :git => git,
     :environment => 'test_env',
-    :application => 'ExampleApp')
+    :application => 'ExampleApp',
+    :logger => logger)
 end
 
 describe Orc::CMDB::HighLevelOrchestration do
   before do
     @cmdb = double
     @git = double
-    @high_level_orchestration = create_high_level_orchestration(@cmdb, @git)
+    @logger = double
+    @high_level_orchestration = create_high_level_orchestration(@cmdb, @git, @logger)
   end
 
   it 'install saves the requested version to the all group group if participation is true and all groups have ' \
@@ -139,6 +141,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
+
     @high_level_orchestration.install('2')
   end
 
@@ -179,7 +182,43 @@ describe Orc::CMDB::HighLevelOrchestration do
     @high_level_orchestration.install('2')
   end
 
-  it 'wont do anything if there is only one swappable group' do
+  it 'install fails if attempting to change version of a group that is swappable and participating but has no '\
+      'group to swap with' do
+    cmdb_yaml = [
+      { :name => 'blue',
+        :target_version => '1',
+        :target_participation => true,
+        :never_swap => false },
+      { :name => 'green',
+        :target_version => '1',
+        :target_participation => false,
+        :never_swap => true }
+    ]
+
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
+      and_return(cmdb_yaml)
+
+    expect(@cmdb).to receive(:save_application).with({ :environment => 'test_env', :application => 'ExampleApp' },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1',
+                                                         :target_participation => true,
+                                                         :never_swap => false },
+                                                       { :name => 'green',
+                                                         :target_version => '1',
+                                                         :target_participation => false,
+                                                         :never_swap => true }
+                                                     ]
+                                                    )
+    expect(@logger).to receive(:log).with("Refusing to install version '2' to group 'blue' as it should swap "\
+      "(never_swap == false) but has no group to swap with.")
+
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
+    @high_level_orchestration.install('2', 'blue')
+  end
+
+  it 'swap does nothing if there is only one swappable group' do
     cmdb_yaml = [
       { :name => 'grey',
         :target_version => '1',
