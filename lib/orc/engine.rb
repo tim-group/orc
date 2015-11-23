@@ -6,6 +6,7 @@ class Orc::Engine
     @logger = options[:log] || raise("Need :log")
     @max_loop = 1000
     @resolution_steps = []
+    @options = option
   end
 
   def resolve
@@ -46,7 +47,7 @@ class Orc::Engine
   def resolve_one_step(resolutions, application_model)
     if resolutions.size > 0
 
-      if $options[:debug]
+      if @options[:debug]
         @logger.log("Useable resolutions:")
         resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
       end

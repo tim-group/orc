@@ -57,6 +57,7 @@ class Orc::Model::Application
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
     @max_loop = 100
     @builder = Orc::Model::Builder.new(args)
+    @options = {}
   end
 
   def participating_instances
@@ -66,7 +67,7 @@ class Orc::Model::Application
   def get_resolutions
     proposed_resolutions = get_proposed_resolutions_for @instances
 
-    if $options[:debug]
+    if @options[:debug]
       @progress_logger.log("Proposed resolutions:")
       proposed_resolutions.each { |r| @progress_logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
     end
