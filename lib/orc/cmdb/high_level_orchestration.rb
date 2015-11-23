@@ -10,10 +10,8 @@ class Orc::CMDB::GroupActions
     groups.each do |group|
       if group[:name] == for_group || for_group == 'all'
         if group[:target_participation]
-          if group[:never_swap]
-            group[:target_version] = version
-          end
-       else
+          group[:target_version] = version if group[:never_swap]
+        else
           group[:target_version] = version
         end
       end
