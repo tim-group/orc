@@ -13,7 +13,7 @@ class Orc::CMDB::Installer
     end
 
     if for_group == 'all'
-      swappable_groups = groups.reject { |group| group[:never_swap] == true }
+      swappable_groups = groups.reject { |group| group[:never_swap] }
       if swappable_groups.size == 1
         swappable_groups[0][:target_version] = version
       end
@@ -23,7 +23,7 @@ end
 
 class Orc::CMDB::Swapper
   def swap(groups, for_group = 'all')
-    swappable_groups = groups.reject { |group| group[:never_swap] == true }
+    swappable_groups = groups.reject { |group| group[:never_swap]}
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
 
     if matched_group || for_group == 'all'
