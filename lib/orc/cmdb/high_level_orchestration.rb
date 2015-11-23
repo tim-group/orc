@@ -1,18 +1,19 @@
 require 'orc/cmdb/namespace'
 
 class Orc::CMDB::GroupActions
-  def initialize(logger)
+  def initialize(spec, logger)
+    @spec = spec
     @logger = logger
   end
 
   def install(groups, version, for_group = 'all')
     groups.each do |group|
       if group[:name] == for_group || for_group == 'all'
-        if group[:target_participation] && group[:never_swap]
-          group[:target_version] = version
-        elsif group[:target_participation] && !group[:never_swap]
-          # Do nothing
-        else
+        if group[:target_participation]
+          if group[:never_swap]
+            group[:target_version] = version
+          end
+       else
           group[:target_version] = version
         end
       end
@@ -24,8 +25,11 @@ class Orc::CMDB::GroupActions
       if for_group == 'all'
         swappable_groups[0][:target_version] = version
       else
-        @logger.log("Refusing to install version '#{version}' to group '#{for_group}' as it should swap "\
-        "(never_swap == false) but has no group to swap with.")
+
+        @logger.log("Refusing to install: version: '#{version}' for group: '#{for_group}'. " \
+          "Application: '#{@spec[:application]}', environment: '#{@spec[:environment]}'\n" \
+          "Group 'blue' is the only swappable group (never_swap=false)\n" \
+          "In order to install a new version using swap, a minimum of 2 swappable groups are required")
       end
     end
 
@@ -59,7 +63,7 @@ class Orc::CMDB::HighLevelOrchestration
     @application = args[:application] || raise('Need :application')
     @spec = { :environment => @environment, :application => @application }
     @logger = args[:logger] || Orc::Progress.logger
-    @group_actions = Orc::CMDB::GroupActions.new(@logger)
+    @group_actions = Orc::CMDB::GroupActions.new(@spec, @logger)
   end
 
   def install(version, group = 'all')

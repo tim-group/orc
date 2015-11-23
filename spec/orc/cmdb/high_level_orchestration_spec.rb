@@ -210,8 +210,9 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                          :never_swap => true }
                                                      ]
                                                     )
-    expect(@logger).to receive(:log).with("Refusing to install version '2' to group 'blue' as it should swap "\
-      "(never_swap == false) but has no group to swap with.")
+    expect(@logger).to receive(:log).with("Refusing to install: version: '2' for group: 'blue'. Application: 'ExampleApp', environment: 'test_env'\n"\
+                                          "Group 'blue' is the only swappable group (never_swap=false)\n"\
+                                          "In order to install a new version using swap, a minimum of 2 swappable groups are required")
 
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
