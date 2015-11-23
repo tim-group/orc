@@ -9,10 +9,11 @@ class Orc::CMDB::Git
     @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 60
+    @options = options
   end
 
   def update
-    logger = $options[:debug] ? Logger.new(STDOUT) : nil
+    logger = @options[:debug] ? Logger.new(STDOUT) : nil
     if File.directory?(@local_path)
       Timeout::timeout(@timeout) do
         @git = Git.open(@local_path, :log => logger)
