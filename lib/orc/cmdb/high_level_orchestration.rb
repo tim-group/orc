@@ -1,6 +1,6 @@
 require 'orc/cmdb/namespace'
 
-class Orc::CMDB::Installer
+class Orc::CMDB::GroupActions
   def install(groups, version, for_group = 'all')
     groups.each do |group|
       if group[:name] == for_group || for_group == 'all'
@@ -21,9 +21,7 @@ class Orc::CMDB::Installer
 
     groups
   end
-end
 
-class Orc::CMDB::Swapper
   def swap(groups, for_group = 'all')
     swappable_groups = groups.reject { |group| group[:never_swap] }
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
@@ -44,14 +42,13 @@ class Orc::CMDB::HighLevelOrchestration
     @environment = args[:environment] || raise('Need :environment')
     @application = args[:application] || raise('Need :application')
     @spec = { :environment => @environment, :application => @application }
-    @installer = Orc::CMDB::Installer.new
-    @swapper = Orc::CMDB::Swapper.new
+    @groupActions = Orc::CMDB::GroupActions.new
   end
 
   def install(version, group = 'all')
     @git.update
     all_groups = @cmdb.retrieve_application(@spec)
-    installed_groups = @installer.install(all_groups, version, group)
+    installed_groups = @groupActions.install(all_groups, version, group)
     @cmdb.save_application(@spec, installed_groups)
     @git.commit_and_push("#{@application} #{@environment}: installing #{version} for group #{group}")
   end
@@ -59,7 +56,7 @@ class Orc::CMDB::HighLevelOrchestration
   def swap
     @git.update
     groups = @cmdb.retrieve_application(@spec)
-    swapped_groups = @swapper.swap(groups)
+    swapped_groups = @groupActions.swap(groups)
     @cmdb.save_application(@spec, swapped_groups)
     @git.commit_and_push("#{@application} #{@environment}: swapping groups")
   end
@@ -67,8 +64,8 @@ class Orc::CMDB::HighLevelOrchestration
   def deploy(version, group = 'all')
     @git.update
     groups = @cmdb.retrieve_application(@spec)
-    installed_groups = @installer.install(groups, version, group)
-    swapped_groups = @swapper.swap(installed_groups, group)
+    installed_groups = @groupActions.install(groups, version, group)
+    swapped_groups = @groupActions.swap(installed_groups, group)
     @cmdb.save_application(@spec, swapped_groups)
     @git.commit_and_push("#{@application} #{@environment}: deploying #{version}")
   end
