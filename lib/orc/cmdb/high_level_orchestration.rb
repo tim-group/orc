@@ -18,12 +18,14 @@ class Orc::CMDB::Installer
         swappable_groups[0][:target_version] = version
       end
     end
+
+    groups
   end
 end
 
 class Orc::CMDB::Swapper
   def swap(groups, for_group = 'all')
-    swappable_groups = groups.reject { |group| group[:never_swap]}
+    swappable_groups = groups.reject { |group| group[:never_swap] }
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
 
     if matched_group || for_group == 'all'
@@ -31,6 +33,7 @@ class Orc::CMDB::Swapper
         group[:target_participation] = !group[:target_participation]
       end if swappable_groups.size > 1
     end
+    groups
   end
 end
 
@@ -48,25 +51,25 @@ class Orc::CMDB::HighLevelOrchestration
   def install(version, group = 'all')
     @git.update
     all_groups = @cmdb.retrieve_application(@spec)
-    @installer.install(all_groups, version, group)
-    @cmdb.save_application(@spec, all_groups)
+    installed_groups = @installer.install(all_groups, version, group)
+    @cmdb.save_application(@spec, installed_groups)
     @git.commit_and_push("#{@application} #{@environment}: installing #{version} for group #{group}")
   end
 
   def swap
     @git.update
     groups = @cmdb.retrieve_application(@spec)
-    @swapper.swap(groups)
-    @cmdb.save_application(@spec, groups)
+    swapped_groups = @swapper.swap(groups)
+    @cmdb.save_application(@spec, swapped_groups)
     @git.commit_and_push("#{@application} #{@environment}: swapping groups")
   end
 
   def deploy(version, group = 'all')
     @git.update
     groups = @cmdb.retrieve_application(@spec)
-    @installer.install(groups, version, group)
-    @swapper.swap(groups, group)
-    @cmdb.save_application(@spec, groups)
+    installed_groups = @installer.install(groups, version, group)
+    swapped_groups = @swapper.swap(installed_groups, group)
+    @cmdb.save_application(@spec, swapped_groups)
     @git.commit_and_push("#{@application} #{@environment}: deploying #{version}")
   end
 
