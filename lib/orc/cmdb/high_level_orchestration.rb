@@ -8,7 +8,7 @@ class Orc::CMDB::GroupActions
 
   def install(groups, version, for_group = 'all')
     groups.each do |group|
-      if group[:name] == for_group || for_group == 'all'
+      if group[:name] == for_group || all_groups?(for_group)
         if group[:target_participation]
           group[:target_version] = version if group[:never_swap]
         else
@@ -20,7 +20,7 @@ class Orc::CMDB::GroupActions
     swappable_groups = swappable(groups)
 
     if swappable_groups.size == 1
-      if for_group == 'all'
+      if all_groups?(for_group)
         swappable_groups[0][:target_version] = version
       else
 
@@ -38,7 +38,7 @@ class Orc::CMDB::GroupActions
     swappable_groups = swappable(groups)
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
 
-    if matched_group || for_group == 'all'
+    if matched_group || all_groups?(for_group)
       swappable_groups.each do |group|
         group[:target_participation] = !group[:target_participation]
       end if swappable_groups.size > 1
@@ -47,6 +47,10 @@ class Orc::CMDB::GroupActions
   end
 
   private
+
+  def all_groups?(for_group)
+    for_group == 'all'
+  end
 
   def swappable(groups)
     groups.reject { |group| group[:never_swap] }
