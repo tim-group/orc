@@ -6,7 +6,7 @@ class Orc::Engine
     @logger = options[:log] || raise("Need :log")
     @max_loop = 1000
     @resolution_steps = []
-    @options = option
+    @options = options
   end
 
   def resolve
