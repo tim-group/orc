@@ -33,8 +33,8 @@ task :package do
   arguments = [
     '--description', 'orchestration tool',
     '--url', 'https://github.com/tim-group/orc',
-    '-p', "build/orc-transition_#{version}.deb",
-    '-n', 'orc-transition',
+    '-p', "build/orc_#{version}.deb",
+    '-n', 'orc',
     '-v', "#{version}",
     '-m', 'Infrastructure <infra@timgroup.com>',
     '-d', 'ruby-bundle',
