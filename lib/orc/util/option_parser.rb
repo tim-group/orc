@@ -45,8 +45,8 @@ class Orc::Util::OptionParser
         $options[:group] = env
       end
 
-      [StatusRequest, DeployRequest, InstallRequest, SwapRequest, ResolveRequest, PromotionRequest,
-       RollingRestartRequest
+      [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
+       PromotionRequest, RollingRestartRequest
       ].
       each do |req|
         req.setup_command_options($options, opts, @commands)
@@ -177,6 +177,20 @@ class Orc::Util::OptionParser
 
     def self.command_options
       ['-i', '--install', 'changes the cmdb - states a new version for the inactive group']
+    end
+  end
+
+  class LimitedInstallRequest < Base
+    def required
+      [:environment, :application, :version]
+    end
+
+    def execute(factory)
+        factory.high_level_orchestration.limited_install(options[:version])
+    end
+
+    def self.command_options
+      ['-l', '--limited-install', 'changes the cmdb - states a new version for a single group']
     end
   end
 

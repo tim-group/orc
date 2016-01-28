@@ -91,6 +91,14 @@ describe Orc::Util::OptionParser do
     expect(command.class.name).to eql('Orc::Util::OptionParser::InstallRequest')
   end
 
+  it 'Works for LimitedInstallRequest' do
+    parser = MockOptionParser.new(['--limited-install', '--environment', 'bar', '--application', 'MyApp', '--version', '1']).
+             parse
+    expect(parser.commands.size).to eql(1)
+    command = parser.commands[0]
+    expect(command.class.name).to eql('Orc::Util::OptionParser::LimitedInstallRequest')
+  end
+
   it 'Works for InstallRequest with groups' do
     parser = MockOptionParser.new(['--install', '--environment', 'bar', '--application', 'MyApp', '--version', '1',
                                    '--group', 'blue']).parse
