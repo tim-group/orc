@@ -434,6 +434,84 @@ describe Orc::CMDB::HighLevelOrchestration do
     high_level_orchestration.promote_from_environment('env1')
   end
 
+  it 'installs limited to one group with minimum version' do
+    cmdb_yaml = [
+      { :name => 'blue',
+        :target_version => '1',
+        :target_participation => true },
+      { :name => 'green',
+        :target_version => '2',
+        :target_participation => true },
+      { :name => 'grey',
+        :target_version => '3',
+        :target_participation => true
+      }
+    ]
+
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
+      and_return(cmdb_yaml)
+
+    expect(@cmdb).to receive(:save_application).with({ :environment => 'test_env', :application => 'ExampleApp' },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '4',
+                                                         :target_participation => true },
+
+                                                       { :name => 'green',
+                                                         :target_version => '2',
+                                                         :target_participation => true },
+
+                                                       { :name => 'grey',
+                                                         :target_version => '3',
+                                                         :target_participation => true,
+                                                       }
+                                                     ]
+                                                    )
+
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
+    @high_level_orchestration.limited_install('4')
+  end
+
+  it 'installs limited to one group with minimum version handling dotted version numbers' do
+    cmdb_yaml = [
+      { :name => 'blue',
+        :target_version => '1.0.99',
+        :target_participation => true },
+      { :name => 'green',
+        :target_version => '1.0.100',
+        :target_participation => true },
+      { :name => 'grey',
+        :target_version => '1.0.98',
+        :target_participation => true
+      }
+    ]
+
+    allow(@cmdb).to receive(:retrieve_application).with(:environment => 'test_env', :application => 'ExampleApp').
+      and_return(cmdb_yaml)
+
+    expect(@cmdb).to receive(:save_application).with({ :environment => 'test_env', :application => 'ExampleApp' },
+                                                     [
+                                                       { :name => 'blue',
+                                                         :target_version => '1.0.99',
+                                                         :target_participation => true },
+
+                                                       { :name => 'green',
+                                                         :target_version => '1.0.100',
+                                                         :target_participation => true },
+
+                                                       { :name => 'grey',
+                                                         :target_version => '1.0.101',
+                                                         :target_participation => true,
+                                                       }
+                                                     ]
+                                                    )
+
+    expect(@git).to receive(:update).ordered
+    expect(@git).to receive(:commit_and_push).ordered
+    @high_level_orchestration.limited_install('1.0.101')
+  end
+
   it 'deploys to all machines in all groups except the group that is swapped' do
     cmdb_yaml = [
       { :name => 'blue',

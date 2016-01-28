@@ -34,6 +34,13 @@ class Orc::CMDB::GroupActions
     groups
   end
 
+  def limited_install(groups, version)
+    min_group = groups.min_by {|g| Gem::Version.new(g[:target_version])}
+    min_group[:target_version] = version
+
+    groups
+  end
+
   def swap(groups, for_group = 'all')
     swappable_groups = swappable(groups)
     matched_group = swappable_groups.collect { |group| group[:name] }.include? for_group
@@ -74,6 +81,14 @@ class Orc::CMDB::HighLevelOrchestration
     installed_groups = @group_actions.install(all_groups, version, group)
     @cmdb.save_application(@spec, installed_groups)
     @git.commit_and_push("#{@application} #{@environment}: installing #{version} for group #{group}")
+  end
+
+  def limited_install(version)
+    @git.update
+    groups = @cmdb.retrieve_application(@spec)
+    installed_groups = @group_actions.limited_install(groups, version)
+    @cmdb.save_application(@spec, installed_groups)
+    @git.commit_and_push("#{@application} #{@environment}: install #{version} to one machine")
   end
 
   def swap
