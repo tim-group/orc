@@ -35,7 +35,7 @@ class Orc::CMDB::GroupActions
   end
 
   def limited_install(groups, version)
-    min_group = groups.min_by {|g| Gem::Version.new(g[:target_version])}
+    min_group = groups.min_by { |g| Gem::Version.new(g[:target_version]) }
     min_group[:target_version] = version
 
     groups

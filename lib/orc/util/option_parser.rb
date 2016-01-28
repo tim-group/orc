@@ -186,7 +186,7 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
-        factory.high_level_orchestration.limited_install(options[:version])
+      factory.high_level_orchestration.limited_install(options[:version])
     end
 
     def self.command_options

@@ -463,7 +463,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
                                                        { :name => 'grey',
                                                          :target_version => '3',
-                                                         :target_participation => true,
+                                                         :target_participation => true
                                                        }
                                                      ]
                                                     )
@@ -502,7 +502,7 @@ describe Orc::CMDB::HighLevelOrchestration do
 
                                                        { :name => 'grey',
                                                          :target_version => '1.0.101',
-                                                         :target_participation => true,
+                                                         :target_participation => true
                                                        }
                                                      ]
                                                     )
