@@ -19,8 +19,8 @@ class Orc::Util::OptionParser
     @option_parser = OptionParser.new do |opts|
       opts.banner =
         "Usage:\n" \
-        "  orc --environment=production --show-status\n" \
-        "  orc --environment=production --show-status --group=blue\n" \
+        "  orc --environment=production --status\n" \
+        "  orc --environment=production --status --group=blue\n" \
         "  orc --environment=production --application=MyApp --resolve\n" \
         "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
         "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n" \
@@ -126,7 +126,7 @@ class Orc::Util::OptionParser
     end
 
     def self.command_options
-      ['-s', '--show-status', 'shows status']
+      ['-s', '--status', 'shows status']
     end
   end
 

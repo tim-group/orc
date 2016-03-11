@@ -60,8 +60,8 @@ describe Orc::Util::OptionParser do
     expect(command.options).to eql(:environment => 'foo', :application => 'bar')
   end
 
-  it 'Works with just --show-status and --environment' do
-    parser = MockOptionParser.new(['--show-status', '--environment', 'bar']).parse
+  it 'Works with just --status and --environment' do
+    parser = MockOptionParser.new(['--status', '--environment', 'bar']).parse
     expect(parser.commands.size).to eql(1)
     command = parser.commands[0]
     expect(command.class.name).to eql('Orc::Util::OptionParser::StatusRequest')

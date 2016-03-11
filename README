@@ -25,7 +25,7 @@ Options:
 Commands:
   Commands (can be specified multiple times) along with required parameters:
     name             required parameters  usage                 description
-    StatusRequest    -e                   -s, --show-status     shows status
+    StatusRequest    -e                   -s, --status          shows status
     DeployRequest    -e -a -v             -d, --deploy          changes the cmdb - does an install followed by a swap
     PromotionRequest -e -a -f             -u, --promote         promotes versions to other environments CMDB
     InstallRequest   -e -a -v             -i, --install         changes the cmdb - states a new version for the inactive group
