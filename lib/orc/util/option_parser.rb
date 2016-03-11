@@ -55,7 +55,15 @@ class Orc::Util::OptionParser
   end
 
   def parse
-    @option_parser.parse! argv
+    begin
+      @option_parser.parse! argv
+    rescue Exception => e
+      puts "Option validation failed: #{e}"
+      puts e.backtrace.inspect
+      puts @option_parser.help
+      exit(1)
+    end
+
     @commands.each do |command|
       check_required(command)
     end

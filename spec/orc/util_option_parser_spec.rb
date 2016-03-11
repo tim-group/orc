@@ -132,4 +132,11 @@ describe Orc::Util::OptionParser do
     command = parser.commands[0]
     expect(command.class.name).to eql('Orc::Util::OptionParser::RollingRestartRequest')
   end
+  it 'will exit 1 when invalid option provided' do
+    begin
+      MockOptionParser.new(['--socks', '--environment', 'bar', '--application', 'MyApp','--group', 'blue']).parse
+    rescue SystemExit => e
+      expect(e.status).to eql(1)
+    end
+  end
 end
