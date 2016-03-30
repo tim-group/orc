@@ -29,6 +29,7 @@ Commands:
     DeployRequest    -e -a -v             -d, --deploy          changes the cmdb - does an install followed by a swap
     PromotionRequest -e -a -f             -u, --promote         promotes versions to other environments CMDB
     InstallRequest   -e -a -v             -i, --install         changes the cmdb - states a new version for the inactive group
+    LimitedInstallRequest -e -a -v        -l, --limited-install changes the cmdb - states a new version for a single group
     SwapRequest      -e -a                -c, --swap            changes the cmdb, swaps the online group to offline and vice-versa
     ResolveRequest   -e -a                -r, --resolve         resolves the differences from the CMDB
 
