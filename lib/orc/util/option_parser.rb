@@ -23,8 +23,7 @@ class Orc::Util::OptionParser
         "  orc --environment=production --status --group=blue\n" \
         "  orc --environment=production --application=MyApp --resolve\n" \
         "  orc --environment=production --application=MyApp --version=2.21.0 --deploy\n" \
-        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n" \
-        "  orc --environment=production --application=MyApp --group=blue --rolling-restart\n"
+        "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n"
 
       opts.on('-D', '--debug', 'enable debug mode') do
         $options[:debug] = true
@@ -46,7 +45,7 @@ class Orc::Util::OptionParser
       end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
-       PromotionRequest, RollingRestartRequest
+       PromotionRequest
       ].
       each do |req|
         req.setup_command_options($options, opts, @commands)
