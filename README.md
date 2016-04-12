@@ -1,6 +1,4 @@
-  * Orc: [![Orc Build Status](https://travis-ci.org/tim-group/orc.png)](https://travis-ci.org/tim-group/orc)
-
-  * Deployapp: [![Deployapp Build Status](https://travis-ci.org/tim-group/deployapp.png)](https://travis-ci.org/tim-group/deployapp)
+   * Deployapp: [![Deployapp Build Status](https://travis-ci.org/tim-group/deployapp.png)](https://travis-ci.org/tim-group/deployapp)
 
 Description
 -----------
