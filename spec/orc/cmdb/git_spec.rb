@@ -194,32 +194,16 @@ describe Orc::CMDB::Git do
     alice_path = @tempdir + '/alice_clone'
     bob_path = @tempdir + '/bob_clone'
 
-    bob = Orc::CMDB::Git.new(
-        :local_path => bob_path,
-        :origin => @origin
-    )
-    alice = Orc::CMDB::Git.new(
-        :local_path => alice_path,
-        :origin => @origin
-    )
+    bob = Orc::CMDB::Git.new(:local_path => bob_path, :origin => @origin)
+    alice = Orc::CMDB::Git.new(:local_path => alice_path, :origin => @origin)
     bob.update
     alice.update
 
-    File.open(bob_path + '/bob', 'w') do |f|
-      f.write("bob's edit")
-    end
+    File.open(bob_path + '/bob', 'w') { |f| f.write("bob's edit") }
+    File.open(alice_path + '/alice', 'w') { |f| f.write("alice's edit") }
 
-    File.open(alice_path + '/alice', 'w') do |f|
-      f.write("alice's edit")
-    end
-
-    alice_thread = Thread.new {
-      alice.commit_and_push
-    }
-
-    bob_thread = Thread.new {
-      bob.commit_and_push
-    }
+    alice_thread = Thread.new { alice.commit_and_push }
+    bob_thread = Thread.new { bob.commit_and_push }
 
     alice_thread.join
     bob_thread.join
