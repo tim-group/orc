@@ -1,4 +1,5 @@
 require 'orc/cmdb/git'
+require 'pp'
 
 describe Orc::CMDB::Git do
   def local_git
@@ -180,5 +181,50 @@ describe Orc::CMDB::Git do
     expect(gitcmdb.get_branch).to eql("master")
     gitcmdb.update
     expect(gitcmdb.get_branch).to eql("master")
+  end
+
+  xit 'retries to push if there have been concurrent modifications after the initial fetching' do
+    FileUtils.touch("#{@origin}/alice")
+    FileUtils.touch("#{@origin}/bob")
+    @repo.add("#{@origin}/alice")
+    @repo.add("#{@origin}/bob")
+    @repo.commit_all('Initial commit')
+    @repo.config('core.bare', 'true')
+
+    alice_path = @tempdir + '/alice_clone'
+    bob_path = @tempdir + '/bob_clone'
+
+    bob = Orc::CMDB::Git.new(
+        :local_path => bob_path,
+        :origin => @origin
+    )
+    alice = Orc::CMDB::Git.new(
+        :local_path => alice_path,
+        :origin => @origin
+    )
+    bob.update
+    alice.update
+
+    File.open(bob_path + '/bob', 'w') do |f|
+      f.write("bob's edit")
+    end
+
+    File.open(alice_path + '/alice', 'w') do |f|
+      f.write("alice's edit")
+    end
+
+    alice_thread = Thread.new {
+      alice.commit_and_push
+    }
+
+    bob_thread = Thread.new {
+      bob.commit_and_push
+    }
+
+    alice_thread.join
+    bob_thread.join
+
+    expect(IO.read(bob_path + '/alice')).to eql("alice's edit")
+    expect(IO.read(alice_path + '/bob')).to eql("bob's edit")
   end
 end
