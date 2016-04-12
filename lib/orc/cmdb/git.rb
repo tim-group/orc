@@ -51,13 +51,24 @@ class Orc::CMDB::Git
       if @git.status.changed.size > 0
         Timeout::timeout(@timeout) do
           @git.commit_all(message)
-          @git.fetch('origin')
-          @git.merge('origin', 'merge concurrent modifications')
-          @git.push
+          push_with_retry
         end
       end
     else
       raise "#{@local_path} doesn't exist"
     end
+  end
+
+  private
+
+  def push_with_retry
+    @git.fetch('origin')
+    @git.merge('origin', 'merge concurrent modifications')
+    @git.push
+  rescue Git::GitExecuteError => _error
+    # if (attempt_number + 1 > total_attempts_allowed)
+    #   raise error
+    # end
+    push_with_retry
   end
 end

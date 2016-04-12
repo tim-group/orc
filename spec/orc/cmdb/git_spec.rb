@@ -183,7 +183,7 @@ describe Orc::CMDB::Git do
     expect(gitcmdb.get_branch).to eql("master")
   end
 
-  xit 'retries to push if there have been concurrent modifications after the initial fetching' do
+  it 'retries to push if there have been concurrent modifications after the initial fetching' do
     FileUtils.touch("#{@origin}/alice")
     FileUtils.touch("#{@origin}/bob")
     @repo.add("#{@origin}/alice")
@@ -207,6 +207,9 @@ describe Orc::CMDB::Git do
 
     alice_thread.join
     bob_thread.join
+
+    alice.update
+    bob.update
 
     expect(IO.read(bob_path + '/alice')).to eql("alice's edit")
     expect(IO.read(alice_path + '/bob')).to eql("bob's edit")
