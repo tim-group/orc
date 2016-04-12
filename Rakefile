@@ -6,20 +6,20 @@ require 'rdoc/task'
 require 'rspec/core/rake_task'
 
 task :default do
-  sh "rake -s -T"
+  sh 'rake -s -T'
 end
 
-desc "Clean up build directories"
+desc 'Clean up build directories'
 task :clean do
-  sh "rm -rf build"
+  sh 'rm -rf build'
 end
 
-desc "Make build directories"
+desc 'Make build directories'
 task :setup do
-  sh "mkdir build"
+  sh 'mkdir build'
 end
 
-desc "Create Debian package"
+desc 'Create Debian package'
 task :package do
   version = "1.0.#{ENV['BUILD_NUMBER']}"
 
@@ -49,22 +49,17 @@ task :package do
   sh "fpm #{argv}"
 end
 
-desc "Build and install"
+desc 'Build and install'
 task :install => [:package] do
-  sh "sudo dpkg -i build/orc*.deb"
+  sh 'sudo dpkg -i build/orc*.deb'
 end
 
-desc "Run specs"
-if ENV['ORC_RSPEC_SEPARATE'] # run each rspec in a separate ruby instance
-  require './spec/rake_override'
-  SingleTestFilePerInterpreterSpec::RakeTask.new(:spec => ["ci:setup:rspec"])
-else # fast run (common ruby process for all tests)
-  RSpec::Core::RakeTask.new(:spec => ["ci:setup:rspec"])
-end
+desc 'Run specs'
+RSpec::Core::RakeTask.new(:spec => ['ci:setup:rspec'])
 
-desc "Generate code coverage"
+desc 'Generate code coverage'
 RSpec::Core::RakeTask.new(:coverage) do |t|
-  t.pattern = "./spec/**/*_spec.rb" # don't need this, it's default.
+  t.pattern = './spec/**/*_spec.rb' # don't need this, it's default.
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec']
 end
@@ -74,7 +69,7 @@ task :ctags do
   sh 'ctags -R --exclude=.git --exclude=build .'
 end
 
-desc "Run lint (Rubocop)"
+desc 'Run lint (Rubocop)'
 task :lint do
-  sh "rubocop"
+  sh 'rubocop'
 end
