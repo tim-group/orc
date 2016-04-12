@@ -7,6 +7,25 @@ describe Orc::CMDB::Git do
     Git.open(@local, :log => nil)
   end
 
+  def setup_alice_and_bob_repos
+    FileUtils.touch("#{@origin}/alice")
+    FileUtils.touch("#{@origin}/bob")
+    @repo.add("#{@origin}/alice")
+    @repo.add("#{@origin}/bob")
+    @repo.commit_all('Initial commit')
+    @repo.config('core.bare', 'true')
+
+    alice_path = @tempdir + '/alice_clone'
+    bob_path = @tempdir + '/bob_clone'
+
+    bob = Orc::CMDB::Git.new(:local_path => bob_path, :origin => @origin)
+    alice = Orc::CMDB::Git.new(:local_path => alice_path, :origin => @origin)
+    bob.update
+    alice.update
+
+    [alice, bob]
+  end
+
   before do
     @tempdir = Dir.mktmpdir(nil, "/tmp")
     @origin = "#{@tempdir}/cmdb_origin"
@@ -184,23 +203,10 @@ describe Orc::CMDB::Git do
   end
 
   it 'retries to push if there have been concurrent modifications after the initial fetching' do
-    FileUtils.touch("#{@origin}/alice")
-    FileUtils.touch("#{@origin}/bob")
-    @repo.add("#{@origin}/alice")
-    @repo.add("#{@origin}/bob")
-    @repo.commit_all('Initial commit')
-    @repo.config('core.bare', 'true')
+    alice, bob = setup_alice_and_bob_repos
 
-    alice_path = @tempdir + '/alice_clone'
-    bob_path = @tempdir + '/bob_clone'
-
-    bob = Orc::CMDB::Git.new(:local_path => bob_path, :origin => @origin)
-    alice = Orc::CMDB::Git.new(:local_path => alice_path, :origin => @origin)
-    bob.update
-    alice.update
-
-    File.open(bob_path + '/bob', 'w') { |f| f.write("bob's edit") }
-    File.open(alice_path + '/alice', 'w') { |f| f.write("alice's edit") }
+    File.open(bob.local_path + '/bob', 'w') { |f| f.write("bob's edit") }
+    File.open(alice.local_path + '/alice', 'w') { |f| f.write("alice's edit") }
 
     alice_thread = Thread.new { alice.commit_and_push }
     bob_thread = Thread.new { bob.commit_and_push }
@@ -211,7 +217,52 @@ describe Orc::CMDB::Git do
     alice.update
     bob.update
 
-    expect(IO.read(bob_path + '/alice')).to eql("alice's edit")
-    expect(IO.read(alice_path + '/bob')).to eql("bob's edit")
+    expect(IO.read(bob.local_path + '/alice')).to eql("alice's edit")
+    expect(IO.read(alice.local_path + '/bob')).to eql("bob's edit")
+  end
+
+  it 'will attempt to retry push if rejected with a git error' do
+    alice, bob = setup_alice_and_bob_repos
+
+    File.open(alice.local_path + '/alice', 'w') { |f| f.write("alice's edit") }
+
+    number_of_attempts_to_reject = 4
+    File.open("#{@origin}/attempts", 'w') { |f| f.write('0') }
+    hook_path = "#{@origin}/.git/hooks/pre-receive"
+    hook = %(#!/bin/sh
+attempts=`cat #{@origin}/attempts`
+if [ "$attempts" -lt #{number_of_attempts_to_reject} ] ; then
+  echo $(( attempts + 1 )) > "#{@origin}/attempts"
+  exit 1 # Reject push on the first attempts
+else
+  exit 0 # Eventually allow push
+fi
+)
+    FileUtils.touch(hook_path)
+    FileUtils.chmod('+x', hook_path)
+    File.open(hook_path, 'w') do |f|
+      f.write(hook)
+    end
+
+    alice.commit_and_push
+    bob.update
+    expect(IO.read(bob.local_path + '/alice')).to eql("alice's edit")
+  end
+
+  it 'will stop retries of push and fail if rejected too many times' do
+    alice, _bob = setup_alice_and_bob_repos
+
+    File.open(alice.local_path + '/alice', 'w') { |f| f.write("alice's edit") }
+
+    File.open("#{@origin}/attempts", 'w') { |f| f.write('0') }
+    hook_path = "#{@origin}/.git/hooks/pre-receive"
+    hook = "#!/bin/sh\nexit 1 # Reject every push\n"
+    FileUtils.touch(hook_path)
+    FileUtils.chmod('+x', hook_path)
+    File.open(hook_path, 'w') do |f|
+      f.write(hook)
+    end
+
+    expect { alice.commit_and_push }.to raise_error(Git::GitExecuteError)
   end
 end

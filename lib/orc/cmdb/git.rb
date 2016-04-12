@@ -4,16 +4,19 @@ require 'timeout'
 require 'orc/cmdb/namespace'
 
 class Orc::CMDB::Git
+  attr_accessor :local_path
+
   def initialize(options = {})
     @repo_url = options[:origin] || raise("Need origin option")
     @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 60
     @options = options
+    @logger = Logger.new(STDOUT)
   end
 
   def update
-    logger = @options[:debug] ? Logger.new(STDOUT) : nil
+    logger = @options[:debug] ? @logger : nil
     if File.directory?(@local_path)
       Timeout::timeout(@timeout) do
         @git = Git.open(@local_path, :log => logger)
@@ -51,7 +54,7 @@ class Orc::CMDB::Git
       if @git.status.changed.size > 0
         Timeout::timeout(@timeout) do
           @git.commit_all(message)
-          push_with_retry
+          push_with_retry(0, 5)
         end
       end
     else
@@ -61,14 +64,15 @@ class Orc::CMDB::Git
 
   private
 
-  def push_with_retry
+  def push_with_retry(attempt_number, total_attempts_allowed)
     @git.fetch('origin')
     @git.merge('origin', 'merge concurrent modifications')
     @git.push
-  rescue Git::GitExecuteError => _error
-    # if (attempt_number + 1 > total_attempts_allowed)
-    #   raise error
-    # end
-    push_with_retry
+  rescue Git::GitExecuteError => error
+    raise error if attempt_number > total_attempts_allowed
+    if @options[:debug]
+      @logger.log("Push to cmdb failed. Retrying (#{attempt_number}/#{total_attempts_allowed})")
+    end
+    push_with_retry(attempt_number + 1, total_attempts_allowed)
   end
 end
