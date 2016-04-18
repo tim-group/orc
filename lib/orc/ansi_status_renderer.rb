@@ -1,7 +1,7 @@
 class Orc::AnsiStatusRenderer
   def render(statuses)
     buffer = ""
-    keys = [:host, :application, :group, :present, :version, :participating, :health]
+    keys = [:host, :application, :group, :present, :version, :participating, :health, :stoppable]
     lengths = {}
     keys.each do |key|
       lengths[key] = key.to_s.length
