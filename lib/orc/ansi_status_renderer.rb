@@ -32,7 +32,7 @@ class Orc::AnsiStatusRenderer
         rem = lengths[key] - status[key].to_s.length + 1
         status_buffer << " " * rem
       end
-      buffer << Color.new(:text => status_buffer).color(color).highlight(present).display
+      buffer << Color.new(:text => status_buffer).color(color).display
     end
 
     buffer
@@ -46,11 +46,6 @@ class Orc::AnsiStatusRenderer
 
     def color(color)
       @text = "\e[1;#{@colors[color]}m#{@text}\e[0m"
-      self
-    end
-
-    def highlight(highlight)
-      @text = "\e[1;40m#{@text}\e[0m" if highlight
       self
     end
 
