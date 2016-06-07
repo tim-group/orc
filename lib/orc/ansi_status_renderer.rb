@@ -50,7 +50,7 @@ class Orc::AnsiStatusRenderer
     end
 
     def highlight(highlight)
-      @text = "\e#{@text}\e[0m" if highlight
+      @text = "\e[1;#{@text}\e[0m" if highlight
       self
     end
 
