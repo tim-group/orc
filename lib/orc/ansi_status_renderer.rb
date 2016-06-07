@@ -25,7 +25,6 @@ class Orc::AnsiStatusRenderer
 
     statuses.sort_by { |s| s[:host] }.each do |status|
       color = status[:group]
-      present = status[:present]
       status_buffer = ""
       keys.each do |key|
         status_buffer << "#{status[key]}"
