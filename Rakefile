@@ -30,6 +30,9 @@ task :package do
   sh 'mkdir -p build/package/usr/local/bin/'
   sh 'cp -r bin/* build/package/usr/local/bin/'
 
+  sh 'mkdir -p build/package/etc'
+  sh 'cp -r etc/* build/package/etc'
+
   arguments = [
     '--description', 'orchestration tool',
     '--url', 'https://github.com/tim-group/orc',
