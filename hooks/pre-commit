@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo -n "Running rake: "
+OUTPUT=`rake -T 2>&1`
+RC=$?
+if [ $RC -ne 0 ]; then
+  echo "FAIL"
+  echo "$OUTPUT"
+  exit 1
+else
+  echo "OK"
+fi
+
+if which rubocop > /dev/null; then
+  # check only touched files
+  tmpdir=$(mktemp -d pre-commit.XXXXXXXXXX)
+  trap "rm -rf $tmpdir" EXIT
+
+  git diff --cached --name-only --diff-filter=ACM \
+   | git checkout-index --stdin --prefix=$tmpdir/
+
+  # rake lint is configured to work with Jenkins
+  # here we run rubocop with no arguments for interactive use
+  rubocop $tmpdir/ || exit 1
+else
+  echo "rubocop not found" >&2
+  exit 1
+fi
