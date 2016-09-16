@@ -4,7 +4,7 @@ class Orc::Engine
   def initialize(options)
     @model_generator = options[:model_generator] || raise("Needs model generator")
     @logger = options[:log] || raise("Need :log")
-    @max_loop = 1000
+    @max_loop = 10000
     @resolution_steps = []
     @options = options
   end
