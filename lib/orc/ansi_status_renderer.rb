@@ -40,7 +40,7 @@ class Orc::AnsiStatusRenderer
   class Color
     def initialize(args)
       @text = args[:text]
-      @colors = { "cyan" => 36, "pink" => 35, "blue" => 34, "yellow" => 33, "green" => 32, "red" => 31, "grey" => 30 }
+      @colors = { "white" => 37, "cyan" => 36, "pink" => 35, "blue" => 34, "yellow" => 33, "green" => 32, "red" => 31, "grey" => 30 }
     end
 
     def color(color)
