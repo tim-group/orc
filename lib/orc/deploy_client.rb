@@ -122,6 +122,18 @@ class Orc::DeployClient
     end
   end
 
+  def restart(spec, hosts)
+    spec[:environment] = @environment
+    spec[:application] = @application if spec[:application].nil?
+    @mcollective_client.custom_request("restart", { :spec => spec }, hosts[0],
+                                       "identity" => hosts[0]).each do |resp|
+      log_response(resp)
+      return resp[:data][:successful]
+    end
+
+    false
+  end
+
   private
 
   def log_response(resp)

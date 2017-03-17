@@ -57,4 +57,8 @@ class FakeRemoteClient
   def status(_spec)
     @instances
   end
+
+  def restart(_spec, _hosts)
+    true
+  end
 end

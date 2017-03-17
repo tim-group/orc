@@ -171,4 +171,40 @@ module Orc::Action
       true
     end
   end
+
+  class RestartAction < Base
+    def default_timeout
+      10
+    end
+
+    def do_execute(all_actions)
+      # rubocop bug
+      # rubocop:disable Lint/UselessAssignment
+      first_action = all_actions.pop
+      # rubocop:enable Lint/UselessAssignment
+      while !all_actions[-1].nil? && all_actions[-1].class.name == self.class.name && all_actions[-1].key == key
+        first_action = all_actions.pop
+      end
+      if self != first_action
+        raise Orc::Exception::FailedToResolve.new("Action RestartAction re-run on same instance multiple times " \
+                                                  "- instance failing to start.")
+      end
+      logger.log_action "restarting #{@instance.host} #{@instance.group_name}"
+
+      response_received = @remote_client.restart({ :group => @instance.group_name },
+                                                 [@instance.host])
+
+      if !response_received
+        raise Orc::Exception::FailedToResolve.new("Action RestartAction did not receive a response from " \
+                                                  "#{@instance.host} within the timeout")
+      else
+          @instance.set_restarted
+      end
+      true
+    end
+
+    def precedence
+      1 # TODO: speak to someone about what this is used for, for now match version updater
+    end
+  end
 end

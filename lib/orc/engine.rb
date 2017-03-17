@@ -10,10 +10,11 @@ class Orc::Engine
   end
 
   def resolve
+    session = []
     @loop_count = 0
     finished = false
     while !finished
-      application_models = @model_generator.create_live_model
+      application_models = @model_generator.create_live_model(session)
       all_resolutions = application_models.map { |model| [model, model.get_resolutions] }
 
       finished = all_resolutions.map do |model, resolutions|
@@ -30,16 +31,11 @@ class Orc::Engine
     @resolution_steps.map(&:to_s)
   end
 
-  def rolling_restart
-    application_models = @model_generator.create_live_model
+  def check_rolling_restart_possible
+    session = []
+    application_models = @model_generator.create_live_model(session)
     all_resolutions = application_models.flat_map(&:get_resolutions)
-
-    if all_resolutions.empty?
-      print "--rolling-restart command would execute, nothing to resolve\n"
-      print "--rolling-restart command not yet available. Under development.\n"
-    else
-      raise Orc::Exception::CannotRestartUnresolvedGroup.new("hah!")
-    end
+    raise Orc::Exception::FailedToResolve.new("Rolling restart not possible as unresolved steps") unless all_resolutions.empty?
   end
 
   private

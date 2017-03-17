@@ -3,6 +3,7 @@ require 'orc/config'
 require 'orc/model/application'
 require 'orc/engine'
 require 'orc/mismatch_resolver'
+require 'orc/restart_resolver'
 require 'orc/deploy_client'
 require 'orc/cmdb/yaml'
 require 'orc/cmdb/git'
@@ -56,8 +57,17 @@ class Orc::Factory
     )
   end
 
+  def restart_engine
+    resolver = Orc::RestartResolver.new(remote_client, @timeout)
+    engine_for_resolver(resolver)
+  end
+
   def engine
     mismatch_resolver = Orc::MismatchResolver.new(remote_client, @timeout)
+    engine_for_resolver(mismatch_resolver)
+  end
+
+  def engine_for_resolver(resolver)
     logger = Orc::Progress.logger
     model_generator = Orc::Model::Builder.new(
       :remote_client      => remote_client,
@@ -65,7 +75,7 @@ class Orc::Factory
       :environment        => environment,
       :application        => application,
       :progress_logger    => logger,
-      :mismatch_resolver  => mismatch_resolver
+      :mismatch_resolver  => resolver
     )
 
     Orc::Engine.new(

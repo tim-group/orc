@@ -45,7 +45,7 @@ class Orc::Util::OptionParser
       end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
-       PromotionRequest
+       PromotionRequest, RollingRestartRequest
       ].
       each do |req|
         req.setup_command_options($options, opts, @commands)
@@ -232,11 +232,12 @@ class Orc::Util::OptionParser
 
   class RollingRestartRequest < Base
     def required
-      [:environment, :application, :group]
+      [:environment, :application]
     end
 
     def execute(factory)
-      factory.engine.rolling_restart
+      factory.engine.check_rolling_restart_possible
+      factory.restart_engine.resolve
     end
 
     def self.command_options

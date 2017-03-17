@@ -26,7 +26,7 @@ class Orc::Model::Builder
     groups
   end
 
-  def create_live_model
+  def create_live_model(session)
     @progress_logger.log("creating live model")
     groups = get_cmdb_groups
     statuses = @remote_client.status(:application => @application, :environment => @environment)
@@ -37,7 +37,7 @@ class Orc::Model::Builder
       instance_models = instances.map do |instance|
         group = groups[instance[:group]]
         raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
-        Orc::Model::Instance.new(instance, group)
+        Orc::Model::Instance.new(instance, group, session)
       end
 
       Orc::Model::Application.new(:name => name,
