@@ -60,7 +60,7 @@ class Orc::RestartResolver
     get_case(
       :should_participate => instance.group.target_participation,
       :does_participate   => instance.participation,
-      :has_restarted   => instance.has_restarted?,
+      :has_restarted   => instance.restarted?,
       :is_healthy         => instance.healthy?,
       :is_drained         => instance.stoppable? # FIXME: should come from model of LB connections instead?
     ).call(instance)

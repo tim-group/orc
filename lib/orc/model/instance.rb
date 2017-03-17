@@ -7,7 +7,7 @@ class Orc::Model::Instance
   attr_accessor :participation
   attr_accessor :version
 
-  def initialize(instance, group, session=[])
+  def initialize(instance, group, session = [])
     @group = group || raise("must pass in a not null group")
     @participation = instance[:participating]
     @version = instance[:version]
@@ -28,7 +28,7 @@ class Orc::Model::Instance
     }
   end
 
-  def has_restarted?
+  def restarted?
     @session.include?(key)
   end
 

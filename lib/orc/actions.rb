@@ -198,7 +198,7 @@ module Orc::Action
         raise Orc::Exception::FailedToResolve.new("Action RestartAction did not receive a response from " \
                                                   "#{@instance.host} within the timeout")
       else
-          @instance.set_restarted
+        @instance.set_restarted
       end
       true
     end
