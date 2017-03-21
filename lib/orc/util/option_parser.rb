@@ -236,6 +236,7 @@ class Orc::Util::OptionParser
     end
 
     def execute(factory)
+      factory.cmdb_git.update
       factory.engine.check_rolling_restart_possible
       factory.restart_engine.resolve
     end
