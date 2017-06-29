@@ -10,7 +10,11 @@ class Orc::CMDB::GroupActions
     groups.each do |group|
       if group[:name] == for_group || all_groups?(for_group)
         if group[:target_participation]
-          group[:target_version] = version if group[:never_swap]
+          if group[:never_swap] 
+            group[:target_version] = version 
+          else
+            @logger.log("Not installing to group #{group[:name]} - consider setting never_swap")
+          end
         else
           group[:target_version] = version
         end
