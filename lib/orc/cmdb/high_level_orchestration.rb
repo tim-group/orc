@@ -7,12 +7,14 @@ class Orc::CMDB::GroupActions
   end
 
   def install(groups, version, for_group = 'all')
+    swappable_groups = swappable(groups)
+
     groups.each do |group|
       if group[:name] == for_group || all_groups?(for_group)
         if group[:target_participation]
           if group[:never_swap]
             group[:target_version] = version
-          else
+          elsif swappable_groups.size > 1
             @logger.log("Not installing to group #{group[:name]} - consider setting never_swap")
           end
         else
@@ -21,13 +23,10 @@ class Orc::CMDB::GroupActions
       end
     end
 
-    swappable_groups = swappable(groups)
-
     if swappable_groups.size == 1
       if all_groups?(for_group)
         swappable_groups[0][:target_version] = version
       else
-
         @logger.log("Refusing to install: version: '#{version}' for group: '#{for_group}'. " \
           "Application: '#{@spec[:application]}', environment: '#{@spec[:environment]}'\n" \
           "Group 'blue' is the only swappable group (never_swap=false)\n" \

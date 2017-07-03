@@ -176,7 +176,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                          :target_participation => true }
                                                      ]
                                                     )
-
+    expect(@logger).to receive(:log).with("Not installing to group green - consider setting never_swap")
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
     @high_level_orchestration.install('2')
@@ -371,7 +371,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                          :target_participation => false }
                                                      ]
                                                     )
-
+    expect(@logger).to receive(:log).with("Not installing to group green - consider setting never_swap")
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
     @high_level_orchestration.deploy('2')
@@ -546,7 +546,7 @@ describe Orc::CMDB::HighLevelOrchestration do
                                                        }
                                                      ]
                                                     )
-
+    expect(@logger).to receive(:log).with("Not installing to group green - consider setting never_swap")
     expect(@git).to receive(:update).ordered
     expect(@git).to receive(:commit_and_push).ordered
     @high_level_orchestration.deploy('3')
