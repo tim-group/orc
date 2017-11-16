@@ -1,4 +1,3 @@
-Gemfile.lock
 _site/*
 gh-pages/*
 html/*
@@ -10,3 +9,4 @@ spec/reports/*.xml
 .project
 .idea/
 tags
+vendor
