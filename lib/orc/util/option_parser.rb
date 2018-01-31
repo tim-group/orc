@@ -253,7 +253,7 @@ class Orc::Util::OptionParser
 
     def execute(factory)
       factory.cmdb_git.update
-      required_resolutions = factory.engine(quiet = !@options[:debug]).required_resolutions
+      required_resolutions = factory.engine(:quiet => !@options[:debug]).required_resolutions
 
       puts required_resolutions.size
     end

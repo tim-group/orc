@@ -65,11 +65,7 @@ class Orc::CMDB::Git
   private
 
   def choose_logger(options)
-    if options[:debug]
-      options[:logger] || Logger.new(STDOUT)
-    else
-      nil
-    end
+    options[:logger] || Logger.new(STDOUT) if options[:debug]
   end
 
   def push_with_retry(attempt_number, total_attempts_allowed)
