@@ -45,7 +45,7 @@ class Orc::Util::OptionParser
       end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
-       PromotionRequest, RollingRestartRequest
+       PromotionRequest, RollingRestartRequest, NeedsStepsToResolve
       ].
       each do |req|
         req.setup_command_options($options, opts, @commands)
@@ -243,6 +243,23 @@ class Orc::Util::OptionParser
 
     def self.command_options
       ['-R', '--rolling-restart', 'safely restarts a group of applications']
+    end
+  end
+
+  class NeedsStepsToResolve < Base
+    def required
+      [:environment, :application]
+    end
+
+    def execute(factory)
+      factory.cmdb_git.update
+      required_resolutions = factory.engine(quiet = !@options[:debug]).required_resolutions
+
+      puts required_resolutions.size
+    end
+
+    def self.command_options
+      ['-n', '--needs-steps-to-resolve', 'outputs estimated number of steps required to resolve differences from CMDB']
     end
   end
 end

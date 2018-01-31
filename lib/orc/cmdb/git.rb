@@ -12,14 +12,13 @@ class Orc::CMDB::Git
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 60
     @options = options
-    @logger = Logger.new(STDOUT)
+    @logger = choose_logger(options)
   end
 
   def update
-    logger = @options[:debug] ? @logger : nil
     if File.directory?(@local_path)
       Timeout::timeout(@timeout) do
-        @git = Git.open(@local_path, :log => logger)
+        @git = Git.open(@local_path, :log => @logger)
         @git.remotes.first.fetch
         @git.fetch('origin')
         @git.merge('origin', 'merge concurrent modifications')
@@ -27,12 +26,13 @@ class Orc::CMDB::Git
       end
       Timeout::timeout(@timeout) do
         Dir.chdir(@local_path) do
-          system('git gc')
+          gc_cmd = 'git gc' + (@options[:debug] ? '' : ' --quiet')
+          system(gc_cmd)
         end
       end
     else
       Timeout::timeout(@timeout) do
-        @git = Git.clone(@repo_url, @local_path, :log => logger)
+        @git = Git.clone(@repo_url, @local_path, :log => @logger)
       end
     end
 
@@ -63,6 +63,14 @@ class Orc::CMDB::Git
   end
 
   private
+
+  def choose_logger(options)
+    if options[:debug]
+      options[:logger] || Logger.new(STDOUT)
+    else
+      nil
+    end
+  end
 
   def push_with_retry(attempt_number, total_attempts_allowed)
     @git.fetch('origin')

@@ -23,6 +23,7 @@ class Orc::Factory
     @timeout = options[:timeout]
     @cmdb = dependencies[:cmdb]
     @remote_client = dependencies[:remote_client]
+    @debug = options[:debug]
   end
 
   def config
@@ -44,7 +45,8 @@ class Orc::Factory
   def cmdb_git
     @cmdb_git ||= Orc::CMDB::Git.new(
       :origin     => config['cmdb_repo_url'],
-      :local_path => config['cmdb_local_path']
+      :local_path => config['cmdb_local_path'],
+      :debug      => @debug
     )
   end
 
@@ -59,16 +61,18 @@ class Orc::Factory
 
   def restart_engine
     resolver = Orc::RestartResolver.new(remote_client, @timeout)
-    engine_for_resolver(resolver)
+    engine_for_resolver(resolver, quiet = false)
   end
 
-  def engine
+  def engine(quiet = false)
     mismatch_resolver = Orc::MismatchResolver.new(remote_client, @timeout)
-    engine_for_resolver(mismatch_resolver)
+    engine_for_resolver(mismatch_resolver, quiet)
   end
 
-  def engine_for_resolver(resolver)
-    logger = Orc::Progress.logger
+  private
+
+  def engine_for_resolver(resolver, quiet)
+    logger = quiet ? Orc::Progress.null_logger : Orc::Progress.logger
     model_generator = Orc::Model::Builder.new(
       :remote_client      => remote_client,
       :cmdb               => cmdb,

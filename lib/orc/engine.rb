@@ -31,12 +31,15 @@ class Orc::Engine
     @resolution_steps.map(&:to_s)
   end
 
-  def check_rolling_restart_possible
+  def required_resolutions
     session = []
     application_models = @model_generator.create_live_model(session)
-    all_resolutions = application_models.flat_map(&:get_resolutions)
+    application_models.flat_map(&:get_resolutions)
+  end
+
+  def check_rolling_restart_possible
     raise Orc::Exception::FailedToResolve.new("Rolling restart not possible as unresolved steps") \
-                                              unless all_resolutions.empty?
+                                              unless required_resolutions.empty?
   end
 
   private
