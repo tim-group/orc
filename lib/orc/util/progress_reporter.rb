@@ -1,16 +1,16 @@
 require 'orc/namespace'
 
-module Orc::Progress
+module Orc::Util::ProgressReporter
   def self.logger
-    Orc::Progress::Logger.new
+    Orc::Util::ProgressReporter::Logger.new
   end
 
   def logger
-    Orc::Progress::Logger.new
+    Orc::Util::ProgressReporter::Logger.new
   end
 
   def self.null_logger
-    Orc::Progress::NullLogger.new
+    Orc::Util::ProgressReporter::NullLogger.new
   end
 
   class Logger

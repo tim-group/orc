@@ -74,7 +74,7 @@ class Orc::CMDB::HighLevelOrchestration
     @environment = args[:environment] || raise('Need :environment')
     @application = args[:application] || raise('Need :application')
     @spec = { :environment => @environment, :application => @application }
-    @logger = args[:logger] || Orc::Progress.logger
+    @logger = args[:logger] || Orc::Util::ProgressReporter.logger
     @group_actions = Orc::CMDB::GroupActions.new(@spec, @logger)
   end
 

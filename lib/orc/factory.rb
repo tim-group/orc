@@ -8,7 +8,7 @@ require 'orc/live/deploy_client'
 require 'orc/cmdb/yaml'
 require 'orc/cmdb/git'
 require 'orc/cmdb/high_level_orchestration'
-require 'orc/progress'
+require 'orc/util/progress_reporter'
 
 class Orc::Factory
   attr_reader :application, :environment, :group
@@ -72,7 +72,7 @@ class Orc::Factory
   private
 
   def engine_for_resolver(resolver, quiet)
-    logger = quiet ? Orc::Progress.null_logger : Orc::Progress.logger
+    logger = quiet ? Orc::Util::ProgressReporter.null_logger : Orc::Util::ProgressReporter.logger
     model_generator = Orc::Model::Builder.new(
       :remote_client      => remote_client,
       :cmdb               => cmdb,

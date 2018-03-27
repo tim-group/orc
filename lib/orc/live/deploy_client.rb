@@ -1,7 +1,7 @@
 require 'mcollective'
 require 'orc/exceptions'
 require 'orc/namespace'
-require 'orc/progress'
+require 'orc/util/progress_reporter'
 
 class MCollective::RPC::DeploytoolWrapper
   include MCollective::RPC
@@ -46,7 +46,7 @@ class Orc::DeployClient
   include MCollective::RPC
 
   def initialize(args)
-    @logger = args[:log] || ::Orc::Progress::Logger.new
+    @logger = args[:log] || ::Orc::Util::ProgressReporter::Logger.new
     @mco_options = MCollective::Util.default_options
     @mco_options[:timeout] = 200
 
