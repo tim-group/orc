@@ -9,45 +9,45 @@ class Orc::RestartResolver
     in_case({
               :should_participate => true,
               :does_participate   => true,
-              :has_restarted      => true,
+              :needs_restart      => false,
               :is_healthy         => true
             }, 'ResolvedCompleteAction')
     in_case({
               :should_participate => true,
               :does_participate   => true,
-              :has_restarted      => true,
+              :needs_restart      => false,
               :is_healthy         => false
             }, 'WaitForHealthyAction')
     in_case({
               :should_participate => false,
               :does_participate   => false,
-              :has_restarted      => true
+              :needs_restart      => false
             }, 'ResolvedCompleteAction')
     in_case({
               :should_participate => true,
               :does_participate   => true,
-              :has_restarted      => false
+              :needs_restart      => true
             }, 'DisableParticipationAction')
     in_case({
               :does_participate   => false,
-              :has_restarted      => false,
+              :needs_restart      => true,
               :is_drained         => true
             }, 'RestartAction')
     in_case({
               :does_participate   => false,
-              :has_restarted      => false,
+              :needs_restart      => true,
               :is_drained         => false
             }, 'WaitForDrainedAction')
     in_case({
               :should_participate => true,
               :does_participate   => false,
-              :has_restarted      => true,
+              :needs_restart      => false,
               :is_healthy         => true
             }, 'EnableParticipationAction')
     in_case({
               :should_participate => true,
               :does_participate   => false,
-              :has_restarted      => true,
+              :needs_restart      => false,
               :is_healthy         => false
             }, 'WaitForHealthyAction')
     in_case({
@@ -60,7 +60,7 @@ class Orc::RestartResolver
     get_case(
       :should_participate => instance.group.target_participation,
       :does_participate   => instance.participation,
-      :has_restarted   => instance.restarted?,
+      :needs_restart      => !instance.restarted?,
       :is_healthy         => instance.healthy?,
       :is_drained         => instance.stoppable? # FIXME: should come from model of LB connections instead?
     ).call(instance)
@@ -76,7 +76,7 @@ class Orc::RestartResolver
     [
       :should_participate,
       :does_participate,
-      :has_restarted,
+      :needs_restart,
       :is_healthy,
       :is_drained
     ].each do |k|
