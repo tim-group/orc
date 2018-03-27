@@ -1,6 +1,6 @@
 require 'mcollective'
+require 'orc/live/namespace'
 require 'orc/exceptions'
-require 'orc/namespace'
 require 'orc/util/progress_reporter'
 
 class MCollective::RPC::DeploytoolWrapper
