@@ -1,6 +1,6 @@
 require 'orc/namespace'
 require 'orc/config'
-require 'orc/model/application'
+require 'orc/model/builder'
 require 'orc/engine'
 require 'orc/mismatch_resolver'
 require 'orc/restart_resolver'

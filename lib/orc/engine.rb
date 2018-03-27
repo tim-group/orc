@@ -1,4 +1,4 @@
-require 'orc/model/application'
+require 'orc/namespace'
 
 class Orc::Engine
   def initialize(options)
