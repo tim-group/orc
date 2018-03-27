@@ -4,7 +4,6 @@ class Orc::RestartResolver
   def initialize(remote_client, timeout = nil)
     @remote_client = remote_client
     @timeout = timeout
-    @restarted_instances = []
     @cases = {}
     in_case({
               :should_participate => true,
@@ -64,10 +63,6 @@ class Orc::RestartResolver
       :is_healthy         => instance.healthy?,
       :is_drained         => instance.stoppable? # FIXME: should come from model of LB connections instead?
     ).call(instance)
-  end
-
-  def set_restarted(instance)
-    @restarted_instances = @restarted_instances.push(instance.key)
   end
 
   private
