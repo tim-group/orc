@@ -1,4 +1,4 @@
-class Orc::AnsiStatusRenderer
+class Orc::Util::AnsiStatusRenderer
   def render(statuses)
     buffer = ""
     keys = [:host, :application, :group, :present, :version, :participating, :health, :stoppable]

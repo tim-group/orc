@@ -4,7 +4,7 @@ require 'orc/factory'
 require 'optparse'
 require 'orc/cmdb/git'
 require 'orc/deploy_client'
-require 'orc/ansi_status_renderer'
+require 'orc/util/ansi_status_renderer'
 require 'etc'
 
 user = ENV['USER']
@@ -126,7 +126,7 @@ class Orc::Util::OptionParser
 
     def execute(factory)
       deploy_client = factory.remote_client
-      renderer = Orc::AnsiStatusRenderer.new
+      renderer = Orc::Util::AnsiStatusRenderer.new
       statuses = deploy_client.status
       rendered_status = renderer.render(statuses)
       print rendered_status
