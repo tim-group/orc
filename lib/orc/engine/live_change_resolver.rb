@@ -1,5 +1,5 @@
 require 'orc/engine/namespace'
-require 'orc/actions'
+require 'orc/engine/actions'
 
 class Orc::Engine::LiveChangeResolver
   def initialize(change_action_name, change_required_check, remote_client, timeout = nil)
@@ -87,7 +87,7 @@ class Orc::Engine::LiveChangeResolver
         return
       end
     end
-    @cases[state] = lambda { |instance| Orc::Action.const_get(name).new(@remote_client, instance, @timeout) }
+    @cases[state] = lambda { |instance| Orc::Engine::Action.const_get(name).new(@remote_client, instance, @timeout) }
   end
 
   def get_case(state)

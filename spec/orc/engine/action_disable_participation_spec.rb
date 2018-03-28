@@ -1,7 +1,7 @@
-require 'orc/actions'
+require 'orc/engine/actions'
 require 'orc/factory'
 
-describe Orc::Action::DisableParticipationAction do
+describe Orc::Engine::Action::DisableParticipationAction do
   before do
     @remote_client = double(Orc::DeployClient)
   end
@@ -10,7 +10,7 @@ describe Orc::Action::DisableParticipationAction do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
-    update_version_action = Orc::Action::DisableParticipationAction.new(@remote_client, instance_model, 0)
+    update_version_action = Orc::Engine::Action::DisableParticipationAction.new(@remote_client, instance_model, 0)
     expect(@remote_client).to receive(:disable_participation).with({ :group => "blue" }, ["host1"])
     update_version_action.execute([])
 

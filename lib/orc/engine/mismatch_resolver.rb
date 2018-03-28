@@ -1,5 +1,5 @@
 require 'orc/engine/namespace'
-require 'orc/actions'
+require 'orc/engine/actions'
 require 'orc/engine/live_change_resolver'
 
 class Orc::Engine::MismatchResolver

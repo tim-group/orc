@@ -1,7 +1,8 @@
+require 'orc/engine/namespace'
 require 'orc/exceptions'
 require 'orc/util/progress_reporter'
 
-module Orc::Action
+module Orc::Engine::Action
   class Base
     include Orc::Util::ProgressReporter
     attr_reader :instance
@@ -39,7 +40,7 @@ module Orc::Action
     end
 
     def to_s
-      self.class.name =~ /Orc::Action::(\w+)/
+      self.class.name =~ /Orc::Engine::Action::(\w+)/
       type = Regexp.last_match(1)
       "#{type}: on #{host} #{group_name}"
     end
