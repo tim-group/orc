@@ -1,9 +1,9 @@
-require 'orc/engine'
+require 'orc/engine/engine'
 require 'orc/factory'
 require 'orc/testutil/in_memory_cmdb'
 require 'orc/testutil/fake_remote_client'
 
-describe Orc::Engine do
+describe Orc::Engine::Engine do
   it 'fails with an error message if the application group is not in the expected state' do
     app_in_unresolved_state = {
       :group => 'blue',

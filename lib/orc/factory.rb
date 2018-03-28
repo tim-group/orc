@@ -1,7 +1,7 @@
 require 'orc/namespace'
 require 'orc/config'
 require 'orc/model/builder'
-require 'orc/engine'
+require 'orc/engine/engine'
 require 'orc/mismatch_resolver'
 require 'orc/restart_resolver'
 require 'orc/live/deploy_client'
@@ -82,7 +82,7 @@ class Orc::Factory
       :mismatch_resolver  => resolver
     )
 
-    Orc::Engine.new(
+    Orc::Engine::Engine.new(
       :model_generator   => model_generator,
       :log               => logger
     )

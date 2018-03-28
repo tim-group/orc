@@ -2,7 +2,7 @@ require 'orc/factory'
 require 'orc/testutil/in_memory_cmdb'
 require 'orc/testutil/fake_remote_client'
 
-describe Orc::Engine do
+describe Orc::Engine::Engine do
   it 'vanilla pass through' do
     factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0 },
                                :remote_client => FakeRemoteClient.new(:instances => [

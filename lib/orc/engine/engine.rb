@@ -1,6 +1,6 @@
-require 'orc/namespace'
+require 'orc/engine/namespace'
 
-class Orc::Engine
+class Orc::Engine::Engine
   def initialize(options)
     @model_generator = options[:model_generator] || raise("Needs model generator")
     @logger = options[:log] || raise("Need :log")
