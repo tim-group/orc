@@ -1,8 +1,8 @@
-require 'orc/factory'
+require 'orc/engine/mismatch_resolver'
 
-describe Orc::MismatchResolver do
+describe Orc::Engine::MismatchResolver do
   before do
-    @mismatch_resolver = Orc::MismatchResolver.new(nil)
+    @mismatch_resolver = Orc::Engine::MismatchResolver.new(nil)
     @should_be_participating_group = Orc::Model::Group.new(
       :name                 => "spg",
       :target_participation => true,

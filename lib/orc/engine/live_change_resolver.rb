@@ -1,7 +1,7 @@
-require 'orc/namespace'
+require 'orc/engine/namespace'
 require 'orc/actions'
 
-class Orc::LiveChangeResolver
+class Orc::Engine::LiveChangeResolver
   def initialize(change_action_name, change_required_check, remote_client, timeout = nil)
     @change_required_check = change_required_check
     @remote_client = remote_client

@@ -2,8 +2,8 @@ require 'orc/namespace'
 require 'orc/config'
 require 'orc/model/builder'
 require 'orc/engine/engine'
-require 'orc/mismatch_resolver'
-require 'orc/restart_resolver'
+require 'orc/engine/mismatch_resolver'
+require 'orc/engine/restart_resolver'
 require 'orc/live/deploy_client'
 require 'orc/cmdb/yaml'
 require 'orc/cmdb/git'
@@ -60,12 +60,12 @@ class Orc::Factory
   end
 
   def restart_engine
-    resolver = Orc::RestartResolver.new(remote_client, @timeout)
+    resolver = Orc::Engine::RestartResolver.new(remote_client, @timeout)
     engine_for_resolver(resolver, :quiet => false)
   end
 
   def engine(quiet = false)
-    mismatch_resolver = Orc::MismatchResolver.new(remote_client, @timeout)
+    mismatch_resolver = Orc::Engine::MismatchResolver.new(remote_client, @timeout)
     engine_for_resolver(mismatch_resolver, quiet)
   end
 
