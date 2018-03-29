@@ -7,7 +7,12 @@ class Orc::Engine::MismatchResolver
     change_required_check = Proc.new do |instance|
       instance.version_mismatch?
     end
-    @resolver = Orc::Engine::LiveChangeResolver.new('UpdateVersionAction', change_required_check, remote_client, timeout)
+    @resolver = Orc::Engine::LiveChangeResolver.new(
+      'UpdateVersionAction',
+      change_required_check,
+      remote_client,
+      timeout
+    )
   end
 
   def resolve(instance)
