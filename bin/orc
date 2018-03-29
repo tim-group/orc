@@ -2,6 +2,6 @@
 
 $: << '/usr/local/lib/site_ruby/timgroup/'
 
-require 'orc/util/option_parser'
+require 'orc/command_line'
 
-Orc::Util::OptionParser.new.parse.execute
+Orc::CommandLine.new.execute(ARGS)

@@ -1,19 +1,15 @@
-require 'rubygems'
 require 'orc/util/namespace'
-require 'orc/factory'
+require 'rubygems'
 require 'optparse'
-require 'orc/cmdb/git'
-require 'orc/live/deploy_client'
 require 'orc/util/ansi_status_renderer'
 require 'etc'
 
-user = ENV['USER']
-ENV['MCOLLECTIVE_SSL_PRIVATE'] = "/home/#{user}/.mc/#{user}-private.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PRIVATE')
-ENV['MCOLLECTIVE_SSL_PUBLIC'] = "/etc/mcollective/ssl/clients/#{user}.pem" unless ENV.has_key?('MCOLLECTIVE_SSL_PUBLIC')
-
 class Orc::Util::OptionParser
+
+  attr_reader :options, :commands
+
   def initialize
-    $options = {}
+    @options = {}
     @commands = []
 
     @option_parser = OptionParser.new do |opts|
@@ -26,40 +22,41 @@ class Orc::Util::OptionParser
         "  orc --environment=production --application=MyApp --version=2.21.0 --group=blue --deploy\n"
 
       opts.on('-D', '--debug', 'enable debug mode') do
-        $options[:debug] = true
+        @options[:debug] = true
       end
       opts.on("-e", "--environment ENVIRONMENT", "specify the environment to execute the plan") do |env|
-        $options[:environment] = env
+        @options[:environment] = env
       end
       opts.on("-f", "--promote-from ENVIRONMENT", "specify the environment to promote from") do |env|
-        $options[:promote_from_environment] = env
+        @options[:promote_from_environment] = env
       end
       opts.on("-a", "--application APPLICATION", "specify the application to execute the plan for") do |app|
-        $options[:application] = app
+        @options[:application] = app
       end
       opts.on("-v", "--version VERSION", "") do |version|
-        $options[:version] = version
+        @options[:version] = version
       end
       opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
-        $options[:group] = env
+        @options[:group] = env
       end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
        PromotionRequest, RollingRestartRequest, NeedsStepsToResolve
       ].
       each do |req|
-        req.setup_command_options($options, opts, @commands)
+        req.setup_command_options(@options, opts, @commands)
       end
     end
   end
 
-  def parse
+  def parse(args)
     begin
-      @option_parser.parse! argv
+      @option_parser.parse! args
     rescue Exception => e
-      puts "Option validation failed: #{e}"
-      puts e.backtrace.inspect
-      puts @option_parser.help
+      print "Option validation failed: #{e}\n"
+      print e.backtrace.inspect
+      print "\n\n"
+      print @option_parser.help
       exit(1)
     end
 
@@ -71,27 +68,15 @@ class Orc::Util::OptionParser
       print @option_parser.help
       exit(1)
     end
-    self
-  end
-
-  def execute
-    @commands.each do |command|
-      command.execute(Orc::Factory.new($options))
-    end
   end
 
   private
-
-  # XXX
-  def argv
-    ARGV
-  end
 
   def check_required(command)
     required = command.required
     failed = []
     required.each do |option|
-      failed.push(option) if $options[option].nil?
+      failed.push(option) if @options[option].nil?
     end
     if failed.size > 0
       print "Command #{command.long_command_name} required the following options (not supplied):\n"
@@ -255,7 +240,7 @@ class Orc::Util::OptionParser
       factory.cmdb_git.update
       required_resolutions = factory.engine(:quiet => !@options[:debug]).required_resolutions
 
-      puts required_resolutions.size
+      print "#{required_resolutions.size}\n"
     end
 
     def self.command_options
