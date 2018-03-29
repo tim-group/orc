@@ -6,7 +6,4 @@ module Orc::Exception
 
   class Timeout < Exception
   end
-
-  class CannotRestartUnresolvedGroup < Exception
-  end
 end
