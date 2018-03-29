@@ -12,7 +12,7 @@ class Orc::Model::Application
     instances.select(&:in_pool?)
   end
 
-  def get_proposed_resolutions()
+  def get_proposed_resolutions
     proposed_resolutions = []
     @instances.each do |instance|
       proposed_resolutions << @mismatch_resolver.resolve(instance)
