@@ -1,5 +1,6 @@
 require 'orc/model/group'
 require 'orc/model/namespace'
+require 'set'
 
 class Orc::Model::Instance
   attr_accessor :group
@@ -7,7 +8,7 @@ class Orc::Model::Instance
   attr_accessor :participation
   attr_accessor :version
 
-  def initialize(instance, group, session = [])
+  def initialize(instance, group, session = {})
     @group = group || raise("must pass in a not null group")
     @participation = instance[:participating]
     @version = instance[:version]
@@ -15,6 +16,7 @@ class Orc::Model::Instance
     @healthy = instance[:health] == "healthy" ? true : false
     @stoppable = instance[:stoppable] == "unwise" ? false : true
     @session = session
+    @session[:restarted_instance_keys] = Set[] if @session[:restarted_instance_keys].nil?
   end
 
   def version_mismatch?
@@ -29,11 +31,11 @@ class Orc::Model::Instance
   end
 
   def restarted?
-    @session.include?(key)
+    @session[:restarted_instance_keys].include?(key)
   end
 
   def set_restarted
-    @session.push(key)
+    @session[:restarted_instance_keys].add(key)
   end
 
   def healthy?

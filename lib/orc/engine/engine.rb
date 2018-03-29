@@ -10,7 +10,7 @@ class Orc::Engine::Engine
   end
 
   def resolve
-    session = []
+    session = {}
     @loop_count = 0
     finished = false
     while !finished
@@ -32,8 +32,7 @@ class Orc::Engine::Engine
   end
 
   def required_resolutions
-    session = []
-    application_models = @model_generator.create_live_model(session)
+    application_models = @model_generator.create_live_model({})
     application_models.flat_map { |model| get_usable_resolutions(model) }
   end
 
