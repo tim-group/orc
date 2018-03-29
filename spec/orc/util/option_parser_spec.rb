@@ -1,7 +1,6 @@
 require 'orc/util/option_parser'
 
 describe Orc::Util::OptionParser do
-
   it 'parses options from argv and passes them to option class constructor' do
     parser = Orc::Util::OptionParser.new
     parser.parse(['--environment', 'foo', '--application', 'bar', '-r'])
@@ -80,7 +79,8 @@ describe Orc::Util::OptionParser do
 
   it 'will exit 1 when invalid option provided' do
     begin
-      Orc::Util::OptionParser.new.parse(['--socks', '--environment', 'bar', '--application', 'MyApp', '--group', 'blue'])
+      Orc::Util::OptionParser.new
+        .parse(['--socks', '--environment', 'bar', '--application', 'MyApp', '--group', 'blue'])
     rescue SystemExit => e
       expect(e.status).to eql(1)
     end

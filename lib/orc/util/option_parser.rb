@@ -5,7 +5,6 @@ require 'orc/util/ansi_status_renderer'
 require 'etc'
 
 class Orc::Util::OptionParser
-
   attr_reader :options, :commands
 
   def initialize

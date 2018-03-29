@@ -26,7 +26,6 @@ class Orc::Util::OptionParser::TestOption < Orc::Util::OptionParser::Base
 end
 
 describe Orc::CommandLine do
-
   it 'Can parse and execute fake command' do
     commandline = Orc::CommandLine.new
 
@@ -44,5 +43,4 @@ describe Orc::CommandLine do
     expect(command.options).to eql(:environment => 'foo', :application => 'bar', :version => '2.5')
     expect(command.factory.class.name).to eql('Orc::Factory')
   end
-
 end
