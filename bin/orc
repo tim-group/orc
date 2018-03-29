@@ -4,4 +4,4 @@ $: << '/usr/local/lib/site_ruby/timgroup/'
 
 require 'orc/command_line'
 
-Orc::CommandLine.new.execute(ARGS)
+Orc::CommandLine.new.execute(ARGV)
