@@ -193,7 +193,7 @@ describe Orc::Engine::Engine do
                                                            "a-app" => []
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::GroupMissing)
+    expect { factory.engine.resolve }.to raise_error(Orc::Model::GroupMissing)
   end
 
   it 'does nothing if all groups say they are resolved' do

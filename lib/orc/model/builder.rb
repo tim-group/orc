@@ -2,7 +2,6 @@ require 'orc/model/namespace'
 require 'orc/model/application'
 require 'orc/model/group'
 require 'orc/model/instance'
-require 'orc/exceptions'
 
 class Orc::Model::Builder
   def initialize(args)
@@ -36,7 +35,7 @@ class Orc::Model::Builder
     clusters.map do |name, instances|
       instance_models = instances.map do |instance|
         group = groups[instance[:group]]
-        raise Orc::Exception::GroupMissing.new("#{instance[:group]}") if group.nil?
+        raise Orc::Model::GroupMissing.new("#{instance[:group]}") if group.nil?
         Orc::Model::Instance.new(instance, group, session)
       end
 
