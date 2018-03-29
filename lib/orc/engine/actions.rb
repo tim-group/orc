@@ -140,7 +140,7 @@ module Orc::Engine::Action
       has_waited_for = Time.now.to_i - first_action.start_time
       if has_waited_for > @max_wait
         # FIXME: Should we throw an exception here, or just return false to indicate the action failed?
-        raise Orc::Exception::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for " \
+        raise Orc::Engine::Timeout.new("Timed out after > #{@max_wait}s waiting #{self.class.name} for " \
                                           "#{@instance.group.name} on #{@instance.host}")
       end
       logger.log_action "Waiting: #{self.class.name} for #{@instance.group.name} on #{@instance.host}: " \

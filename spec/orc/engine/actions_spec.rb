@@ -15,10 +15,10 @@ describe Orc::Engine::Action::WaitActionBase do
     i.do_execute([i])
     sleep 1
     i.max_wait = 0
-    expect { i.do_execute([i]) }.to raise_error(Orc::Exception::Timeout)
+    expect { i.do_execute([i]) }.to raise_error(Orc::Engine::Timeout)
     new = Orc::Engine::Action::WaitActionBase.new('fo', instance)
     multi = [i, new]
     new.max_wait = 0
-    expect { new.do_execute(multi) }.to raise_error(Orc::Exception::Timeout)
+    expect { new.do_execute(multi) }.to raise_error(Orc::Engine::Timeout)
   end
 end
