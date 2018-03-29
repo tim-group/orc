@@ -24,7 +24,7 @@ class Orc::Engine::Engine
 
       @loop_count += 1
       if @loop_count > @max_loop
-        raise Orc::Exception::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
+        raise Orc::Engine::FailedToResolve.new("Aborted loop executed #{@loop_count} > #{@max_loop} times")
       end
     end
 
@@ -38,7 +38,7 @@ class Orc::Engine::Engine
   end
 
   def check_rolling_restart_possible
-    raise Orc::Exception::FailedToResolve.new("Rolling restart not possible as unresolved steps") \
+    raise Orc::Engine::FailedToResolve.new("Rolling restart not possible as unresolved steps") \
                                               unless required_resolutions.empty?
   end
 
@@ -65,7 +65,7 @@ class Orc::Engine::Engine
     end
 
     if useable_resolutions.size == 0 && incomplete_resolutions.size > 0
-      raise Orc::Exception::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all " \
+      raise Orc::Engine::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all " \
       "result in invalid state) - manual intervention required")
     end
 
@@ -93,7 +93,7 @@ class Orc::Engine::Engine
     @resolution_steps.push action
     action.check_valid(application_model) # FIXME: This throws if invalid, execute returns false if invalid?
     if !action.execute(@resolution_steps)
-      raise Orc::Exception::FailedToResolve.new("Action #{action.class.name} failed")
+      raise Orc::Engine::FailedToResolve.new("Action #{action.class.name} failed")
     end
   end
 end

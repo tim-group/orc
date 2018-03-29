@@ -1,5 +1,4 @@
 require 'orc/engine/namespace'
-require 'orc/exceptions'
 require 'orc/util/progress_reporter'
 
 module Orc::Engine::Action
@@ -56,7 +55,7 @@ module Orc::Engine::Action
         first_action = all_actions.pop
       end
       if self != first_action
-        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction re-run on same instance multiple times " \
+        raise Orc::Engine::FailedToResolve.new("Action UpdateVersionAction re-run on same instance multiple times " \
                                                   "- instance failing to start.")
       end
       logger.log_action "deploying #{@instance.host} #{@instance.group_name} to version " \
@@ -66,7 +65,7 @@ module Orc::Engine::Action
                                                            @instance.group.target_version)
 
       if !response_received
-        raise Orc::Exception::FailedToResolve.new("Action UpdateVersionAction did not receive a response from " \
+        raise Orc::Engine::FailedToResolve.new("Action UpdateVersionAction did not receive a response from " \
                                                   "#{@instance.host} within the timeout")
       end
 
@@ -103,7 +102,7 @@ module Orc::Engine::Action
     def check_valid(application_model)
       participating_instances = application_model.participating_instances.reject { |instance| instance == @instance }
       if (participating_instances.size == 0)
-        raise Orc::Exception::FailedToResolve.new("Disabling participation for #{@instance.host} " \
+        raise Orc::Engine::FailedToResolve.new("Disabling participation for #{@instance.host} " \
                                                   "#{@instance.group.name} would result in zero participating " \
                                                   "instances - please resolve manually")
       end
@@ -187,7 +186,7 @@ module Orc::Engine::Action
         first_action = all_actions.pop
       end
       if self != first_action
-        raise Orc::Exception::FailedToResolve.new("Action RestartAction re-run on same instance multiple times " \
+        raise Orc::Engine::FailedToResolve.new("Action RestartAction re-run on same instance multiple times " \
                                                   "- instance failing to start.")
       end
       logger.log_action "restarting #{@instance.host} #{@instance.group_name}"
@@ -196,7 +195,7 @@ module Orc::Engine::Action
                                                  [@instance.host])
 
       if !response_received
-        raise Orc::Exception::FailedToResolve.new("Action RestartAction did not receive a response from " \
+        raise Orc::Engine::FailedToResolve.new("Action RestartAction did not receive a response from " \
                                                   "#{@instance.host} within the timeout")
       else
         @instance.set_restarted

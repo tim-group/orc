@@ -21,7 +21,7 @@ describe Orc::Engine::Action::UpdateVersionAction do
 
     update_version_action = Orc::Engine::Action::UpdateVersionAction.new(@remote_client, instance_model)
     allow(@remote_client).to receive(:update_to_version).and_return(false)
-    expect { update_version_action.execute([update_version_action]) }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { update_version_action.execute([update_version_action]) }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   def get_testaction(group_name = 'A')
@@ -52,6 +52,6 @@ describe Orc::Engine::Action::UpdateVersionAction do
   it 'throws an exception if the same action for the same group is run twice' do
     first = get_testaction
     second = get_testaction
-    expect { second.do_execute([first, second]) }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { second.do_execute([first, second]) }.to raise_error(Orc::Engine::FailedToResolve)
   end
 end

@@ -67,7 +67,7 @@ describe Orc::Engine::Engine do
                                                            }]
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   xit 'safely deploys across multiple clusters and app types' do
@@ -109,7 +109,7 @@ describe Orc::Engine::Engine do
                                                            }]
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   it 'safely deploys across multiple clusters and app types' do
@@ -151,7 +151,7 @@ describe Orc::Engine::Engine do
                                                            }]
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   it 'gives sensible error messages when cmdb info is missing' do
@@ -239,7 +239,7 @@ describe Orc::Engine::Engine do
                                                            }]
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   it 'aborts if the same action is attempted twice - ie fails to deploy' do
@@ -259,6 +259,6 @@ describe Orc::Engine::Engine do
                                                            }]
                                                          }))
 
-    expect { factory.engine.resolve }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
 end

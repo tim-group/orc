@@ -31,7 +31,7 @@ describe Orc::Engine::Engine do
                                    }]
                                  }))
 
-    expect { factory.engine.check_rolling_restart_possible }.to raise_error(Orc::Exception::FailedToResolve)
+    expect { factory.engine.check_rolling_restart_possible }.to raise_error(Orc::Engine::FailedToResolve)
   end
 
   it 'halts rolling restart if any individual restart fails' do
