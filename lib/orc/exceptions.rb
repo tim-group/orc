@@ -4,9 +4,6 @@ module Orc::Exception
   class FailedToResolve < Exception
   end
 
-  class FailedToDiscover < Exception
-  end
-
   class GroupMissing < Exception
   end
 

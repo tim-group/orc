@@ -17,7 +17,7 @@ describe Orc::DeployClient do
   it 'handles messages correctly when the agent throws an exception' do
     client = get_client([{ :data => { :status => nil } }])
 
-    expect { client.status }.to raise_error(Orc::Exception::FailedToDiscover)
+    expect { client.status }.to raise_error(Orc::Live::FailedToDiscover)
   end
 
   it 'process status messages from new agents' do

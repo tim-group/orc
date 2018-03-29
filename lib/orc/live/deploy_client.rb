@@ -1,6 +1,5 @@
 require 'mcollective'
 require 'orc/live/namespace'
-require 'orc/exceptions'
 require 'orc/util/progress_reporter'
 
 class MCollective::RPC::DeploytoolWrapper
@@ -84,7 +83,7 @@ class Orc::DeployClient
     if 0 == instances.count
       error = "Did not find any instances of #{@application} in #{@environment}"
       error = "Did not find any instances of #{@application} #{@group} in #{@environment}" unless @group.nil?
-      raise Orc::Exception::FailedToDiscover.new(error)
+      raise Orc::Live::FailedToDiscover.new(error)
     end
 
     instances
