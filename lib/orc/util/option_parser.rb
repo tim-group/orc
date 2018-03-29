@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'orc/namespace'
+require 'orc/util/namespace'
 require 'orc/factory'
 require 'optparse'
 require 'orc/cmdb/git'

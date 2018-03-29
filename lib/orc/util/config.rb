@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/util/namespace'
 require 'yaml'
 
 class Orc::Util::Config

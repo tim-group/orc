@@ -1,3 +1,5 @@
+require 'orc/util/namespace'
+
 class Orc::Util::AnsiStatusRenderer
   def render(statuses)
     buffer = ""

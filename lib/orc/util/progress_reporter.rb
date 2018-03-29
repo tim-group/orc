@@ -1,4 +1,4 @@
-require 'orc/namespace'
+require 'orc/util/namespace'
 
 module Orc::Util::ProgressReporter
   def self.logger
