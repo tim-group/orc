@@ -11,7 +11,6 @@ class Orc::Model::Builder
     @application = args[:application] # || raise('Must pass :application')
     @mismatch_resolver = args[:mismatch_resolver] || raise('Must pass :mismatch resolver')
     @progress_logger = args[:progress_logger] || raise('Must pass :progress_logger')
-    @max_loop = 100
   end
 
   def get_cmdb_groups
@@ -41,8 +40,7 @@ class Orc::Model::Builder
 
       Orc::Model::Application.new(:name => name,
                                   :instances => instance_models.sort_by(&:group_name),
-                                  :mismatch_resolver => @mismatch_resolver,
-                                  :progress_logger => @progress_logger)
+                                  :mismatch_resolver => @mismatch_resolver)
     end
   end
 end

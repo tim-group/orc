@@ -15,7 +15,7 @@ class Orc::Engine::Engine
     finished = false
     while !finished
       application_models = @model_generator.create_live_model(session)
-      all_resolutions = application_models.map { |model| [model, model.get_resolutions] }
+      all_resolutions = application_models.map { |model| [model, get_usable_resolutions(model)] }
 
       finished = all_resolutions.map do |model, resolutions|
         @logger.log("resolving one step for #{model.name}")
@@ -34,7 +34,7 @@ class Orc::Engine::Engine
   def required_resolutions
     session = []
     application_models = @model_generator.create_live_model(session)
-    application_models.flat_map(&:get_resolutions)
+    application_models.flat_map { |model| get_usable_resolutions(model) }
   end
 
   def check_rolling_restart_possible
@@ -43,6 +43,34 @@ class Orc::Engine::Engine
   end
 
   private
+
+  def get_usable_resolutions(application_model)
+    proposed_resolutions = application_model.get_proposed_resolutions
+
+    if @options[:debug]
+      @logger.log("Proposed resolutions:")
+      proposed_resolutions.each { |r| @logger.log("    #{r.class.name} on #{r.host} group #{r.group_name}") }
+    end
+
+    incomplete_resolutions = proposed_resolutions.reject(&:complete?)
+
+    useable_resolutions = incomplete_resolutions.reject do |resolution|
+      reject = true
+      begin
+        resolution.check_valid(application_model)
+        reject = false
+      rescue Exception
+      end
+      reject
+    end
+
+    if useable_resolutions.size == 0 && incomplete_resolutions.size > 0
+      raise Orc::Exception::FailedToResolve.new("Needed actions to resolve, but no actions could be taken (all " \
+      "result in invalid state) - manual intervention required")
+    end
+
+    useable_resolutions
+  end
 
   def resolve_one_step(resolutions, application_model)
     if resolutions.size > 0
