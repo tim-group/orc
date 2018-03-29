@@ -84,7 +84,8 @@ class Orc::Factory
 
     Orc::Engine::Engine.new(
       :model_generator   => model_generator,
-      :log               => logger
+      :log               => logger,
+      :debug             => @debug
     )
   end
 end
