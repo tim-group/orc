@@ -79,8 +79,8 @@ describe Orc::Util::OptionParser do
 
   it 'will exit 1 when invalid option provided' do
     begin
-      Orc::Util::OptionParser.new
-        .parse(['--socks', '--environment', 'bar', '--application', 'MyApp', '--group', 'blue'])
+      parser = Orc::Util::OptionParser.new
+      parser.parse(['--socks', '--environment', 'bar', '--application', 'MyApp', '--group', 'blue'])
     rescue SystemExit => e
       expect(e.status).to eql(1)
     end
