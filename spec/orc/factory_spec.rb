@@ -1,7 +1,7 @@
-require 'orc/config'
+require 'orc/util/config'
 require 'orc/factory'
 
-class Orc::Config
+class Orc::Util::Config
   attr_reader :config_location
 end
 

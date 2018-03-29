@@ -1,5 +1,5 @@
 require 'orc/namespace'
-require 'orc/config'
+require 'orc/util/config'
 require 'orc/model/builder'
 require 'orc/engine/engine'
 require 'orc/engine/mismatch_resolver'
@@ -27,7 +27,7 @@ class Orc::Factory
   end
 
   def config
-    @config ||= Orc::Config.new
+    @config ||= Orc::Util::Config.new
   end
 
   def cmdb

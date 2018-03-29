@@ -1,13 +1,13 @@
-require 'orc/config'
+require 'orc/util/config'
 require 'tmpdir'
 
-class Orc::Config
+class Orc::Util::Config
   attr_reader :config
 end
 
-describe Orc::Config do
+describe Orc::Util::Config do
   it 'can construct and read defaults' do
-    c = Orc::Config.new('/tmp/does_not_exist.yaml')
+    c = Orc::Util::Config.new('/tmp/does_not_exist.yaml')
     expect(c.config).to eql('cmdb_repo_url' => 'git@git:cmdb',
                             'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/")
   end
@@ -24,7 +24,7 @@ describe Orc::Config do
         f.write data.to_yaml
       end
 
-      c = Orc::Config.new(fn)
+      c = Orc::Util::Config.new(fn)
       expect(c['cmdb']).to eql(data['cmdb'])
       expect(c['other']).to eql('stuff')
     end
