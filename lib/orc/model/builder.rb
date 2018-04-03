@@ -26,6 +26,10 @@ class Orc::Model::Builder
 
   def create_live_model(session)
     @progress_logger.log("creating live model")
+
+    session[:cleaning_instance_keys] = Set[] if session[:cleaning_instance_keys].nil?
+    session[:provisioning_instance_keys] = Set[] if session[:provisioning_instance_keys].nil?
+
     groups = get_cmdb_groups
     statuses = @remote_client.status(:application => @application, :environment => @environment)
 
@@ -37,6 +41,17 @@ class Orc::Model::Builder
         raise Orc::Model::GroupMissing.new("#{instance[:group]}") if group.nil?
         Orc::Model::Instance.new(instance, group, session)
       end
+
+      missing_instance_keys = Set[] | session[:cleaning_instance_keys] | session[:provisioning_instance_keys]
+      missing_instance_keys.subtract(instance_models.map(&:key))
+
+      instance_models += missing_instance_keys.map { |key|
+        Orc::Model::Instance.new({
+          :host => key[:host],
+          :participating => false,
+          :missing => true
+        }, groups[key[:group]], session)
+      }
 
       Orc::Model::Application.new(:name => name,
                                   :instances => instance_models.sort_by(&:group_name),

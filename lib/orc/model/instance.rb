@@ -15,8 +15,12 @@ class Orc::Model::Instance
     @host = instance[:host]
     @healthy = instance[:health] == "healthy" ? true : false
     @stoppable = instance[:stoppable] == "unwise" ? false : true
+    @missing = instance[:missing] == true
     @session = session
     @session[:restarted_instance_keys] = Set[] if @session[:restarted_instance_keys].nil?
+    @session[:cleaning_instance_keys] = Set[] if @session[:cleaning_instance_keys].nil?
+    @session[:provisioning_instance_keys] = Set[] if @session[:provisioning_instance_keys].nil?
+    @session[:provisioning_instance_keys].delete(key) unless @missing
   end
 
   def version_mismatch?
@@ -36,6 +40,29 @@ class Orc::Model::Instance
 
   def set_restarted
     @session[:restarted_instance_keys].add(key)
+  end
+
+  def being_cleaned?
+    @session[:cleaning_instance_keys].include?(key)
+  end
+
+  def set_being_cleaned
+    raise "cannot clean an instance that is already absent" if @missing
+    @session[:cleaning_instance_keys].add(key)
+  end
+
+  def being_provisioned?
+    @session[:provisioning_instance_keys].include?(key)
+  end
+
+  def set_being_provisioned
+    raise "cannot provision an instance that is already present" unless @missing
+    @session[:cleaning_instance_keys].delete(key)
+    @session[:provisioning_instance_keys].add(key)
+  end
+
+  def missing?
+    @missing
   end
 
   def healthy?
