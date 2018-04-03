@@ -276,4 +276,25 @@ describe Orc::Engine::MismatchResolver do
 
     expect { resolution.check_valid(mock_appmodel) }.to raise_error(Orc::Engine::FailedToResolve)
   end
+
+  it 'sends provision when should be participating, is participating and has a version mismatch' do
+    instance = Orc::Model::Instance.new(
+      {
+        :participating => false,
+        :version       => "incorrect_version",
+        :health        => "ill",
+        :stoppable     => "safe",
+        :host          => "h1",
+        :missing       => true
+      },
+      @should_be_participating_group,
+      {
+        :cleaning_instance_keys => Set[{:host => "h1", :group => @should_be_participating_group.name}],
+      }
+    )
+
+    mismatch_resolver = Orc::Engine::MismatchResolver.new(nil, nil, true)
+    resolution = mismatch_resolver.resolve(instance)
+    expect(resolution.class).to eql(Orc::Engine::Action::ProvisionInstanceAction)
+  end
 end

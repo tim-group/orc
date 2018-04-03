@@ -52,6 +52,18 @@ class Orc::Engine::LiveChangeResolver
               :is_healthy         => false
             }, 'WaitForHealthyAction')
     in_case({
+              :is_being_cleaned => true,
+              :is_missing       => false,
+            }, 'WaitForCleanAction')
+    in_case({
+              :is_being_cleaned => true,
+              :is_missing       => true,
+            }, 'ProvisionInstanceAction')
+    in_case({
+              :is_being_provisioned => true,
+              :is_missing           => true,
+            }, 'WaitForProvisionAction')
+    in_case({
               :should_participate => false,
               :does_participate   => true
             }, 'DisableParticipationAction')
@@ -59,11 +71,14 @@ class Orc::Engine::LiveChangeResolver
 
   def resolve(instance)
     get_case(
-      :should_participate => instance.group.target_participation,
-      :does_participate   => instance.participation,
-      :change_required    => @change_required_check.call(instance),
-      :is_healthy         => instance.healthy?,
-      :is_drained         => instance.stoppable? # FIXME: should come from model of LB connections instead?
+      :should_participate   => instance.group.target_participation,
+      :does_participate     => instance.participation,
+      :change_required      => @change_required_check.call(instance),
+      :is_being_cleaned     => instance.being_cleaned?,
+      :is_being_provisioned => instance.being_provisioned?,
+      :is_missing           => instance.missing?,
+      :is_healthy           => instance.healthy?,
+      :is_drained           => instance.stoppable? # FIXME: should come from model of LB connections instead?
     ).call(instance)
   end
 
@@ -74,6 +89,9 @@ class Orc::Engine::LiveChangeResolver
       :should_participate,
       :does_participate,
       :change_required,
+      :is_being_cleaned,
+      :is_being_provisioned,
+      :is_missing,
       :is_healthy,
       :is_drained
     ].each do |k|

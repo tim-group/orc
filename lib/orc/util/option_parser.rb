@@ -38,6 +38,9 @@ class Orc::Util::OptionParser
       opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
         @options[:group] = env
       end
+      opts.on('-c', '--clean-instances', 'when resolving, clean and reprovision instances rather than upgrading in situ') do
+        @options[:reprovision] = true
+      end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
        PromotionRequest, RollingRestartRequest, NeedsStepsToResolve

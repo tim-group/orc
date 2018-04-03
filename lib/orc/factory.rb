@@ -24,6 +24,7 @@ class Orc::Factory
     @cmdb = dependencies[:cmdb]
     @remote_client = dependencies[:remote_client]
     @debug = options[:debug]
+    @reprovision = options[:reprovision]
   end
 
   def config
@@ -65,7 +66,7 @@ class Orc::Factory
   end
 
   def engine(quiet = false)
-    mismatch_resolver = Orc::Engine::MismatchResolver.new(remote_client, @timeout)
+    mismatch_resolver = Orc::Engine::MismatchResolver.new(remote_client, @timeout, @reprovision)
     engine_for_resolver(mismatch_resolver, quiet)
   end
 

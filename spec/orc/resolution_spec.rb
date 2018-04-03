@@ -261,4 +261,40 @@ describe Orc::Engine::Engine do
 
     expect { factory.engine.resolve }.to raise_error(Orc::Engine::FailedToResolve)
   end
+
+  it 'vanilla pass through with reprovision' do
+    factory = Orc::Factory.new({ :environment => "a", :application => "app", :timeout => 0, :reprovision => true },
+                               :remote_client => FakeRemoteClient.new(:instances => [
+                                 { :group => "blue",
+                                   :host => "h1",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy",
+                                   :stoppable     => "safe" },
+                                 { :group => "blue",
+                                   :host => "h2",
+                                   :version => "2.2",
+                                   :application => "app",
+                                   :participating => true,
+                                   :health        => "healthy",
+                                   :stoppable     => "safe" }]),
+                               :cmdb => InMemoryCmdb.new(
+                                 :groups => {
+                                   "a-app" => [{
+                                     :name => "blue",
+                                     :target_participation => true,
+                                     :target_version => "5"
+                                   }]
+                                 }))
+
+    expect(factory.engine.resolve).to eq ['DisableParticipationAction: on h1 blue',
+                                          'CleanInstanceAction: on h1 blue',
+                                          'ProvisionInstanceAction: on h1 blue',
+                                          'EnableParticipationAction: on h1 blue',
+                                          'DisableParticipationAction: on h2 blue',
+                                          'CleanInstanceAction: on h2 blue',
+                                          'ProvisionInstanceAction: on h2 blue',
+                                          'EnableParticipationAction: on h2 blue']
+  end
 end

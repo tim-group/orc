@@ -133,6 +133,14 @@ class Orc::DeployClient
     false
   end
 
+  def clean_instance(host)
+    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' clean")
+  end
+
+  def provision_instance(host)
+    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' provision")
+  end
+
   private
 
   def log_response(resp)

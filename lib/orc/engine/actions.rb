@@ -94,6 +94,42 @@ module Orc::Engine::Action
     end
   end
 
+  class ProvisionInstanceAction < Base
+    def default_timeout
+      10
+    end
+
+    def do_execute(_all_actions)
+      logger.log_action "provisioning #{@instance.host}"
+      @instance.set_being_provisioned
+      successful = @remote_client.provision_instance(@instance.host)
+      sleep(@timeout)
+      successful
+    end
+
+    def precedence
+      1
+    end
+  end
+
+  class CleanInstanceAction < Base
+    def default_timeout
+      10
+    end
+
+    def do_execute(_all_actions)
+      logger.log_action "cleaning #{@instance.host}"
+      @instance.set_being_cleaned
+      successful = @remote_client.clean_instance(@instance.host)
+      sleep(@timeout)
+      successful
+    end
+
+    def precedence
+      3
+    end
+  end
+
   class DisableParticipationAction < Base
     def default_timeout
       10
@@ -156,6 +192,12 @@ module Orc::Engine::Action
   end
 
   class WaitForDrainedAction < WaitActionBase
+  end
+
+  class WaitForCleanAction < WaitActionBase
+  end
+
+  class WaitForProvisionAction < WaitActionBase
   end
 
   class ResolvedCompleteAction < Base

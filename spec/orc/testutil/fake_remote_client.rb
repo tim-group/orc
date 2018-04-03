@@ -7,15 +7,18 @@ class FakeRemoteClient
         :version => "2.2",
         :application => "app",
         :participating => true,
-        :health        => "healthy" },
+        :health        => "healthy",
+        :stoppable     => "safe" },
       { :group => "blue",
         :host => "h2",
         :version => "2.2",
         :application => "app",
         :participating => true,
-        :health        => "healthy" }
+        :health        => "healthy",
+        :stoppable     => "safe" }
     ] if @instances.nil?
 
+    @cleaned_instances = {}
     @fail_to_deploy = opts[:fail_to_deploy]
   end
 
@@ -52,6 +55,18 @@ class FakeRemoteClient
         instance
       end
     end
+  end
+
+  def clean_instance(host)
+    @cleaned_instances[host] = @instances.detect { |instance| instance[:host] == host }
+    @instances.delete_if { |instance| instance[:host] == host }
+  end
+
+  def provision_instance(host)
+    provisioned_instance = @cleaned_instances[host]
+    @cleaned_instances.delete(host)
+    provisioned_instance[:version] = "5"
+    @instances.push(provisioned_instance)
   end
 
   def status(_spec)
