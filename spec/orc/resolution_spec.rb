@@ -11,13 +11,15 @@ describe Orc::Engine::Engine do
                                    :version => "2.2",
                                    :application => "app",
                                    :participating => true,
-                                   :health        => "healthy" },
+                                   :health        => "healthy",
+                                   :stoppable     => "unwise" },
                                  { :group => "blue",
                                    :host => "h2",
                                    :version => "2.2",
                                    :application => "app",
                                    :participating => true,
-                                   :health        => "healthy" }]),
+                                   :health        => "healthy",
+                                   :stoppable     => "unwise" }]),
                                :cmdb => InMemoryCmdb.new(
                                  :groups => {
                                    "a-app" => [{
@@ -28,10 +30,14 @@ describe Orc::Engine::Engine do
                                  }))
 
     expect(factory.engine.resolve).to eq ['DisableParticipationAction: on h1 blue',
+                                          'WaitForDrainedAction: on h1 blue',
                                           'UpdateVersionAction: on h1 blue',
+                                          'WaitForHealthyAction: on h1 blue',
                                           'EnableParticipationAction: on h1 blue',
                                           'DisableParticipationAction: on h2 blue',
+                                          'WaitForDrainedAction: on h2 blue',
                                           'UpdateVersionAction: on h2 blue',
+                                          'WaitForHealthyAction: on h2 blue',
                                           'EnableParticipationAction: on h2 blue']
   end
 
@@ -271,14 +277,14 @@ describe Orc::Engine::Engine do
                                    :application => "app",
                                    :participating => true,
                                    :health        => "healthy",
-                                   :stoppable     => "safe" },
+                                   :stoppable     => "unwise" },
                                  { :group => "blue",
                                    :host => "h2",
                                    :version => "2.2",
                                    :application => "app",
                                    :participating => true,
                                    :health        => "healthy",
-                                   :stoppable     => "safe" }]),
+                                   :stoppable     => "unwise" }]),
                                :cmdb => InMemoryCmdb.new(
                                  :groups => {
                                    "a-app" => [{
@@ -289,12 +295,20 @@ describe Orc::Engine::Engine do
                                  }))
 
     expect(factory.engine.resolve).to eq ['DisableParticipationAction: on h1 blue',
+                                          'WaitForDrainedAction: on h1 blue',
                                           'CleanInstanceAction: on h1 blue',
+                                          'WaitForCleanAction: on h1 blue',
                                           'ProvisionInstanceAction: on h1 blue',
+                                          'WaitForProvisionAction: on h1 blue',
+                                          'WaitForHealthyAction: on h1 blue',
                                           'EnableParticipationAction: on h1 blue',
                                           'DisableParticipationAction: on h2 blue',
+                                          'WaitForDrainedAction: on h2 blue',
                                           'CleanInstanceAction: on h2 blue',
+                                          'WaitForCleanAction: on h2 blue',
                                           'ProvisionInstanceAction: on h2 blue',
+                                          'WaitForProvisionAction: on h2 blue',
+                                          'WaitForHealthyAction: on h2 blue',
                                           'EnableParticipationAction: on h2 blue']
   end
 end
