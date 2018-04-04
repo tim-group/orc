@@ -45,13 +45,16 @@ class Orc::Model::Builder
       missing_instance_keys = Set[] | session[:cleaning_instance_keys] | session[:provisioning_instance_keys]
       missing_instance_keys.subtract(instance_models.map(&:key))
 
-      instance_models += missing_instance_keys.map { |key|
-        Orc::Model::Instance.new({
-          :host => key[:host],
-          :participating => false,
-          :missing => true
-        }, groups[key[:group]], session)
-      }
+      instance_models += missing_instance_keys.map do |key|
+        Orc::Model::Instance.new(
+          {
+            :host => key[:host],
+            :participating => false,
+            :missing => true
+          },
+          groups[key[:group]],
+          session)
+      end
 
       Orc::Model::Application.new(:name => name,
                                   :instances => instance_models.sort_by(&:group_name),

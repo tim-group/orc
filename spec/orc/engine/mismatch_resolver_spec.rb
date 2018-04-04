@@ -288,9 +288,7 @@ describe Orc::Engine::MismatchResolver do
         :missing       => true
       },
       @should_be_participating_group,
-      {
-        :cleaning_instance_keys => Set[{:host => "h1", :group => @should_be_participating_group.name}],
-      }
+      :cleaning_instance_keys => Set[{ :host => "h1", :group => @should_be_participating_group.name }]
     )
 
     mismatch_resolver = Orc::Engine::MismatchResolver.new(nil, nil, true)

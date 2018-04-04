@@ -2,6 +2,7 @@ require 'orc/engine/namespace'
 require 'orc/engine/actions'
 
 class Orc::Engine::LiveChangeResolver
+  # rubocop:disable MethodLength
   def initialize(change_action_name, change_required_check, remote_client, timeout = nil)
     @change_required_check = change_required_check
     @remote_client = remote_client
@@ -53,21 +54,22 @@ class Orc::Engine::LiveChangeResolver
             }, 'WaitForHealthyAction')
     in_case({
               :is_being_cleaned => true,
-              :is_missing       => false,
+              :is_missing       => false
             }, 'WaitForCleanAction')
     in_case({
               :is_being_cleaned => true,
-              :is_missing       => true,
+              :is_missing       => true
             }, 'ProvisionInstanceAction')
     in_case({
               :is_being_provisioned => true,
-              :is_missing           => true,
+              :is_missing           => true
             }, 'WaitForProvisionAction')
     in_case({
               :should_participate => false,
               :does_participate   => true
             }, 'DisableParticipationAction')
   end
+  # rubocop:enable MethodLength
 
   def resolve(instance)
     get_case(

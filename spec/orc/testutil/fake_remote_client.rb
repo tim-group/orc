@@ -30,9 +30,9 @@ class FakeRemoteClient
       if (instance[:host] == hosts[0])
         instance[:version] = target_version
         instance[:health] = 'ill'
-        @delayed_effects.push({:delay => 1, :mutator => Proc.new do |instances|
+        @delayed_effects.push(:delay => 1, :mutator => Proc.new do |instances|
           instances.detect { |i| i[:host] == hosts[0] }[:health] = 'healthy'
-        end})
+        end)
         instance
       else
         instance
@@ -44,9 +44,9 @@ class FakeRemoteClient
     @instances = @instances.map do |instance|
       if (instance[:host] == hosts[0])
         instance[:participating] = false
-        @delayed_effects.push({:delay => 1, :mutator => Proc.new do |instances|
+        @delayed_effects.push(:delay => 1, :mutator => Proc.new do |instances|
           instances.detect { |i| i[:host] == hosts[0] }[:stoppable] = 'safe'
-        end})
+        end)
         instance
       else
         instance
@@ -66,31 +66,31 @@ class FakeRemoteClient
   end
 
   def clean_instance(host)
-    @delayed_effects.push({:delay => 0, :mutator => Proc.new do |instances|
+    @delayed_effects.push(:delay => 0, :mutator => Proc.new do |instances|
       @cleaned_instances[host] = instances.detect { |instance| instance[:host] == host }
       instances.delete_if { |instance| instance[:host] == host }
-    end})
+    end)
   end
 
   def provision_instance(host)
-    @delayed_effects.push({:delay => 0, :mutator => Proc.new do |instances|
+    @delayed_effects.push(:delay => 0, :mutator => Proc.new do |instances|
       provisioned_instance = @cleaned_instances[host]
       @cleaned_instances.delete(host)
       provisioned_instance[:version] = "5"
       provisioned_instance[:health] = "ill"
       instances.push(provisioned_instance)
-    end})
-    @delayed_effects.push({:delay => 2, :mutator => Proc.new do |instances|
+    end)
+    @delayed_effects.push(:delay => 2, :mutator => Proc.new do |instances|
       instances.detect { |instance| instance[:host] == host }[:health] = 'healthy'
-    end})
+    end)
   end
 
   def status(_spec)
     result = @instances.clone
-    @delayed_effects.each { |effect|
+    @delayed_effects.each do |effect|
       effect[:mutator].call(@instances) if effect[:delay] == 0
       effect[:delay] -= 1
-    }
+    end
     @delayed_effects.delete_if { |e| e[:delay] < 0 }
     result
   end
