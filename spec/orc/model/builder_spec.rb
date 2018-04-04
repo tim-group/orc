@@ -29,7 +29,7 @@ describe Orc::Model::Builder do
         }]
       }),
     :mismatch_resolver => {},
-    :progress_logger => Orc::Util::ProgressReporter::NullLogger.new )
+    :progress_logger => Orc::Util::ProgressReporter::NullLogger.new)
 
   builder_with_missing_instance = Orc::Model::Builder.new(
     :environment => "a",
@@ -50,13 +50,13 @@ describe Orc::Model::Builder do
         }]
       }),
     :mismatch_resolver => {},
-    :progress_logger => Orc::Util::ProgressReporter::NullLogger.new )
+    :progress_logger => Orc::Util::ProgressReporter::NullLogger.new)
 
   it 'supports a vanilla pass through' do
     session = {}
 
     model = builder.create_live_model(session)[0]
-    expect(model.instances.length).to eq (2)
+    expect(model.instances.length).to eq 2
     instance = model.instances.detect { |i| i.host == "h1" }
     expect(instance.missing?).to be false
     expect(instance.being_cleaned?).to be false
@@ -65,13 +65,14 @@ describe Orc::Model::Builder do
     instance.set_being_cleaned
 
     model = builder.create_live_model(session)[0]
+    expect(model.instances.size).to eq 2
     instance = model.instances.detect { |i| i.host == "h1" }
     expect(instance.missing?).to be false
     expect(instance.being_cleaned?).to be true
     expect(instance.being_provisioned?).to be false
 
     model = builder_with_missing_instance.create_live_model(session)[0]
-    expect(model.instances.size).to eq (2)
+    expect(model.instances.size).to eq 2
     instance = model.instances.detect { |i| i.host == "h1" }
     expect(instance.missing?).to be true
     expect(instance.being_cleaned?).to be true
@@ -80,14 +81,14 @@ describe Orc::Model::Builder do
     instance.set_being_provisioned
 
     model = builder_with_missing_instance.create_live_model(session)[0]
-    expect(model.instances.size).to eq (2)
+    expect(model.instances.size).to eq 2
     instance = model.instances.detect { |i| i.host == "h1" }
     expect(instance.missing?).to be true
     expect(instance.being_cleaned?).to be false
     expect(instance.being_provisioned?).to be true
 
     model = builder.create_live_model(session)[0]
-    expect(model.instances.size).to eq (2)
+    expect(model.instances.size).to eq 2
     instance = model.instances.detect { |i| i.host == "h1" }
     expect(instance.missing?).to be false
     expect(instance.being_cleaned?).to be false
