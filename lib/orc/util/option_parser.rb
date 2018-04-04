@@ -38,7 +38,7 @@ class Orc::Util::OptionParser
       opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
         @options[:group] = env
       end
-      opts.on('-c', '--clean-instances', 'when resolving, reprovision instances rather than upgrading in situ') do
+      opts.on('-C', '--clean-instances', 'when resolving, reprovision instances rather than upgrading in situ') do
         @options[:reprovision] = true
       end
 
