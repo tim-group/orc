@@ -27,37 +27,37 @@ class Orc::Model::Builder
   def create_live_model(session)
     @progress_logger.log("creating live model")
 
+    session[:instance_data] = {} if session[:instance_data].nil?
     session[:cleaning_instance_keys] = Set[] if session[:cleaning_instance_keys].nil?
     session[:provisioning_instance_keys] = Set[] if session[:provisioning_instance_keys].nil?
 
+    missing_instance_keys = Set[] | session[:cleaning_instance_keys] | session[:provisioning_instance_keys]
+
     groups = get_cmdb_groups
-    statuses = @remote_client.status(:application => @application, :environment => @environment)
+    statuses = @remote_client.status(
+      { :application => @application, :environment => @environment },
+      !missing_instance_keys.empty?)
 
-    clusters = statuses.group_by { |instance| "#{instance[:cluster] || 'default'}:#{instance[:application]}" }
+    instances = statuses.map do |instance_data|
+      group = groups[instance_data[:group]]
+      raise Orc::Model::GroupMissing.new("#{instance_data[:group]}") if group.nil?
+      instance = Orc::Model::Instance.new(instance_data, group, session)
+      session[:instance_data][instance.key] = instance_data
+      instance
+    end
 
-    clusters.map do |name, instances|
-      instance_models = instances.map do |instance|
-        group = groups[instance[:group]]
-        raise Orc::Model::GroupMissing.new("#{instance[:group]}") if group.nil?
-        Orc::Model::Instance.new(instance, group, session)
-      end
+    missing_instance_keys.subtract(instances.map(&:key))
+    instances += missing_instance_keys.map do |key|
+      instance_data = session[:instance_data][key].clone
+      instance_data[:participating] = false
+      instance_data[:missing] = true
+      instance_data[:health] = 'ill'
+      Orc::Model::Instance.new(instance_data, groups[key[:group]], session)
+    end
 
-      missing_instance_keys = Set[] | session[:cleaning_instance_keys] | session[:provisioning_instance_keys]
-      missing_instance_keys.subtract(instance_models.map(&:key))
-
-      instance_models += missing_instance_keys.map do |key|
-        Orc::Model::Instance.new(
-          {
-            :host => key[:host],
-            :participating => false,
-            :missing => true
-          },
-          groups[key[:group]],
-          session)
-      end
-
-      Orc::Model::Application.new(:name => name,
-                                  :instances => instance_models.sort_by(&:group_name),
+    instances.group_by(&:cluster).map do |cluster_name, cluster_instances|
+      Orc::Model::Application.new(:name => cluster_name,
+                                  :instances => cluster_instances.sort_by(&:group_name),
                                   :mismatch_resolver => @mismatch_resolver)
     end
   end

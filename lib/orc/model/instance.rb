@@ -7,6 +7,7 @@ class Orc::Model::Instance
   attr_accessor :host
   attr_accessor :participation
   attr_accessor :version
+  attr_accessor :cluster
 
   def initialize(instance, group, session = {})
     @group = group || raise("must pass in a not null group")
@@ -16,6 +17,7 @@ class Orc::Model::Instance
     @healthy = instance[:health] == "healthy" ? true : false
     @stoppable = instance[:stoppable] == "unwise" ? false : true
     @missing = instance[:missing] == true
+    @cluster = "#{instance[:cluster] || 'default'}:#{instance[:application]}"
     @session = session
     @session[:restarted_instance_keys] = Set[] if @session[:restarted_instance_keys].nil?
     @session[:cleaning_instance_keys] = Set[] if @session[:cleaning_instance_keys].nil?

@@ -1,3 +1,5 @@
+require 'orc/live/namespace'
+
 class FakeRemoteClient
   def initialize(opts)
     @instances = opts[:instances]
@@ -85,8 +87,10 @@ class FakeRemoteClient
     end)
   end
 
-  def status(_spec)
+  def status(_spec, allow_empty = false)
     result = @instances.clone
+    raise Orc::Live::FailedToDiscover.new("no instances found") if result.empty? && !allow_empty
+
     @delayed_effects.each do |effect|
       effect[:mutator].call(@instances) if effect[:delay] == 0
       effect[:delay] -= 1

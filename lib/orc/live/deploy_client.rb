@@ -57,7 +57,7 @@ class Orc::DeployClient
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @mco_options)
   end
 
-  def status(spec = {})
+  def status(spec = {}, allow_none = false)
     instances = []
 
     spec[:application] = @application if !@application.nil?
@@ -80,7 +80,7 @@ class Orc::DeployClient
       end
     end
 
-    if 0 == instances.count
+    if 0 == instances.count && !allow_none
       error = "Did not find any instances of #{@application} in #{@environment}"
       error = "Did not find any instances of #{@application} #{@group} in #{@environment}" unless @group.nil?
       raise Orc::Live::FailedToDiscover.new(error)
