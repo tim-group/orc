@@ -141,6 +141,10 @@ class Orc::DeployClient
     system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' provision")
   end
 
+  def reprovision_instance(host)
+    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' reprovision")
+  end
+
   private
 
   def log_response(resp)

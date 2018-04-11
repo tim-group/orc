@@ -102,7 +102,7 @@ module Orc::Engine::Action
     def do_execute(_all_actions)
       logger.log_action "provisioning #{@instance.host}"
       @instance.set_being_provisioned
-      successful = @remote_client.provision_instance(@instance.host)
+      successful = @remote_client.reprovision_instance(@instance.host)
       sleep(@timeout)
       successful
     end

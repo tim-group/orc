@@ -69,8 +69,10 @@ class FakeRemoteClient
 
   def clean_instance(host)
     @delayed_effects.push(:delay => 0, :mutator => Proc.new do |instances|
-      @cleaned_instances[host] = instances.detect { |instance| instance[:host] == host }
-      instances.delete_if { |instance| instance[:host] == host }
+      unless @cleaned_instances[host]
+        @cleaned_instances[host] = instances.detect { |instance| instance[:host] == host }
+        instances.delete_if { |instance| instance[:host] == host }
+      end
     end)
   end
 
@@ -85,6 +87,11 @@ class FakeRemoteClient
     @delayed_effects.push(:delay => 2, :mutator => Proc.new do |instances|
       instances.detect { |instance| instance[:host] == host }[:health] = 'healthy'
     end)
+  end
+
+  def reprovision_instance(host)
+    clean_instance(host)
+    provision_instance(host)
   end
 
   def status(_spec, allow_empty = false)
