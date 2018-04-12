@@ -52,6 +52,7 @@ class Orc::DeployClient
     @environment = args[:environment]
     @application = args[:application]
     @group = args[:group]
+    @debug = args[:debug]
     @mco_options[:config] = args[:config] if !args[:config].nil?
     @mco_options[:verbose] = true
     @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @mco_options)
@@ -134,18 +135,23 @@ class Orc::DeployClient
   end
 
   def clean_instance(host)
-    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' clean")
+    stacks(host, 'clean')
   end
 
   def provision_instance(host)
-    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' provision")
+    stacks(host, 'provision')
   end
 
   def reprovision_instance(host)
-    system("stacks --checkout-config --environment '#{@environment}' --stack '#{host}' reprovision")
+    stacks(host, 'reprovision')
   end
 
   private
+
+  def stacks(stack, command)
+    verbosity = @debug ? '-vv' : ''
+    system("stacks #{verbosity} --checkout-config --environment '#{@environment}' --stack '#{stack}' #{command}")
+  end
 
   def log_response(resp)
     data  = resp[:data]

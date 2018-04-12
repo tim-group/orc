@@ -39,7 +39,8 @@ class Orc::Factory
     @remote_client ||= Orc::DeployClient.new(
       :environment => environment,
       :application => application,
-      :group       => group
+      :group       => group,
+      :debug       => @debug
     )
   end
 
