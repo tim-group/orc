@@ -8,10 +8,10 @@ class Orc::Engine::RestartResolver
       !instance.restarted?
     end
     @resolver = Orc::Engine::LiveChangeResolver.new(
-        reprovision ? 'CleanInstanceAction' : 'RestartAction',
-        change_required_check,
-        remote_client,
-        timeout
+      reprovision ? 'CleanInstanceAction' : 'RestartAction',
+      change_required_check,
+      remote_client,
+      timeout
     )
   end
 

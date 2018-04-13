@@ -7,7 +7,7 @@ require 'orc/cmdb/namespace'
 module Git
   class Lib
     ls_files_orig = instance_method(:ls_files)
-    define_method(:ls_files) { |location = '.'| ls_files_orig.bind(self).(location) }
+    define_method(:ls_files) { |location = '.'| ls_files_orig.bind(self).call(location) }
   end
 end
 
