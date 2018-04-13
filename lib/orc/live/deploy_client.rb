@@ -5,67 +5,72 @@ require 'orc/util/progress_reporter'
 class MCollective::RPC::DeploytoolWrapper
   include MCollective::RPC
 
-  def initialize(environment, options)
+  def initialize(environment)
     @environment = environment
-    @mco_options = options
   end
 
-  def status(spec)
+  def status(spec, maybe_offline_hosts = [])
     spec[:environment] = @environment if spec[:environment].nil?
-    get_client(spec[:environment], spec[:application], spec[:group]).status(:spec => spec)
+    expected_hosts = discover_hosts(spec[:environment], spec[:application], spec[:group]) - maybe_offline_hosts
+
+    expected_host_statuses = custom_request("status", { :spec => spec }, expected_hosts)
+    missing_host_statuses = custom_request("status", { :spec => spec }, maybe_offline_hosts, 10)
+
+    expected_host_statuses + missing_host_statuses
   end
 
-  def custom_request(action, request, hosts, identity_hash)
-    get_client.custom_request(action, request, hosts, identity_hash)
+  def custom_request(action, request, hosts, timeout = 200)
+    get_client(timeout).custom_request(action, request, hosts, 'agent' => 'deployapp')
   end
 
   private
 
-  def get_client(environment = nil, application = nil, group = nil)
+  def discover_hosts(environment = nil, application = nil, group = nil)
     begin # FIXME: Occasionally this dies with Marshal errors, just retry once..
-      mc = rpcclient("deployapp", :options => @mco_options)
-      mc.fact_filter "logicalenv", environment unless environment.nil?
-      mc.fact_filter "application", application unless application.nil?
-      mc.fact_filter "group", group unless group.nil?
-      mc.discover :verbose => false
+      attempt_discovery(environment, application, group)
     rescue
-      mc = rpcclient("deployapp", :options => @mco_options)
-      mc.fact_filter "logicalenv", environment unless environment.nil?
-      mc.fact_filter "application", application unless application.nil?
-      mc.fact_filter "group", group unless group.nil?
-      mc.discover :verbose => false
+      attempt_discovery(environment, application, group)
     end
+  end
+
+  def attempt_discovery(environment = nil, application = nil, group = nil)
+    mc = rpcclient("deployapp", :options => MCollective::Util.default_options)
+    mc.fact_filter "logicalenv", environment unless environment.nil?
+    mc.fact_filter "application", application unless application.nil?
+    mc.fact_filter "group", group unless group.nil?
+    mc.discover(:verbose => false).sort
+  end
+
+  def get_client(timeout)
+    mco_options = MCollective::Util.default_options
+    mco_options[:timeout] = timeout if timeout
+    mco_options[:verbose] = true
+    mc = rpcclient("deployapp", :options => mco_options)
     mc.progress = false
-    mc.verbose  = true
+    mc.verbose = true
     mc
   end
 end
 
 class Orc::DeployClient
-  include MCollective::RPC
 
   def initialize(args)
     @logger = args[:log] || ::Orc::Util::ProgressReporter::Logger.new
-    @mco_options = MCollective::Util.default_options
-    @mco_options[:timeout] = 200
-
     @environment = args[:environment]
     @application = args[:application]
     @group = args[:group]
     @debug = args[:debug]
-    @mco_options[:config] = args[:config] if !args[:config].nil?
-    @mco_options[:verbose] = true
-    @mcollective_client = args[:mcollective_client] || DeploytoolWrapper.new(@environment, @mco_options)
+    @mcollective_client = args[:mcollective_client] || MCollective::RPC::DeploytoolWrapper.new(@environment)
   end
 
-  def status(spec = {}, allow_none = false)
+  def status(spec = {}, maybe_offline_hosts = [])
     instances = []
 
     spec[:application] = @application if !@application.nil?
     spec[:group] = @group if !@group.nil?
 
-    @mcollective_client.status(spec).each do |resp|
-      data  = resp[:data]
+    @mcollective_client.status(spec, maybe_offline_hosts).each do |resp|
+      data = resp[:data]
 
       if data.is_a?(Hash) && data.has_key?(:statuses)
         raw_instances = data[:statuses]
@@ -81,7 +86,7 @@ class Orc::DeployClient
       end
     end
 
-    if 0 == instances.count && !allow_none
+    if instances.empty? && maybe_offline_hosts.empty?
       error = "Did not find any instances of #{@application} in #{@environment}"
       error = "Did not find any instances of #{@application} #{@group} in #{@environment}" unless @group.nil?
       raise Orc::Live::FailedToDiscover.new(error)
@@ -94,8 +99,7 @@ class Orc::DeployClient
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts[0],
-                                       "identity" => hosts[0]).each do |resp|
+    @mcollective_client.custom_request("update_to_version", { :spec => spec, :version => version }, hosts).each do |resp|
       log_response(resp)
       return resp[:data][:successful]
     end
@@ -106,8 +110,7 @@ class Orc::DeployClient
   def enable_participation(spec, hosts)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts[0],
-                                       "identity" => hosts[0]).each do |resp|
+    @mcollective_client.custom_request("enable_participation", { :spec => spec }, hosts).each do |resp|
       log_response(resp)
     end
   end
@@ -116,8 +119,7 @@ class Orc::DeployClient
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
 
-    @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts[0],
-                                       "identity" => hosts[0]).each do |resp|
+    @mcollective_client.custom_request("disable_participation", { :spec => spec }, hosts).each do |resp|
       log_response(resp)
     end
   end
@@ -125,8 +127,7 @@ class Orc::DeployClient
   def restart(spec, hosts)
     spec[:environment] = @environment
     spec[:application] = @application if spec[:application].nil?
-    @mcollective_client.custom_request("restart", { :spec => spec }, hosts[0],
-                                       "identity" => hosts[0]).each do |resp|
+    @mcollective_client.custom_request("restart", { :spec => spec }, hosts).each do |resp|
       log_response(resp)
       return resp[:data][:successful]
     end

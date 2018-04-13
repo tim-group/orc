@@ -36,7 +36,7 @@ class Orc::Model::Builder
     groups = get_cmdb_groups
     statuses = @remote_client.status(
       { :application => @application, :environment => @environment },
-      !missing_instance_keys.empty?)
+      missing_instance_keys.map { |key| key[:host] })
 
     instances = statuses.map do |instance_data|
       group = groups[instance_data[:group]]

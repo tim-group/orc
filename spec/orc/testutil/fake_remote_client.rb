@@ -94,9 +94,9 @@ class FakeRemoteClient
     provision_instance(host)
   end
 
-  def status(_spec, allow_empty = false)
+  def status(_spec, maybe_offline_hosts = [])
     result = @instances.clone
-    raise Orc::Live::FailedToDiscover.new("no instances found") if result.empty? && !allow_empty
+    raise Orc::Live::FailedToDiscover.new("no instances found") if result.empty? && missing_hosts.empty?
 
     @delayed_effects.each do |effect|
       effect[:mutator].call(@instances) if effect[:delay] == 0
