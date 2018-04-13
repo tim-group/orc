@@ -94,7 +94,7 @@ class FakeRemoteClient
     provision_instance(host)
   end
 
-  def status(_spec, maybe_offline_hosts = [])
+  def status(*)
     result = @instances.clone
     raise Orc::Live::FailedToDiscover.new("no instances found") if result.empty? && missing_hosts.empty?
 
