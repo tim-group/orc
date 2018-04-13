@@ -3,6 +3,14 @@ require 'logger'
 require 'timeout'
 require 'orc/cmdb/namespace'
 
+# XXX Monkey patch ruby-git until https://github.com/ruby-git/ruby-git/pull/320 is fixed
+module Git
+  class Lib
+    ls_files_orig = instance_method(:ls_files)
+    define_method(:ls_files) { |location = '.'| ls_files_orig.bind(self).(location) }
+  end
+end
+
 class Orc::CMDB::Git
   attr_accessor :local_path
 
