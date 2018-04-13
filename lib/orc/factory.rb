@@ -62,7 +62,7 @@ class Orc::Factory
   end
 
   def restart_engine
-    resolver = Orc::Engine::RestartResolver.new(remote_client, @timeout)
+    resolver = Orc::Engine::RestartResolver.new(remote_client, @timeout, @reprovision)
     engine_for_resolver(resolver, :quiet => false)
   end
 

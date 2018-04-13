@@ -22,7 +22,11 @@ class Orc::Model::Instance
     @session[:restarted_instance_keys] = Set[] if @session[:restarted_instance_keys].nil?
     @session[:cleaning_instance_keys] = Set[] if @session[:cleaning_instance_keys].nil?
     @session[:provisioning_instance_keys] = Set[] if @session[:provisioning_instance_keys].nil?
-    @session[:provisioning_instance_keys].delete(key) unless @missing
+
+    if !@missing && being_provisioned?
+      @session[:provisioning_instance_keys].delete(key)
+      set_restarted
+    end
   end
 
   def version_mismatch?
