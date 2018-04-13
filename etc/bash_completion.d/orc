@@ -26,7 +26,7 @@ _orc()
       ;;
   esac
 
-  COMPREPLY=( $(compgen -W "--debug --environment --promote-from --application\
+  COMPREPLY=( $(compgen -W "--debug --clean-instances --environment --promote-from --application\
                             --version --group --status --deploy --install \
                             --limited-install --swap --resolve --promote" -- "$cur") )
 
