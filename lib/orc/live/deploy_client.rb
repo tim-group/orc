@@ -11,12 +11,8 @@ class MCollective::RPC::DeploytoolWrapper
 
   def status(spec, maybe_offline_hosts = [])
     spec[:environment] = @environment if spec[:environment].nil?
-    expected_hosts = discover_hosts(spec[:environment], spec[:application], spec[:group]) - maybe_offline_hosts
-
-    expected_host_statuses = custom_request("status", { :spec => spec }, expected_hosts)
-    missing_host_statuses = custom_request("status", { :spec => spec }, maybe_offline_hosts, 10)
-
-    expected_host_statuses + missing_host_statuses
+    online_hosts = discover_hosts(spec[:environment], spec[:application], spec[:group])
+    status_of(spec, online_hosts - maybe_offline_hosts, 200) + status_of(spec, maybe_offline_hosts, 10)
   end
 
   def custom_request(action, request, hosts, timeout = 200)
@@ -30,6 +26,10 @@ class MCollective::RPC::DeploytoolWrapper
     attempt_discovery(environment, application, group)
   rescue
     attempt_discovery(environment, application, group)
+  end
+
+  def status_of(spec, hosts, timeout)
+    hosts.empty? ? [] : custom_request("status", { :spec => spec }, hosts, timeout)
   end
 
   def attempt_discovery(environment = nil, application = nil, group = nil)
