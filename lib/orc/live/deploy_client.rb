@@ -149,7 +149,7 @@ class Orc::DeployClient
 
   def stacks(stack, command)
     verbosity = @debug ? '-vv' : ''
-    system("stacks #{verbosity} --checkout-config --environment '#{@environment}' --stack '#{stack}' #{command}")
+    system("stacks #{verbosity} --no-tmux --checkout-config --environment '#{@environment}' --stack '#{stack}' #{command}")
   end
 
   def log_response(resp)
