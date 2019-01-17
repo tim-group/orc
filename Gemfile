@@ -6,5 +6,5 @@ source "https://rubygems.org" do
   gem 'mcollective-client', '2.8.1'
   gem 'rake', '12.2.1'
   gem 'rspec', '3.7.0'
-  gem 'rubocop', '0.32.1'
+  gem 'rubocop', '0.63.0'
 end
