@@ -1,6 +1,10 @@
 #!/opt/ruby-bundle/bin/ruby
 
-$: << '/usr/local/lib/site_ruby/timgroup/'
+if ENV['dev']
+  $LOAD_PATH << 'lib/'
+else
+  $LOAD_PATH << '/usr/local/lib/site_ruby/timgroup/'
+end
 
 require 'orc/command_line'
 
