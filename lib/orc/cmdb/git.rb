@@ -19,6 +19,7 @@ class Orc::CMDB::Git
     @local_path = options[:local_path] || raise("Need local_path option")
     @branch = options[:branch] || "master"
     @timeout = options[:timeout] || 60
+    @depth = options[:depth] || 1000
     @options = options
     @logger = choose_logger(options)
   end
@@ -40,7 +41,7 @@ class Orc::CMDB::Git
       end
     else
       Timeout::timeout(@timeout) do
-        @git = Git.clone(@repo_url, @local_path, :log => @logger)
+        @git = Git.clone(@repo_url, @local_path, :log => @logger, :depth => @depth)
       end
     end
 
