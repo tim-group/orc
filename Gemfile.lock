@@ -35,7 +35,7 @@ GEM
     insist (1.0.0)
     io-like (0.3.0)
     json (1.8.6)
-    mcollective-client (2.8.1)
+    mcollective-client (2.12.4)
       json
       stomp
       systemu
@@ -76,7 +76,7 @@ GEM
     ruby-xz (0.2.3)
       ffi (~> 1.9)
       io-like (~> 0.3)
-    stomp (1.4.4)
+    stomp (1.4.8)
     stud (0.0.23)
     systemu (2.6.5)
 
@@ -87,7 +87,7 @@ DEPENDENCIES
   ci_reporter_rspec (= 1.0.0)!
   fpm!
   git!
-  mcollective-client (= 2.8.1)!
+  mcollective-client (= 2.12.4)!
   rake (= 12.2.1)!
   rspec (= 3.7.0)!
   rubocop (= 0.32.1)!
