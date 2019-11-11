@@ -52,7 +52,7 @@ GEM
     powerpack (0.1.1)
     rainbow (2.2.2)
       rake
-    rake (12.2.1)
+    rake (12.3.2)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)
@@ -88,7 +88,7 @@ DEPENDENCIES
   fpm!
   git!
   mcollective-client (= 2.8.1)!
-  rake (= 12.2.1)!
+  rake (= 12.3.2)!
   rspec (= 3.7.0)!
   rubocop (= 0.32.1)!
 
