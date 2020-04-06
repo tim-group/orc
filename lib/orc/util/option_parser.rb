@@ -38,10 +38,10 @@ class Orc::Util::OptionParser
       opts.on("-g", "--group GROUP", "specify the group to execute the plan") do |env|
         @options[:group] = env
       end
-      opts.on('-C', '--clean-instances', 'when resolving, reprovision instances rather than upgrading in situ') do
+      opts.on("-C", "--clean-instances", "when resolving, reprovision instances rather than upgrading in situ") do
         @options[:reprovision] = true
       end
-      opts.on('-w', '--max-wait', 'when resolving, timeout if no resolution after max_wait seconds') do |max_wait|
+      opts.on("-w", "--max-wait MAX_WAIT_SECONDS", "when resolving, timeout after max_wait seconds") do |max_wait|
         @options[:max_wait] = max_wait.to_i
       end
 

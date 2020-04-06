@@ -90,6 +90,6 @@ describe Orc::Util::OptionParser do
     parser = Orc::Util::OptionParser.new
     parser.parse(['--environment', 'foo', '--application', 'bar', '-r', '--max-wait', '42'])
 
-    expect(parser.options)[:max_wait].to eql(42)
+    expect(parser.options[:max_wait]).to eql(42)
   end
 end
