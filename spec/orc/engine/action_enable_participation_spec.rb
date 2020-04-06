@@ -10,7 +10,10 @@ describe Orc::Engine::Action::EnableParticipationAction do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
-    update_version_action = Orc::Engine::Action::EnableParticipationAction.new(@remote_client, instance_model, 0)
+    update_version_action = Orc::Engine::Action::EnableParticipationAction.new(
+      :remote_client => @remote_client,
+      :instance => instance_model,
+      :timeout => 0)
     expect(@remote_client).to receive(:enable_participation).with({ :group => "blue" }, ["host1"])
     update_version_action.execute([])
   end

@@ -5,10 +5,10 @@ module Orc::Engine::Action
   class Base
     include Orc::Util::ProgressReporter
     attr_reader :instance
-    def initialize(remote_client, instance, timeout = nil)
-      @instance = instance
-      @remote_client = remote_client
-      @timeout = timeout || default_timeout
+    def initialize(options)
+      @instance = options[:instance]
+      @remote_client = options[:remote_client]
+      @timeout = options[:timeout] || default_timeout
     end
 
     def default_timeout
@@ -157,11 +157,11 @@ module Orc::Engine::Action
   end
 
   class WaitActionBase < Base
-    attr_reader :start_time, :max_wait
-    def initialize(*args)
+    attr_reader :start_time
+    def initialize(options)
       super
       @start_time = Time.now.to_i
-      @max_wait ||= 25 * 60 # 25m
+      @max_wait = options[:max_wait]
     end
 
     def do_execute(all_actions)

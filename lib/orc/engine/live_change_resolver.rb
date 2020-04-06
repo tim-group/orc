@@ -7,6 +7,8 @@ class Orc::Engine::LiveChangeResolver
     @change_required_check = change_required_check
     @remote_client = remote_client
     @timeout = timeout
+    @max_wait ||= 25 * 60 # 25m
+
     @cases = {}
     in_case({
               :should_participate => true,
@@ -107,7 +109,13 @@ class Orc::Engine::LiveChangeResolver
         return
       end
     end
-    @cases[state] = lambda { |instance| Orc::Engine::Action.const_get(name).new(@remote_client, instance, @timeout) }
+    @cases[state] = lambda do |instance|
+      Orc::Engine::Action.const_get(name).new(
+        :remote_client => @remote_client,
+        :instance => instance,
+        :timeout => @timeout,
+        :max_wait => @max_wait)
+    end
   end
 
   def get_case(state)

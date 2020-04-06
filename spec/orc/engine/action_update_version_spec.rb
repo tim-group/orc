@@ -10,7 +10,9 @@ describe Orc::Engine::Action::UpdateVersionAction do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
-    update_version_action = Orc::Engine::Action::UpdateVersionAction.new(@remote_client, instance_model)
+    update_version_action = Orc::Engine::Action::UpdateVersionAction.new(
+      :remote_client => @remote_client,
+      :instance => instance_model)
     expect(@remote_client).to receive(:update_to_version).with({ :group => "blue" }, ["host1"], "16").and_return(true)
     update_version_action.execute([update_version_action])
   end
@@ -19,7 +21,9 @@ describe Orc::Engine::Action::UpdateVersionAction do
     group = Orc::Model::Group.new(:name => "blue", :target_version => "16")
     instance_model = Orc::Model::Instance.new({ :host => "host1" }, group)
 
-    update_version_action = Orc::Engine::Action::UpdateVersionAction.new(@remote_client, instance_model)
+    update_version_action = Orc::Engine::Action::UpdateVersionAction.new(
+      :remote_client => @remote_client,
+      :instance => instance_model)
     allow(@remote_client).to receive(:update_to_version).and_return(false)
     expect { update_version_action.execute([update_version_action]) }.to raise_error(Orc::Engine::FailedToResolve)
   end
@@ -35,7 +39,7 @@ describe Orc::Engine::Action::UpdateVersionAction do
     allow(instance).to receive(:host).and_return('localhost')
     remote_client = double
     allow(remote_client).to receive(:update_to_version).and_return(true)
-    Orc::Engine::Action::UpdateVersionAction.new(remote_client, instance)
+    Orc::Engine::Action::UpdateVersionAction.new(:remote_client => remote_client, :instance => instance)
   end
 
   it 'works as expected' do
