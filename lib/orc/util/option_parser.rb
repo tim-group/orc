@@ -41,6 +41,9 @@ class Orc::Util::OptionParser
       opts.on('-C', '--clean-instances', 'when resolving, reprovision instances rather than upgrading in situ') do
         @options[:reprovision] = true
       end
+      opts.on('-w', '--max-wait', 'when resolving, timeout if no resolution after max_wait seconds') do |max_wait|
+        @options[:max_wait] = max_wait.to_i
+      end
 
       [StatusRequest, DeployRequest, InstallRequest, LimitedInstallRequest, SwapRequest, ResolveRequest,
        PromotionRequest, RollingRestartRequest, NeedsStepsToResolve

@@ -85,4 +85,11 @@ describe Orc::Util::OptionParser do
       expect(e.status).to eql(1)
     end
   end
+
+  it 'accepts max_wait parameter as integer number of seconds' do
+    parser = Orc::Util::OptionParser.new
+    parser.parse(['--environment', 'foo', '--application', 'bar', '-r', '--max-wait', '42'])
+
+    expect(parser.options)[:max_wait].to eql(42)
+  end
 end
