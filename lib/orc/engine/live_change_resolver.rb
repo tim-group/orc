@@ -3,11 +3,11 @@ require 'orc/engine/actions'
 
 class Orc::Engine::LiveChangeResolver
   # rubocop:disable MethodLength
-  def initialize(change_action_name, change_required_check, remote_client, timeout = nil)
+  def initialize(change_action_name, change_required_check, remote_client, max_wait, timeout = nil)
     @change_required_check = change_required_check
     @remote_client = remote_client
     @timeout = timeout
-    @max_wait ||= 25 * 60 # 25m
+    @max_wait = max_wait
 
     @cases = {}
     in_case({

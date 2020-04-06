@@ -25,6 +25,7 @@ class Orc::Factory
     @remote_client = dependencies[:remote_client]
     @debug = options[:debug]
     @reprovision = options[:reprovision]
+    @max_wait = options[:max_wait] || 25 * 60
   end
 
   def config
@@ -62,12 +63,12 @@ class Orc::Factory
   end
 
   def restart_engine
-    resolver = Orc::Engine::RestartResolver.new(remote_client, @timeout, @reprovision)
+    resolver = Orc::Engine::RestartResolver.new(remote_client, @max_wait, @timeout, @reprovision)
     engine_for_resolver(resolver, :quiet => false)
   end
 
   def engine(quiet = false)
-    mismatch_resolver = Orc::Engine::MismatchResolver.new(remote_client, @timeout, @reprovision)
+    mismatch_resolver = Orc::Engine::MismatchResolver.new(remote_client, @max_wait, @timeout, @reprovision)
     engine_for_resolver(mismatch_resolver, quiet)
   end
 

@@ -2,7 +2,8 @@ require 'orc/engine/mismatch_resolver'
 
 describe Orc::Engine::MismatchResolver do
   before do
-    @mismatch_resolver = Orc::Engine::MismatchResolver.new(nil)
+    max_wait = 25 * 60
+    @mismatch_resolver = Orc::Engine::MismatchResolver.new(nil, max_wait)
     @should_be_participating_group = Orc::Model::Group.new(
       :name                 => "spg",
       :target_participation => true,
