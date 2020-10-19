@@ -6,7 +6,7 @@ class Orc::Util::Config
     @config_location = config_location
     @tried_to_load_config = false
     @config = {
-      'cmdb_repo_url' => 'git@git:cmdb',
+      'cmdb_repo_url' => 'git@git.net.local:cmdb',
       'cmdb_local_path' => "#{ENV['HOME']}/.cmdb/"
     }
   end
